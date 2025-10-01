@@ -8,8 +8,5 @@ void LineC::read(){
             Raw[(y*8)+i] = Expander.ADC.give_digital(list[y],i);
         }
     }
-    for(int i = 0 ; i<8 ; i++){
-        Raw_Out[i] = Expander.ADC.give_digital(CS_Line_OUT,i);
-    }
 }
 

@@ -1,16 +1,18 @@
-#include "Defender.h" 
+#include "Defender.h"
 
 DefenderTacticsC DefenderTactics;
 
-void DefenderTacticsC::step(){
-	//TODO
+void DefenderTacticsC:: step(){
+    bool ballcaught = true;
+    if (ballcaught = true){
+            Goaldirection();
+    }
+    else{
+        Ballsearch();
+
+    }
+    
 }
 
-void DefenderTacticsC::BallSearch(){
-	//TODO
-}
 
-void DefenderTacticsC::BallDefend(){
-	//TODO
-}
 

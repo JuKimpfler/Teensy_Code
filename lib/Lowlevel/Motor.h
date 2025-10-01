@@ -16,8 +16,7 @@ class MotorC
     void OnFast(int MotorVR , int MotorVL , int MotorHR , int MotorHL);
     void OffFast();
     void BreakFast();
-
-    int Iteration_list[8] = {VR_PortA,VR_PortB,VL_PortA,VL_PortB,HR_PortA,HR_PortB,HL_PortA,HL_PortB};
+    void Break(int Motor);
 };
 
 extern MotorC Motor;

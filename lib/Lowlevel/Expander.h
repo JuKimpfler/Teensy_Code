@@ -10,9 +10,8 @@ class ExpanderC {
     public:
         class I2CC {
             private :
-                bool ITF1[8] ;
-                bool ITF2[8] ;
-                bool Ex[8];
+                bool Switch[8] ;
+                bool Dip[4];
             public:
                 void init(int Add , int Mode , int on_off = All_Off);
                 void read(int Add);
@@ -27,8 +26,8 @@ class ExpanderC {
                 int lineB[8];
                 int lineC[8];
                 int lineD[8];
-                int lineOUT[8];
             public:
+                int IR[8];
                 void init(int Port);
                 void read(int Port);
                 int give_digital(int Port, int Pin);

@@ -8,7 +8,6 @@ class LineC {
     public:
         void read();
         float Raw[32];
-        float Raw_Out[8];
 };
 
 extern LineC Line;

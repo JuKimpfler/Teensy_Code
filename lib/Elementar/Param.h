@@ -29,10 +29,9 @@ inline int Motor_Frequency =  400;
 
 #define distFactor 2.3
 
-inline int IrWeights[8] = {1,2,3,4,5,6,7,8};
-inline int IrMin[8] = {1,2,3,4,5,6,7,8};
-inline int IrMax[8] = {1,2,3,4,5,6,7,8};
-inline int IrDir[8] = {0,0,0,0,0,0,0,0};
+inline int IR_Pos[8] = {1,2,3,4,5,6,7,8};
+inline int Ir_Min[8] = {1,2,3,4,5,6,7,8};
+inline int Ir_Max[8] = {1,2,3,4,5,6,7,8};
 
 //#define XCP_BL 
 //#define XCP_USB

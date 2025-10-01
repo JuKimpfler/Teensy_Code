@@ -75,9 +75,13 @@ void RobotC::Stop(){
 }
 
 void RobotC::KickerC::Off(){
-    digitalWrite(Kicker_Port,LOW);
+    
+}
+
+void RobotC::KickerC::On(int Cycletime){
+    
 }
 
 void RobotC::KickerC::Once(){
-    digitalWrite(Kicker_Port,HIGH);
+    
 }

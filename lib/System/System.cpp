@@ -28,53 +28,53 @@ void SystemC::Start_Update(){
 }
 
 void SystemC::Button_Update(){
-    Expander.I2C.read(I2C_Ex);
-    Expander.I2C.read(I2C_ITF_1);
-    Expander.I2C.read(I2C_ITF_2);
+    Expander.I2C.read(I2C_Button);
+    Expander.I2C.read(I2C_Dip_SW);
 
-    Button[0] = !Expander.I2C.give(I2C_Ex,BTN1_Ex);
-    Button[1] = !Expander.I2C.give(I2C_Ex,BTN2_Ex);
-    Button[2] = !Expander.I2C.give(I2C_Ex,BTN3_Ex);
-    Button[3] = !Expander.I2C.give(I2C_Ex,BTN4_Ex);
-    Switches[0] = !Expander.I2C.give(I2C_Ex,SW1_Ex);
-    Switches[1] = !Expander.I2C.give(I2C_Ex,SW2_Ex);
-    Switches[2] = !Expander.I2C.give(I2C_Ex,SW3_Ex);
+    Button[0] = !Expander.I2C.give(I2C_Button,4);
+    Button[1] = !Expander.I2C.give(I2C_Button,5);
+    Button[2] = !Expander.I2C.give(I2C_Button,6);
+    Button[3] = !Expander.I2C.give(I2C_Button,7);
 
-    Switches[3] = !Expander.I2C.give(I2C_ITF_1,SW1_ITF1);
-    Switches[4] = !Expander.I2C.give(I2C_ITF_1,SW2_ITF1);
-    Switches[5] = !Expander.I2C.give(I2C_ITF_1,SW3_ITF1);
-    Switches[6] = !Expander.I2C.give(I2C_ITF_1,SW4_ITF1);
-    Switches[7] = !Expander.I2C.give(I2C_ITF_1,SW5_ITF1);
-    Start_ITF = !Expander.I2C.give(I2C_ITF_1,Start_ITF1);
-    Button[4] = !Expander.I2C.give(I2C_ITF_1,BTN1_ITF1);
-    Button[5] = !Expander.I2C.give(I2C_ITF_1,BTN2_ITF1);
-
-    Button[6] = !Expander.I2C.give(I2C_ITF_1,BTN1_ITF2);
-    Button[7] = !Expander.I2C.give(I2C_ITF_1,BTN2_ITF2);
+    Switches[0] = !Expander.I2C.give(I2C_Button,0);
+    Switches[1] = !Expander.I2C.give(I2C_Button,1);
+    Switches[2] = !Expander.I2C.give(I2C_Button,2);
+    Switches[3] = !Expander.I2C.give(I2C_Button,3);
 }
 
 void SystemC::initC::Motors(){
     Motor.init();
+    Expander.I2C.init(I2C_Motor,Output_Mode,All_Off);
+    Expander.I2C.init(I2C_Schuss,Output_Mode,All_Off);
 }
 
 void SystemC::initC::Interface(){
     //RGB.init();
+    #ifndef XCP_USB 
+        Serial.begin(115200); 
+    #endif
+
+    #ifdef XCP_BL 
+        xcpMaster_bl.Init();
+    #endif 
+    #ifdef XCP_USB 
+        xcpMaster_usb.Init();
+    #endif
     //Debug.begin();
-    Expander.I2C.init(I2C_Ex,Ex_config);
-    Expander.I2C.init(I2C_ITF_1,ITF1_config);
-    Expander.I2C.init(I2C_ITF_2,ITF2_config);
+    Expander.I2C.init(I2C_Button,Input_Mode);
+    Expander.I2C.init(I2C_Dip_SW,Input_Mode);
 }
 
 void SystemC::initC::Sensors(){
     pinMode(Start_Port,INPUT);
 
-    Expander.ADC.init(CS_Line_OUT);
+    Expander.ADC.init(CS_IR);
     Expander.ADC.init(CS_LineA);
     Expander.ADC.init(CS_LineB);
     Expander.ADC.init(CS_LineC);
     Expander.ADC.init(CS_LineD);
 
-    INA.init();
+    //INA.init();
 
     LDR.init();
 
@@ -92,20 +92,33 @@ void SystemC::UpdateC::Interface(){
     if (Interface_Timer > 1000/Interface_Frequency){
         System.Button_Update();
         Interface_Timer=0;
+        #ifdef XCP_BL 
+            xcpMaster_bl.Event(0);
+        #endif 
+        #ifdef XCP_USB 
+            xcpMaster_usb.Event(0);
+        #endif
     }
+
+    #ifdef XCP_BL 
+      xcpMaster_bl.BackgroudTask();
+    #endif 
+    #ifdef XCP_USB 
+      xcpMaster_usb.BackgroudTask();
+    #endif
 }
 
 void SystemC::UpdateC::Sensors(){
     
     System.Start_Update();
 
-    Expander.ADC.read(CS_Line_OUT);
+    //Expander.ADC.read(CS_IR);
     Expander.ADC.read(CS_LineA);
     Expander.ADC.read(CS_LineB);
     Expander.ADC.read(CS_LineC);
     Expander.ADC.read(CS_LineD);
 
-    IR.read();
+    //IR.read();
 
     Line.read();
     

@@ -4,10 +4,11 @@
 #include "Calculations.h"
 
 class DefenderTacticsC{
+    private:
     public:
         void step();
-        void BallSearch();
-        void BallDefend();
+        void BallCaught();
+        void Ballsearch();
+        void Goaldirection();
 };
-
 extern DefenderTacticsC DefenderTactics;

@@ -1,12 +1,12 @@
 #pragma once
-#include "INA219.h"
 #include "Elementar.h"
 
-class INAC{
+class USC{
     private:
     public:
         void init();
-        float readVoltage();
+        void Read();
 };
 
-extern INAC INA;
+extern USC US;
+ 

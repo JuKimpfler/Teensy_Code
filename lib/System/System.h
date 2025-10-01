@@ -24,10 +24,8 @@ class SystemC {
 
     public:
         bool Start;
-        bool Start_ITF;
-        bool Button[8];
-        bool Switches[8];
-        bool LED[7];
+        bool Button[4];
+        bool Switches[4];
 
         class initC{
             public:

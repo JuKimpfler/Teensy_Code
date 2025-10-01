@@ -2,19 +2,12 @@
 INAC INA;
 
 
-INA219 INA219_Main(I2C_INA219_Main);
-
-INA219 INA219_DR(I2C_INA219_DR);
+INA219 INA219_lib(I2C_INA219);
 
 void INAC::init(){
-    INA219_Main.begin();
-    INA219_DR.begin();
+    INA219_lib.begin();
 }
 
-float INAC::Voltage_DR(){
-    return INA219_DR.getBusVoltage();
-}
-
-float INAC::Voltage(){
-    return INA219_Main.getBusVoltage();
+float INAC::readVoltage(){
+    return INA219_lib.getBusVoltage();
 }
