@@ -9,7 +9,7 @@ def count_lines_in_files(directory, extensions=('.cpp', '.c', '.h'), exclude_dir
     file_count = 0
 
     # Normalisiere auszuschließende Ordnerpfade
-    exclude_dirs = [os.path.abspath(os.path.join(directory, d)) for d in exclude_dirs]
+    exclude_dirs = c[os.path.abspath(os.path.join(directory, d)) for d in exclude_dirs]
 
     for root, dirs, files in os.walk(directory):
         abs_root = os.path.abspath(root)
