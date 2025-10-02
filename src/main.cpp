@@ -2,9 +2,9 @@
 #include "System.h"
 
 void setup() {
-    System.init.Sensors();
-    System.init.Motors();
-    System.init.Interface();
+    System.init.Sensors() ;
+    System.init.Motors() ;
+    System.init.Interface()  ;
 }
 
 void loop() { 
