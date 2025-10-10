@@ -36,7 +36,7 @@ def count_lines_in_files(directory, extensions=('.cpp', '.c', '.h'), exclude_dir
 
 # Beispielaufruf
 count_lines_in_files(
-    directory="C:/Users/juki/OneDrive/Desktop/Bodenseekoalas/teensy_code",
+    directory="C:\Users\Roboter AG\Desktop\Archiv_8_6_2025",
     exclude_dirs=[".pio", "include", ".vscode"]
 )
 
