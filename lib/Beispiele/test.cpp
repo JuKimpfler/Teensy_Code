@@ -1,4 +1,6 @@
 #include "test.h"
+
+
 TestC Test;
 
 void TestC::init(){
