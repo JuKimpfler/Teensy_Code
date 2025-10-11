@@ -7,3 +7,6 @@
 # Git Manager Credentials (auto-added)
 git_manager_credentials*.txt
 .gitgit_manager_credentials*.txt
+
+# Git Manager Credentials (auto-added)
+*credentials*.txt
