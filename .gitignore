@@ -3,3 +3,7 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
+
+# Git Manager Credentials (auto-added)
+git_manager_credentials*.txt
+*credentials*.txt
