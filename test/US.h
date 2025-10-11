@@ -8,5 +8,5 @@ class USC{
         void Read();
 };
 
-extern USC US;
+extern USC US ;
  
