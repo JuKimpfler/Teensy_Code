@@ -3,7 +3,10 @@ RobotC Robot;
 
 void RobotC::Turn(float Angle ,int Speed1 = HighSpeed){
     PID.setAngle(Angle);
-    Motor.OnFast(PID.Out,PID.Out,PID.Out,PID.Out);
+    Motor.On(PID.Out,VR_Motor);
+    Motor.On(PID.Out,VL_Motor);
+    Motor.On(PID.Out,HR_Motor);
+    Motor.On(PID.Out,HL_Motor);
 }
 
 void RobotC::Drive(float Dir , float Angle = 200000 ,int Speed1 = HighSpeed){
@@ -67,11 +70,17 @@ void RobotC::Drive(float Dir , float Angle = 200000 ,int Speed1 = HighSpeed){
     if (Dir2==0){Vel_D[HR_Motor] = Vel_D[HR_Motor]*-1;}
     if (Dir3==0){Vel_D[HL_Motor] = Vel_D[HL_Motor]*-1;}
 
-    Motor.OnFast(Vel_D[VR_Motor],Vel_D[VL_Motor],Vel_D[HR_Motor],Vel_D[HL_Motor]);
+    Motor.On(Vel_D[VR_Motor],VR_Motor);
+    Motor.On(Vel_D[VL_Motor],VL_Motor);
+    Motor.On(Vel_D[HR_Motor],HR_Motor);
+    Motor.On(Vel_D[HL_Motor],HL_Motor);
 }
 
 void RobotC::Stop(){
-    Motor.BreakFast();
+    Motor.Break(1);
+    Motor.Break(2);
+    Motor.Break(3);
+    Motor.Break(4);
 }
 
 void RobotC::KickerC::Off(){

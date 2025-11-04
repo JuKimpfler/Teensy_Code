@@ -2,38 +2,26 @@
 ExpanderC Expander;
 
 void ExpanderC::I2CC::init(int Add , int Mode , int on_off = All_Off){ // on_off -> write all Outputs to low or high
-    if(Add == I2C_Button || Add == I2C_Dip_SW){
-        Wire.begin(); 
-        Wire.beginTransmission(Add);
-        Wire.write(Config_Reg);        
-        Wire.write(Mode);         
-        Wire.endTransmission();
-        Wire.beginTransmission(Add); 
-        Wire.write(Output_Reg);         
-        Wire.write(on_off);         
-        Wire.endTransmission();
-    }
-    else{
-        Wire1.begin(); 
-        Wire1.beginTransmission(Add);
-        Wire1.write(Config_Reg);        
-        Wire1.write(Mode);         
-        Wire1.endTransmission();
-        Wire1.beginTransmission(Add); 
-        Wire1.write(Output_Reg);         
-        Wire1.write(on_off);         
-        Wire1.endTransmission();
-    }
+
+    Wire1.begin(); 
+    Wire1.beginTransmission(Add);
+    Wire1.write(Config_Reg);        
+    Wire1.write(Mode);         
+    Wire1.endTransmission();
+    Wire1.beginTransmission(Add); 
+    Wire1.write(Output_Reg);         
+    Wire1.write(on_off);         
+    Wire1.endTransmission();
 }
 
 void ExpanderC::I2CC::read(int Add){
     
-    Wire.beginTransmission(Add); //address second port expander
-    Wire.write(Input_Reg);  // select input register
-    Wire.endTransmission(false);        // send repeated start instead of stop
-    Wire.requestFrom(Add, 1);          // Start a read access and expect one byte
-    byte last = Wire.read();     // read Register
-    Wire.endTransmission(); // end of transmittion
+    Wire1.beginTransmission(Add); //address second port expander
+    Wire1.write(Input_Reg);  // select input register
+    Wire1.endTransmission(false);        // send repeated start instead of stop
+    Wire1.requestFrom(Add, 1);          // Start a read access and expect one byte
+    byte last = Wire1.read();     // read Register
+    Wire1.endTransmission(); // end of transmittion
 
     int rest=0;
 
@@ -67,6 +55,23 @@ bool ExpanderC::I2CC::give(int Add , int Port){
         return Switch[Port];
     }
 }
+
+
+void ExpanderC::I2CC::write_Single(int Add , int Port , bool Zustand){
+    if ( Zustand == true ){
+        Wire1.beginTransmission(Add); //address second port expander
+        Wire1.write(Output_Reg);             // select output register
+        Wire1.write(00000001);            // update output ports Port_Seting
+        Wire1.endTransmission();
+    }
+    else if ( Zustand == false ){
+        Wire1.beginTransmission(Add); //address second port expander
+        Wire1.write(Output_Reg);             // select output register
+        Wire1.write(00000000);            // update output ports Port_Seting
+        Wire1.endTransmission();
+    }
+}
+
 
 void ExpanderC::I2CC::write(int Add , int Port , bool Zustand){
     Wire1.beginTransmission(Add); //address second port expander

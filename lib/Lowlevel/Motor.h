@@ -13,9 +13,6 @@ class MotorC
     void init();
     void On(int Speed , int Motor); // +- Speed für Richtung
     void Off(int Motor);
-    void OnFast(int MotorVR , int MotorVL , int MotorHR , int MotorHL);
-    void OffFast();
-    void BreakFast();
     void Break(int Motor);
 };
 

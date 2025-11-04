@@ -5,25 +5,24 @@
 #define enums_h
 
 enum Motor_Port { // Portbelegung Direct an Teensy
-    VR_Motor = 1, //4
-    VL_Motor = 2, //9
-    HR_Motor = 3, //5
-    HL_Motor = 4, //6
+    VR_Motor = 4, //
+    VL_Motor = 3, //
+    HR_Motor = 1, //
+    HL_Motor = 2, //
 
-    VR_Speed_Port = 4,
-    VL_Speed_Port = 9,
-    HR_Speed_Port = 5,
-    HL_Speed_Port = 6,
-    DR_Speed_Port = 2,
+    VR_Speed_Port = 9, //
+    VL_Speed_Port = 6, //
+    HR_Speed_Port = 4, //
+    HL_Speed_Port = 5, //
 
-    VR_ExpanderA = 7,
-    VR_ExpanderB = 6,
-    VL_ExpanderA = 1,
-    VL_ExpanderB = 0,
-    HR_ExpanderA = 5,
-    HR_ExpanderB = 4,
-    HL_ExpanderA = 3,
-    HL_ExpanderB = 2,
+    VR_ExpanderA = 26, //
+    VR_ExpanderB = 32, //
+    VL_ExpanderA = 7, //
+    VL_ExpanderB = 8, //
+    HR_ExpanderA = 0, //
+    HR_ExpanderB = 1, //
+    HL_ExpanderA = 2, //
+    HL_ExpanderB = 3, //
 };
 
 enum Ultrasonic_Address{

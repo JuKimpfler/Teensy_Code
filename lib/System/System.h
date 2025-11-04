@@ -26,6 +26,7 @@ class SystemC {
         bool Start;
         bool Button[4];
         bool Switches[4];
+        bool Sys_LED;
 
         class initC{
             public:

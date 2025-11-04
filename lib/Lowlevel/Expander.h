@@ -17,6 +17,8 @@ class ExpanderC {
                 void read(int Add);
                 bool give(int Add , int Port);
                 void write(int Add , int Port , bool Zustand);
+                void write_Single(int Add , int Port , bool Zustand);
+                
         };
         I2CC I2C;
         

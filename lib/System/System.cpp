@@ -31,21 +31,21 @@ void SystemC::Button_Update(){
     Expander.I2C.read(I2C_Button);
     Expander.I2C.read(I2C_Dip_SW);
 
-    Button[0] = !Expander.I2C.give(I2C_Button,4);
-    Button[1] = !Expander.I2C.give(I2C_Button,5);
-    Button[2] = !Expander.I2C.give(I2C_Button,6);
-    Button[3] = !Expander.I2C.give(I2C_Button,7);
+    Button[0] = !Expander.I2C.give(I2C_Button,0);
+    Button[1] = !Expander.I2C.give(I2C_Button,1);
+    Button[2] = !Expander.I2C.give(I2C_Button,2);
+    Button[3] = !Expander.I2C.give(I2C_Button,3);
 
-    Switches[0] = !Expander.I2C.give(I2C_Button,0);
-    Switches[1] = !Expander.I2C.give(I2C_Button,1);
-    Switches[2] = !Expander.I2C.give(I2C_Button,2);
-    Switches[3] = !Expander.I2C.give(I2C_Button,3);
+    Switches[0] = !Expander.I2C.give(I2C_Button,4);
+    Switches[1] = !Expander.I2C.give(I2C_Button,5);
+    Switches[2] = !Expander.I2C.give(I2C_Button,6);
+    
 }
 
 void SystemC::initC::Motors(){
     Motor.init();
-    Expander.I2C.init(I2C_Motor,Output_Mode,All_Off);
-    Expander.I2C.init(I2C_Schuss,Output_Mode,All_Off);
+    //Expander.I2C.init(I2C_Motor,Output_Mode,All_Off);
+    //Expander.I2C.init(I2C_Schuss,Output_Mode,All_Off);
 }
 
 void SystemC::initC::Interface(){
@@ -61,18 +61,18 @@ void SystemC::initC::Interface(){
         xcpMaster_usb.Init();
     #endif
     //Debug.begin();
-    Expander.I2C.init(I2C_Button,Input_Mode);
-    Expander.I2C.init(I2C_Dip_SW,Input_Mode);
+    //Expander.I2C.init(I2C_Button,Input_Mode);
+    //Expander.I2C.init(I2C_Dip_SW,Input_Mode);
 }
 
 void SystemC::initC::Sensors(){
     pinMode(Start_Port,INPUT);
 
-    Expander.ADC.init(CS_IR);
-    Expander.ADC.init(CS_LineA);
-    Expander.ADC.init(CS_LineB);
-    Expander.ADC.init(CS_LineC);
-    Expander.ADC.init(CS_LineD);
+    //Expander.ADC.init(CS_IR);
+    //Expander.ADC.init(CS_LineA);
+    //Expander.ADC.init(CS_LineB);
+    //Expander.ADC.init(CS_LineC);
+    //Expander.ADC.init(CS_LineD);
 
     //INA.init();
 
@@ -113,17 +113,16 @@ void SystemC::UpdateC::Sensors(){
     System.Start_Update();
 
     //Expander.ADC.read(CS_IR);
-    Expander.ADC.read(CS_LineA);
-    Expander.ADC.read(CS_LineB);
-    Expander.ADC.read(CS_LineC);
-    Expander.ADC.read(CS_LineD);
+    //Expander.ADC.read(CS_LineA);
+    //Expander.ADC.read(CS_LineB);
+    //Expander.ADC.read(CS_LineC);
+    //Expander.ADC.read(CS_LineD);
 
     //IR.read();
 
-    Line.read();
+    //Line.read();
     
     //OpenMV.read();
-    PID.Calculate();
     BNO055.read();
     /*
     if (US_Timer > 1000/US_Frequency){
@@ -137,5 +136,6 @@ void SystemC::UpdateC::Sensors(){
 }
 
 void SystemC::UpdateC::Calculations(){
-    LineCalc.Calc();
+    //LineCalc.Calc();
+    PID.Calculate();
 }
