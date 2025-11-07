@@ -1,5 +1,5 @@
 #include "System.h"
-
+/*
 // XCP
 #ifdef XCP_BL
   XcpSxIMaster xcpMaster_bl = XcpSxIMaster(500000,7);
@@ -15,7 +15,7 @@ PROGMEM const char kXcpStationId[kXcpStationIdLength] = "Bodenseekoalas_2vs2_" _
 #ifdef __cplusplus
 }
 #endif
-
+*/
 SystemC System;
 
 elapsedMillis Interface_Timer;
@@ -28,17 +28,16 @@ void SystemC::Start_Update(){
 }
 
 void SystemC::Button_Update(){
-    Expander.I2C.read(I2C_Button);
-    Expander.I2C.read(I2C_Dip_SW);
+    Expander.I2C.read(I2C_ITF_Main);
 
-    Button[0] = !Expander.I2C.give(I2C_Button,0);
-    Button[1] = !Expander.I2C.give(I2C_Button,1);
-    Button[2] = !Expander.I2C.give(I2C_Button,2);
-    Button[3] = !Expander.I2C.give(I2C_Button,3);
+    Button[0] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_BT0);
+    Button[1] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_BT1);
+    Button[2] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_BT2);
+    Button[3] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_BT3);
 
-    Switches[0] = !Expander.I2C.give(I2C_Button,4);
-    Switches[1] = !Expander.I2C.give(I2C_Button,5);
-    Switches[2] = !Expander.I2C.give(I2C_Button,6);
+    Switches[0] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW0);
+    Switches[1] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW1);
+    Switches[2] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW2);
     
 }
 
@@ -50,6 +49,7 @@ void SystemC::initC::Motors(){
 
 void SystemC::initC::Interface(){
     //RGB.init();
+    /*
     #ifndef XCP_USB 
         Serial.begin(115200); 
     #endif
@@ -60,8 +60,9 @@ void SystemC::initC::Interface(){
     #ifdef XCP_USB 
         xcpMaster_usb.Init();
     #endif
+    */
     //Debug.begin();
-    //Expander.I2C.init(I2C_Button,Input_Mode);
+    Expander.I2C.init(I2C_ITF_Main,Input_Mode);
     //Expander.I2C.init(I2C_Dip_SW,Input_Mode);
 }
 
@@ -92,20 +93,20 @@ void SystemC::UpdateC::Interface(){
     if (Interface_Timer > 1000/Interface_Frequency){
         System.Button_Update();
         Interface_Timer=0;
-        #ifdef XCP_BL 
-            xcpMaster_bl.Event(0);
-        #endif 
-        #ifdef XCP_USB 
-            xcpMaster_usb.Event(0);
-        #endif
+        //#ifdef XCP_BL 
+        //    xcpMaster_bl.Event(0);
+        //#endif 
+        //#ifdef XCP_USB 
+        //    xcpMaster_usb.Event(0);
+        //#endif
     }
 
-    #ifdef XCP_BL 
-      xcpMaster_bl.BackgroudTask();
-    #endif 
-    #ifdef XCP_USB 
-      xcpMaster_usb.BackgroudTask();
-    #endif
+    //#ifdef XCP_BL 
+    //  xcpMaster_bl.BackgroudTask();
+    //#endif 
+    //#ifdef XCP_USB 
+    //  xcpMaster_usb.BackgroudTask();
+    //#endif
 }
 
 void SystemC::UpdateC::Sensors(){

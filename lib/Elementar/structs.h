@@ -1,6 +1,6 @@
 #pragma once
 #include "Param.h"
-#include "enum.h"
+#include "enum_V5.h"
 #include <wiring.h>
 #include <algorithm>
 

@@ -16,16 +16,21 @@ void loop() {
     System.Update.Calculations();
  
     if(System.Start){
-        //Game.Run();
+        Game.Run();
         //for ( int i = 0 ; i<7 ; i++){Serial.print(Expander.ADC.IR[i]);Serial.print(" , ");}Serial.println(Expander.ADC.IR[7]);
-        Motor.On(100,HL_Motor);
-        Serial.println(BNO055.TiltZ);
-        System.Sys_LED = true;
+
+        
+    
+        Serial.println(PID.Out);
     }
     else{
         Robot.Stop();
-        Serial.println(Cycletime);
-        System.Sys_LED = false;
+        Serial.print(BNO055.give_TiltZ());
+        Serial.print(" , ");
+        Serial.print(PID.Out);
+        Serial.print(" , ");
+        Serial.println(PID.diffTime);
+        
     }
 
     if(System.Button[0]){

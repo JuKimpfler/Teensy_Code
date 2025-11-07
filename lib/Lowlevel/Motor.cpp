@@ -22,8 +22,6 @@ void MotorC::init(){
     analogWriteFrequency(VL_Speed_Port,Motor_Frequency);
     analogWriteFrequency(HR_Speed_Port,Motor_Frequency);
     analogWriteFrequency(HL_Speed_Port,Motor_Frequency);
-
-    analogWriteFrequency(DR_Speed_Port,Motor_Frequency);
 }
 
 void MotorC::On(int Speed , int Motor){
@@ -45,13 +43,13 @@ void MotorC::On(int Speed , int Motor){
         }
         else if (Motor == VL_Motor){
             analogWrite(VL_Speed_Port,Speed);
-            digitalWrite(VL_ExpanderA,1);
-            digitalWrite(VL_ExpanderB,0);
+            digitalWrite(VL_ExpanderA,0);
+            digitalWrite(VL_ExpanderB,1);
         }
         else if (Motor == HR_Motor){
             analogWrite(HR_Speed_Port,Speed);
-            digitalWrite(HR_ExpanderA,1);
-            digitalWrite(HR_ExpanderB,0);
+            digitalWrite(HR_ExpanderA,0);
+            digitalWrite(HR_ExpanderB,1);
         }
         else if (Motor == HL_Motor){
             analogWrite(HL_Speed_Port,Speed);
@@ -67,13 +65,13 @@ void MotorC::On(int Speed , int Motor){
         }
         else if (Motor == VL_Motor){
             analogWrite(VL_Speed_Port,Speed);
-            digitalWrite(VL_ExpanderA,0);
-            digitalWrite(VL_ExpanderB,1);
+            digitalWrite(VL_ExpanderA,1);
+            digitalWrite(VL_ExpanderB,0);
         }
         else if (Motor == HR_Motor){
             analogWrite(HR_Speed_Port,Speed);
-            digitalWrite(HR_ExpanderA,0);
-            digitalWrite(HR_ExpanderB,1);
+            digitalWrite(HR_ExpanderA,1);
+            digitalWrite(HR_ExpanderB,0);
         }
         else if (Motor == HL_Motor){
             analogWrite(HL_Speed_Port,Speed);

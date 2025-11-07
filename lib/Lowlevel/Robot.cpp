@@ -77,10 +77,10 @@ void RobotC::Drive(float Dir , float Angle = 200000 ,int Speed1 = HighSpeed){
 }
 
 void RobotC::Stop(){
-    Motor.Break(1);
-    Motor.Break(2);
-    Motor.Break(3);
-    Motor.Break(4);
+    Motor.Off(VR_Motor);
+    Motor.Off(VL_Motor);
+    Motor.Off(HR_Motor);
+    Motor.Off(HL_Motor);
 }
 
 void RobotC::KickerC::Off(){

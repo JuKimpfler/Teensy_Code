@@ -3,8 +3,8 @@
 PIDC PID;
 
 void PIDC::Calculate(){
-    now = millis();
-    float diffTime = float(now - last);
+    now = micros();
+    diffTime = float(now - last) / 1000;
     last = now;
 
     float error = Angle - BNO055.give_TiltZ();
@@ -24,12 +24,12 @@ void PIDC::Calculate(){
     float derivative = (error - ealt) / diffTime;
     ealt = error;
 
-    //if (error > 0){
-    //    Out  = -((error * error * Kp ) + abs(esum * Ki * diffTime) + abs(derivative * Kd));
-    //}else{
-        Out  = -((error * Kp ) + (esum * Ki * diffTime) + (derivative * Kd));
-    //}
-    last = millis(); 
+    if (error > 0){
+        Out  = (error * Kp ) + (abs(esum * Ki * diffTime)) + abs(derivative * Kd);
+    }else{
+        Out  = (error * Kp ) + -(abs(esum * Ki * diffTime)) + -(abs(derivative * Kd));
+    }
+    last = micros(); 
 }
 
 void PIDC::setAngle(float Angle1){

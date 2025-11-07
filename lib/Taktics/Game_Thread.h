@@ -3,6 +3,7 @@
 #include "Lowlevel.h"
 #include "Calculations.h"
 #include "Elementar_Taktics.h"
+#include "System.h"
 
 class GameC{
     private:

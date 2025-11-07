@@ -25,7 +25,7 @@ void ExpanderC::I2CC::read(int Add){
 
     int rest=0;
 
-    if(Add == I2C_Button){
+    if(Add == I2C_ITF_Main){
         Switch[0] = (last & 1);
         Switch[1] = (last & (1 << 1));
         Switch[2] = (last & (1 << 2));
@@ -35,23 +35,10 @@ void ExpanderC::I2CC::read(int Add){
         Switch[6] = (last & (1 << 6));
         Switch[7] = (last & (1 << 7));
     }
-    else if (Add == I2C_Dip_SW){
-        Dip[0] = (last & 1);
-        Dip[1] = (last & (1 << 1));
-        Dip[2] = (last & (1 << 2));
-        Dip[3] = (last & (1 << 3));
-        rest = (last & (1 << 4));
-        rest = (last & (1 << 5));
-        rest = (last & (1 << 6));
-        rest = (last & (1 << 7));
-    }
 }
 
 bool ExpanderC::I2CC::give(int Add , int Port){
-    if (Add == I2C_Dip_SW){
-        return Dip[Port];
-    }
-    else if (Add == I2C_Button){
+    if (Add == I2C_ITF_Main){
         return Switch[Port];
     }
 }

@@ -10,19 +10,19 @@ enum Motor_Port { // Portbelegung Direct an Teensy
     HR_Motor = 1, //
     HL_Motor = 2, //
 
-    VR_Speed_Port = 9, //
-    VL_Speed_Port = 6, //
-    HR_Speed_Port = 4, //
-    HL_Speed_Port = 5, //
+    VR_Speed_Port = 9, //+
+    VL_Speed_Port = 6, //+
+    HR_Speed_Port = 4, //+
+    HL_Speed_Port = 5, //+
 
-    VR_ExpanderA = 26, //
-    VR_ExpanderB = 32, //
-    VL_ExpanderA = 7, //
-    VL_ExpanderB = 8, //
-    HR_ExpanderA = 0, //
-    HR_ExpanderB = 1, //
-    HL_ExpanderA = 2, //
-    HL_ExpanderB = 3, //
+    VR_ExpanderA = 26, //+
+    VR_ExpanderB = 32, //+
+    VL_ExpanderA = 7, //+
+    VL_ExpanderB = 8, //+
+    HR_ExpanderA = 0, //+
+    HR_ExpanderB = 1, //+
+    HL_ExpanderA = 2, //+
+    HL_ExpanderB = 3, //+
 };
 
 enum Ultrasonic_Address{
@@ -61,16 +61,14 @@ enum I2C_Port {
 };
 
 enum I2C_Pin {
-    ITF_Main_LED = 2,
-    ITF_Main_Dip0 = 7,
-    ITF_Main_Dip1 = 6,
-    ITF_Main_Dip2 = 5,
-    ITF_Main_Dip3 = 4,
-    ITF_Main_SW = 3,
-    ITF_Main_BT0 = 1,
-    ITF_Main_BT1 = 0,
-    
-    
+    ITF_Main_LED = 7,
+    ITF_Main_SW0 = 4,
+    ITF_Main_SW1 = 5,
+    ITF_Main_SW2 = 6,
+    ITF_Main_BT0 = 0,
+    ITF_Main_BT1 = 1,
+    ITF_Main_BT2 = 2,
+    ITF_Main_BT3 = 3, 
 };
 
 enum ADC_Port {

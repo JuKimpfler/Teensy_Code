@@ -10,7 +10,7 @@ inline float Kp =  0.09;
 inline float Kd =  14;
 inline float Ki =  0;
 
-inline float PID_Konstante = 0.3;
+inline float PID_Konstante = 0.6; // 0.3
 
 inline int LDR_Schwelle =  500;
 
@@ -18,7 +18,7 @@ inline int Line_Schwelle = 2000;
 
 inline int Motor_Frequency =  400;
 
-#define Interface_Frequency 5 // angegeben in Hz (wie oft pro sekunde wird das Interface upgedated)
+#define Interface_Frequency 10 // angegeben in Hz (wie oft pro sekunde wird das Interface upgedated)
 #define US_Frequency 10 // angegeben in Hz (wie oft pro sekunde wird das US upgedated)
 
 // CalculationsParameter

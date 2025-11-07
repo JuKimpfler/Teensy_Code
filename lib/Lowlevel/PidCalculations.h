@@ -11,7 +11,8 @@ class PIDC {
 
     public:
         float esum;
-        float ealt; 
+        float ealt;  
+        float diffTime;
         float Out;
 
         void Calculate();
