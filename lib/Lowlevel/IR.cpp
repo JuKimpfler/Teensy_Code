@@ -2,17 +2,25 @@
 
 IRC IR;
 
-void IRC::read(){
-    IR_Values[0] = Expander.ADC.give(CS_IR,0);
-    IR_Values[1] = Expander.ADC.give(CS_IR,1);
-    IR_Values[2] = Expander.ADC.give(CS_IR,2);
-    IR_Values[3] = Expander.ADC.give(CS_IR,3);
-    IR_Values[4] = Expander.ADC.give(CS_IR,4);
-    IR_Values[5] = Expander.ADC.give(CS_IR,5);
-    IR_Values[6] = Expander.ADC.give(CS_IR,6);
-    IR_Values[7] = Expander.ADC.give(CS_IR,7);
+I2C_bus i2c1(I2C_BUS);
+Device_handle ir_ring_handle = {i2c1, I2C_target{0x0A}};
+IR_ring ir_ring(ir_ring_handle);
+
+void IRC::init(){
+    I2C_BUS.begin();
+    I2C_BUS.setClock(1000000);
 }
 
-int IRC::GetData(int Port){
+void IRC::read(){
+    uint16_t calib_data[16];
+    ir_ring.read_calibrated_values(calib_data);
+    for (int i = 0 ; i++ ; i<16){
+        IR_Values[i] = calib_data[i];
+    }
+    Angle = ir_ring.read_ball_angle();
+    Distance = ir_ring.read_ball_distance();
+}
+
+int IRC::GetData(int Port){ // raw Data of the IR Sensors
     return IR_Values[Port];
 }

@@ -17,8 +17,8 @@ enum Motor_Port { // Portbelegung Direct an Teensy
 
     VR_ExpanderA = 26, //+
     VR_ExpanderB = 32, //+
-    VL_ExpanderA = 7, //+
-    VL_ExpanderB = 8, //+
+    VL_ExpanderA = 8, //+
+    VL_ExpanderB = 7, //+
     HR_ExpanderA = 0, //+
     HR_ExpanderB = 1, //+
     HL_ExpanderA = 2, //+
@@ -83,10 +83,14 @@ enum ADC_Port {
 };
 
 
+#define I2C_BUS Wire1     // IRL-Ring on Wire1
+#define I2C_SPEED 1000000 // 1 MHz
+
+
 //Seriel Port
-#define UART_Debug Serial6
+#define UART_Debug Serial
 #define UART_BT Serial5
-#define Uart_Cam1 Serial3
+#define UART_Cam1 Serial6
 #define UART_Cam2 Serial7
 
 #endif

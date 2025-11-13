@@ -25,11 +25,12 @@ void PIDC::Calculate(){
     ealt = error;
 
     if (error > 0){
-        Out  = (error * Kp ) + (abs(esum * Ki * diffTime)) + abs(derivative * Kd);
+        Out  = (error * Kp ) + -(abs(esum * Ki * diffTime)) + abs(derivative * Kd);
     }else{
-        Out  = (error * Kp ) + -(abs(esum * Ki * diffTime)) + -(abs(derivative * Kd));
+        Out  = (error * Kp ) + (abs(esum * Ki * diffTime)) + -(abs(derivative * Kd));
     }
     last = micros(); 
+    Serial.println(diffTime);
 }
 
 void PIDC::setAngle(float Angle1){

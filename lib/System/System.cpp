@@ -48,7 +48,7 @@ void SystemC::initC::Motors(){
 }
 
 void SystemC::initC::Interface(){
-    //RGB.init();
+    RGB.init();
     /*
     #ifndef XCP_USB 
         Serial.begin(115200); 
@@ -69,7 +69,8 @@ void SystemC::initC::Interface(){
 void SystemC::initC::Sensors(){
     pinMode(Start_Port,INPUT);
 
-    //Expander.ADC.init(CS_IR);
+    IR.init();
+
     //Expander.ADC.init(CS_LineA);
     //Expander.ADC.init(CS_LineB);
     //Expander.ADC.init(CS_LineC);
@@ -81,7 +82,7 @@ void SystemC::initC::Sensors(){
 
     BNO055.init();
 
-    //OpenMV.init();
+    Cam.init();
 
     //Ultrasonic.init(US_Back);
     //Ultrasonic.init(US_Front);
@@ -110,20 +111,20 @@ void SystemC::UpdateC::Interface(){
 }
 
 void SystemC::UpdateC::Sensors(){
+
+    Cam.read();
     
     System.Start_Update();
 
-    //Expander.ADC.read(CS_IR);
     //Expander.ADC.read(CS_LineA);
     //Expander.ADC.read(CS_LineB);
     //Expander.ADC.read(CS_LineC);
     //Expander.ADC.read(CS_LineD);
 
-    //IR.read();
+    IR.read();
 
     //Line.read();
-    
-    //OpenMV.read();
+
     BNO055.read();
     /*
     if (US_Timer > 1000/US_Frequency){

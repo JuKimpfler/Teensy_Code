@@ -21,10 +21,10 @@ void RobotC::Drive(float Dir , float Angle = 200000 ,int Speed1 = HighSpeed){
     PID.setAngle(Angle);
     Dir_A = Dir - Angle;
 
-    Vel[VR_Motor] = sinf((Dir_A+45)*DEG_TO_RAD) + (PID.Out * PID_Konstante);
-    Vel[VL_Motor] = sinf((Dir_A+315)*DEG_TO_RAD) + (PID.Out * PID_Konstante);
-    Vel[HR_Motor] = sinf((Dir_A+135)*DEG_TO_RAD) + (PID.Out * PID_Konstante);
-    Vel[HL_Motor] = sinf((Dir_A+225)*DEG_TO_RAD) + (PID.Out * PID_Konstante);
+    Vel[VR_Motor] = sinf((Dir_A+45)*DEG_TO_RAD) + (-PID.Out * PID_Konstante);
+    Vel[VL_Motor] = sinf((Dir_A+315)*DEG_TO_RAD) + (-PID.Out * PID_Konstante);
+    Vel[HR_Motor] = sinf((Dir_A+135)*DEG_TO_RAD) + (-PID.Out * PID_Konstante);
+    Vel[HL_Motor] = sinf((Dir_A+225)*DEG_TO_RAD) + (-PID.Out * PID_Konstante);
 
     if (Vel[VR_Motor]<0){Vel_D[VR_Motor]=Vel[VR_Motor]*-1;Dir0=0;}
     else{Vel_D[VR_Motor]=Vel[VR_Motor];Dir0=1;}
@@ -65,10 +65,10 @@ void RobotC::Drive(float Dir , float Angle = 200000 ,int Speed1 = HighSpeed){
         Vel_D[HL_Motor]= Vel_D[HL_Motor]*Error; 
     }
 
-    if (Dir0==0){Vel_D[VR_Motor] = Vel_D[VR_Motor]*-1;}
-    if (Dir1==0){Vel_D[VL_Motor] = Vel_D[VL_Motor]*-1;}
-    if (Dir2==0){Vel_D[HR_Motor] = Vel_D[HR_Motor]*-1;}
-    if (Dir3==0){Vel_D[HL_Motor] = Vel_D[HL_Motor]*-1;}
+    if (Dir0==1){Vel_D[VR_Motor] = Vel_D[VR_Motor]*-1;}
+    if (Dir1==1){Vel_D[VL_Motor] = Vel_D[VL_Motor]*-1;}
+    if (Dir2==1){Vel_D[HR_Motor] = Vel_D[HR_Motor]*-1;}
+    if (Dir3==1){Vel_D[HL_Motor] = Vel_D[HL_Motor]*-1;}
 
     Motor.On(Vel_D[VR_Motor],VR_Motor);
     Motor.On(Vel_D[VL_Motor],VL_Motor);

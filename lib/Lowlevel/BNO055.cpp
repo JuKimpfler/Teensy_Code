@@ -1,4 +1,5 @@
 #include "BNO055.h"
+#include "RGB.h"
 
 Adafruit_BNO055 bno;
 
@@ -46,6 +47,19 @@ void BNO055C::Calibrate(){
     sensors_event_t event; 
     bno.getEvent(&event);
     BNO_Cal = event.orientation.x;
+}
+
+void BNO055C::showCal(){
+    uint8_t system2 = 0;
+    uint8_t gyro = 0;
+    uint8_t accel = 0;
+    uint8_t mag = 0;
+    bno.getCalibration(&system2, &gyro, &accel, &mag);
+
+    if (mag==0){RGB.write(0,"R");}// LED AN
+    else if (mag==1){RGB.write(0,"O");}// LED AN
+    else if (mag==2){RGB.write(0,"Y");}// LED AN
+    else if (mag==3){RGB.write(0,"G");}// LED AN
 }
 
 float BNO055C::give_TiltX(){

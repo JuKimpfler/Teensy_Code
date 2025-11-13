@@ -8,11 +8,12 @@
 #include "Line.h"
 #include "Calculations.h"
 #include "Taktics.h"
-//#include "Cam.h"
+#include "Cam.h"
 #include "INA.h"
 #include "LDR.h"
 #include "IR.h"
 #include "Robot.h"
+#include "RGB.h"
 //#include "UltraSonic.h"
 
 
@@ -49,4 +50,5 @@ extern elapsedMillis Interface_Timer;
 extern elapsedMillis US_Timer;
 extern elapsedMillis Schuss_Timer;
 extern elapsedMicros Cycle_Timer;
+
 extern SystemC System;

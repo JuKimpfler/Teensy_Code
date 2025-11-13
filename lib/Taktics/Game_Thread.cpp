@@ -1,4 +1,5 @@
 #include "Game_Thread.h"
+#include "RGB.h"
 GameC Game;
 
 void GameC::Run(){
@@ -17,7 +18,9 @@ void GameC::Run(){
         }*/
     //}
 
-    Robot.Turn(0);
+    //Robot.Drive(90,0,5);
+    //Robot.Turn(0);
+
 }
 
 

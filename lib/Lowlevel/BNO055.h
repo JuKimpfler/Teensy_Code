@@ -16,6 +16,7 @@ class BNO055C {
         void init();
         void read();
         void Calibrate();
+        void showCal();
         float give_TiltZ();
         float give_TiltX();
         float give_TiltY();
