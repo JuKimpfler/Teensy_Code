@@ -25,9 +25,9 @@ void PIDC::Calculate(){
     ealt = error;
 
     if (error > 0){
-        Out  = (error * Kp ) + -(abs(esum * Ki * diffTime)) + abs(derivative * Kd);
+        Out  = (error * Kp  * PID_Mult) + (esum * Ki * diffTime * PID_Mult) + (derivative * Kd);
     }else{
-        Out  = (error * Kp ) + (abs(esum * Ki * diffTime)) + -(abs(derivative * Kd));
+        Out  = (error * Kp  * PID_Mult) + -(esum * Ki * diffTime * PID_Mult) + -(derivative * Kd);
     }
     last = micros(); 
     Serial.println(diffTime);

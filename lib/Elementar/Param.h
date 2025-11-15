@@ -6,9 +6,11 @@
 #define HighSpeed 100 // Speed im HS modus
 inline float LowSpeed = 70; // Speed im LS modus
 
-inline float Kp =  0.18;
-inline float Kd =  12;
-inline float Ki =  0;
+inline float Kp =  0.18; //0.18 0.004
+inline float Kd =  3; //12 10
+inline float Ki =  0.00016;
+
+inline float PID_Mult = 0.1;
 
 inline float PID_Konstante = 0.6; // 0.3
 

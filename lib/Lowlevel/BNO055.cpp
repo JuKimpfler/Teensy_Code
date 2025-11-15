@@ -1,7 +1,7 @@
 #include "BNO055.h"
 #include "RGB.h"
 
-Adafruit_BNO055 bno;
+Adafruit_BNO055 bno(55, 0x28, &Wire1);
 
 BNO055C BNO055;
 

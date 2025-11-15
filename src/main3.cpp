@@ -42,7 +42,6 @@ void loop() {
         //}
 
 
-        delayMicroseconds(500);
     }
     else{
         Robot.Stop();
