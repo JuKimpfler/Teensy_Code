@@ -3,6 +3,7 @@
 #include "Cam.h"
 #include "RGB.h"
 
+
 void setup() {
     System.init.Sensors() ;
     System.init.Motors() ;
@@ -17,24 +18,29 @@ void loop() {
     System.Update.Calculations();
 
     BNO055.showCal();
+
+    if(System.Button[1]){
+        IR.NullCall = IR.Distance_raw;
+    } 
  
     if(System.Start){
-        //Game.Run();
+        Game.Run();
 
-        
+        Serial.print("Angle: "); Serial.println(BNO055.give_TiltX());
 
         //Serial.println(PID.Out);
 
-        Serial.print("Ball angle: "); Serial.println(IR.Angle);
-        Serial.print("Ball distance: "); Serial.println(IR.Distance);
+        //Serial.print("Ball angle: "); Serial.println(IR.Angle);
+        //Serial.print("Ball distance: "); Serial.println(IR.Distance);
+        //Serial.print("Ball Drive: "); Serial.println(BallSearchCalculations.OutAngle);
 
-        Serial.print("Calibrated data: ");
-        for (int i=0; i<16; i++)
-        {
-            Serial.print(i+1); Serial.print(": ");
-            Serial.print(IR.IR_Values[i]); Serial.print("  ");
-        }
-        Serial.println();
+        //Serial.print("Calibrated data: ");
+        //for (int i=0; i<16; i++)
+        //{
+        //    Serial.print(i+1); Serial.print(": ");
+        //    Serial.print(IR.IR_Values[i]); Serial.print("  ");
+        //}
+
 
         delayMicroseconds(500);
     }
