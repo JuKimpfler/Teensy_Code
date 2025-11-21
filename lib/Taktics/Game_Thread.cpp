@@ -10,15 +10,14 @@ void GameC::Run(){
     //else{
         //Robot.Drive(Rand_Dir,0,20);
         //Robot.Turn(0);
-        /*if (LDR.Aktiv()){
+        if (LDR.Aktiv()){
+            //vlt attacker / defender
             Taktics.BallSearch();
         }
         else{
             Taktics.GoalAttak();
-        }*/
+        }
     //}
-
-    Robot.Drive(-BallSearchCalculations.OutAngle,0,30);
     //Robot.Turn(0);
 
 }
