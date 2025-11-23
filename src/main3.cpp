@@ -18,15 +18,13 @@ void loop() {
     System.Update.Calculations();
 
     BNO055.showCal();
-
-    if(System.Button[1]){
-        IR.NullCall = IR.Distance_raw;
-    } 
  
     if(System.Start){
-        Game.Run();
+        //Game.Run();
 
-        Serial.print("Angle: "); Serial.println(BNO055.give_TiltX());
+        Robot.Turn(0);
+
+        //Serial.print("Angle: "); Serial.println(BNO055.give_TiltX());
 
         //Serial.println(PID.Out);
 

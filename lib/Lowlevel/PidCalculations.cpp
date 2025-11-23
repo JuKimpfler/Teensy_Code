@@ -30,7 +30,6 @@ void PIDC::Calculate(){
         Out  = (error * Kp  * PID_Mult) + -(esum * Ki * diffTime * PID_Mult) + -(derivative * Kd);
     }
     last = micros(); 
-    Serial.println(diffTime);
 }
 
 void PIDC::setAngle(float Angle1){
