@@ -8,7 +8,7 @@ inline float LowSpeed = 70; // Speed im LS modus
 
 inline float Kp =  2.2; //2.2 
 inline float Kd =  12; //10
-inline float Ki =  0.00016; //.00016
+inline float Ki =  0.0016; //.00016
 
 inline float PID_Mult = 0.1;
 

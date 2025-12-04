@@ -6,8 +6,8 @@ void CamC::init(){
 }
 
 void CamC::read(){
-    if (UART_Cam1.available()>1){
-        message = UART_Cam1.readStringUntil('$');
+    if (UART_1.available()>1){
+        message = UART_1.readStringUntil('$');
     
     if (message.length() == 20){
         UART_Debug.println(message);

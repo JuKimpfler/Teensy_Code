@@ -22,15 +22,17 @@ void loop() {
     if(System.Start){
         //Game.Run();
 
-        Robot.Turn(0);
+        //Robot.Turn(0);
+
+        Robot.Drive(0,0,20);
 
         //Serial.print("Angle: "); Serial.println(BNO055.give_TiltX());
 
         //Serial.println(PID.Out);
 
-        //Serial.print("Ball angle: "); Serial.println(IR.Angle);
-        //Serial.print("Ball distance: "); Serial.println(IR.Distance);
-        //Serial.print("Ball Drive: "); Serial.println(BallSearchCalculations.OutAngle);
+        UART_1.print("Ball angle: "); UART_1.println(IR.Angle);
+        UART_1.print("Ball distance: "); UART_1.println(IR.Distance);
+        UART_1.print("Ball Drive: "); UART_1.println(BallSearchCalculations.OutAngle);
 
         //Serial.print("Calibrated data: ");
         //for (int i=0; i<16; i++)
@@ -51,6 +53,15 @@ void loop() {
     if(System.Button[0]){
         BNO055.Calibrate();
     }   
+
+    if(System.Button[1]){
+        Robot.Kicker.Once();
+        RGB.write(1,"G");
+    } 
+    else{
+        Robot.Kicker.Off();
+        RGB.write(1,"OFF");
+    }
     
     Cycletime = Cycle_Timer;
     

@@ -62,6 +62,7 @@ void SystemC::initC::Interface(){
     #endif
     */
     //Debug.begin();
+    UART_1.begin(115200); 
     Expander.I2C.init(I2C_ITF_Main,Input_Mode);
     //Expander.I2C.init(I2C_Dip_SW,Input_Mode);
 }

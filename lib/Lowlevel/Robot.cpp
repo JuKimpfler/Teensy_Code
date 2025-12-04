@@ -21,10 +21,10 @@ void RobotC::Drive(float Dir , float Angle = 200000 ,int Speed1 = HighSpeed){
     PID.setAngle(Angle);
     Dir_A = Dir - Angle;
 
-    Vel[VR_Motor] = sinf((Dir_A+45)*DEG_TO_RAD) + (-PID.Out * PID_Konstante);
-    Vel[VL_Motor] = sinf((Dir_A+315)*DEG_TO_RAD) + (-PID.Out * PID_Konstante);
-    Vel[HR_Motor] = sinf((Dir_A+135)*DEG_TO_RAD) + (-PID.Out * PID_Konstante);
-    Vel[HL_Motor] = sinf((Dir_A+225)*DEG_TO_RAD) + (-PID.Out * PID_Konstante);
+    Vel[VR_Motor] = sinf((Dir_A+45)*DEG_TO_RAD)*15 + (-PID.Out);
+    Vel[VL_Motor] = sinf((Dir_A+315)*DEG_TO_RAD)*15 + (-PID.Out);
+    Vel[HR_Motor] = sinf((Dir_A+135)*DEG_TO_RAD)*15 + (-PID.Out);
+    Vel[HL_Motor] = sinf((Dir_A+225)*DEG_TO_RAD)*15 + (-PID.Out);
 
     if (Vel[VR_Motor]<0){Vel_D[VR_Motor]=Vel[VR_Motor]*-1;Dir0=0;}
     else{Vel_D[VR_Motor]=Vel[VR_Motor];Dir0=1;}
@@ -84,7 +84,7 @@ void RobotC::Stop(){
 }
 
 void RobotC::KickerC::Off(){
-    
+    digitalWrite(18,LOW);
 }
 
 void RobotC::KickerC::On(int Cycletime){
@@ -92,5 +92,5 @@ void RobotC::KickerC::On(int Cycletime){
 }
 
 void RobotC::KickerC::Once(){
-    
+    digitalWrite(18,HIGH);
 }
