@@ -28,8 +28,8 @@ class ExpanderC {
                 int lineB[8];
                 int lineC[8];
                 int lineD[8];
+                int lineOut[8];
             public:
-                int IR[8];
                 void init(int Port);
                 void read(int Port);
                 int give_digital(int Port, int Pin);

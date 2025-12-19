@@ -62,7 +62,7 @@ void SystemC::initC::Interface(){
     #endif
     */
     //Debug.begin();
-    UART_1.begin(115200); 
+    UART_Debug.begin(115200); 
     Expander.I2C.init(I2C_ITF_Main,Input_Mode);
     //Expander.I2C.init(I2C_Dip_SW,Input_Mode);
 }
@@ -72,10 +72,11 @@ void SystemC::initC::Sensors(){
 
     IR.init();
 
-    //Expander.ADC.init(CS_LineA);
-    //Expander.ADC.init(CS_LineB);
-    //Expander.ADC.init(CS_LineC);
-    //Expander.ADC.init(CS_LineD);
+    Expander.ADC.init(CS_LineA);
+    Expander.ADC.init(CS_LineB);
+    Expander.ADC.init(CS_LineC);
+    Expander.ADC.init(CS_LineD);
+    Expander.ADC.init(CS_LineVW);
 
     //INA.init();
 
@@ -117,14 +118,16 @@ void SystemC::UpdateC::Sensors(){
     
     System.Start_Update();
 
-    //Expander.ADC.read(CS_LineA);
-    //Expander.ADC.read(CS_LineB);
-    //Expander.ADC.read(CS_LineC);
-    //Expander.ADC.read(CS_LineD);
+    Expander.ADC.read(CS_LineA);
+    Expander.ADC.read(CS_LineB);
+    Expander.ADC.read(CS_LineC);
+    Expander.ADC.read(CS_LineD);
+    Expander.ADC.read(CS_LineVW);
 
     IR.read();
 
-    //Line.read();
+    Line.read();
+    Line.read_VW();
 
     BNO055.read();
     /*
@@ -139,7 +142,7 @@ void SystemC::UpdateC::Sensors(){
 }
 
 void SystemC::UpdateC::Calculations(){
-    //LineCalc.Calc();
+    LineCalc.Calc();
     PID.Calculate();
     BallSearchCalculations.getAngleCurvature(IR.Angle,IR.Distance);
 }

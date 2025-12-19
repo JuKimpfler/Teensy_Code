@@ -20,19 +20,17 @@ void loop() {
     BNO055.showCal();
  
     if(System.Start){
-        //Game.Run();
+        Game.Run();
 
         //Robot.Turn(0);
 
-        Robot.Drive(0,0,20);
+        //Robot.Drive(0,0,20); 
 
         //Serial.print("Angle: "); Serial.println(BNO055.give_TiltX());
 
         //Serial.println(PID.Out);
 
-        UART_1.print("Ball angle: "); UART_1.println(IR.Angle);
-        UART_1.print("Ball distance: "); UART_1.println(IR.Distance);
-        UART_1.print("Ball Drive: "); UART_1.println(BallSearchCalculations.OutAngle);
+        
 
         //Serial.print("Calibrated data: ");
         //for (int i=0; i<16; i++)
@@ -41,26 +39,43 @@ void loop() {
         //    Serial.print(IR.IR_Values[i]); Serial.print("  ");
         //}
 
-
+        //Robot.Drive(BallSearchCalculations.OutAngle,0,MainSpeed);
+        //Line.read();
+        Serial.println("Hallo1234");
     }
     else{
         Robot.Stop();
         //RGB.write(0,"OFF");
         //RGB.write(1,"OFF");
         //RGB.write(2,"OFF");
+        //UART_Debug.print("Ball angle: "); UART_Debug.println(IR.Angle);
+        //UART_Debug.print("Ball distance: "); UART_Debug.println(IR.Distance);
+        //UART_Debug.print("Ball Drive: "); UART_Debug.println(BallSearchCalculations.OutAngle);
+        Serial.println("1");
+
+        if(Serial.available() > 0){
+            Serial.println(Serial.readString());
+        }
     }
 
     if(System.Button[0]){
         BNO055.Calibrate();
     }   
 
-    if(System.Button[1]){
-        Robot.Kicker.Once();
-        RGB.write(1,"G");
-    } 
-    else{
-        Robot.Kicker.Off();
-        RGB.write(1,"OFF");
+    //if(System.Button[1]){
+    //    Robot.Kicker.Once();
+    //    RGB.write(1,"G");
+    //} 
+    //else{
+    //    Robot.Kicker.Off();
+    //    RGB.write(1,"OFF");
+    //}
+
+    if (System.Switches[0]){
+        MainSpeed = HighSpeed;
+    }
+    else {
+        MainSpeed = LowSpeed;
     }
     
     Cycletime = Cycle_Timer;

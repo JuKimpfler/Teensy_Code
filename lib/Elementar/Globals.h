@@ -4,4 +4,5 @@
 #ifndef Glob
 #define Glob
 inline int Cycletime = 0;
+inline int MainSpeed = 30;
 #endif

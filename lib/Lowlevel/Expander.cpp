@@ -96,60 +96,38 @@ void ExpanderC::I2CC::write(int Add , int Port , bool Zustand){
 
 
 void ExpanderC::ADCC::init(int Port){
-    if (Port == CS_IR){
-        #ifndef Spi1_Start
-        #define Spi1_Start
-            SPI1.begin();
-        #endif
-        pinMode(Port, OUTPUT);  /* ADC chip select */
-        digitalWrite(Port, HIGH);  /* prepare default state of ADC chip select */
-    }
-    else{
         #ifndef Spi0_Start
         #define Spi0_Start
             SPI.begin();
         #endif
         pinMode(Port, OUTPUT);  /* ADC chip select */
         digitalWrite(Port, HIGH);  /* prepare default state of ADC chip select */
-    }
 }
 
 void ExpanderC::ADCC::read(int Port){
-    if (Port == CS_LineA || Port == CS_LineB || Port == CS_LineC || Port == CS_LineD ){
-        SPI.beginTransaction(SPISettings(14000000, MSBFIRST, SPI_MODE3)); //Start SPI und Einstellern der Übertragungsparameter
+    SPI.beginTransaction(SPISettings(14000000, MSBFIRST, SPI_MODE3)); //Start SPI und Einstellern der Übertragungsparameter
 
-        digitalWrite(Port, LOW);  /* prepare default state of ADC chip select */
+    digitalWrite(Port, LOW);  /* prepare default state of ADC chip select */
 
-        for (int i = 0 ; i<8 ; i++){
-            if (Port == CS_LineA){
-                lineA[i] = SPI.transfer16(Expander.ADC_Befehle[i]);
-            }
-            else if (Port == CS_LineB){
-                lineB[i] = SPI.transfer16(Expander.ADC_Befehle[i]);
-            }
-            else if (Port == CS_LineC){
-                lineC[i] = SPI.transfer16(Expander.ADC_Befehle[i]);
-            }
-            else if (Port == CS_LineD){
-                lineD[i] = SPI.transfer16(Expander.ADC_Befehle[i]);
-            }
+    for (int i = 0 ; i<8 ; i++){
+        if (Port == CS_LineA){
+            lineA[i] = SPI.transfer16(Expander.ADC_Befehle[i]);
         }
-
-        digitalWrite(Port, HIGH);  // prepare default state of ADC chip select 
-        SPI.endTransaction(); 
-    }
-    else{
-        SPI1.beginTransaction(SPISettings(14000000, MSBFIRST, SPI_MODE3)); //Start SPI und Einstellern der Übertragungsparameter
-
-        digitalWrite(Port, LOW); /* prepare default state of ADC chip select */
-
-        for (int i = 0 ; i<8 ; i++){
-            IR[i] = SPI1.transfer16(Expander.ADC_Befehle[i]);
+        else if (Port == CS_LineB){
+            lineB[i] = SPI.transfer16(Expander.ADC_Befehle[i]);
         }
-
-        digitalWrite(Port, HIGH);
-        SPI1.endTransaction(); 
+        else if (Port == CS_LineC){
+            lineC[i] = SPI.transfer16(Expander.ADC_Befehle[i]);
+        }
+        else if (Port == CS_LineD){
+            lineD[i] = SPI.transfer16(Expander.ADC_Befehle[i]);
+        }
+        else if (Port == CS_LineVW){
+            lineOut[i] = SPI.transfer16(Expander.ADC_Befehle[i]);
+        }
     }
+
+    digitalWrite(Port, HIGH);  // prepare default state of ADC chip select 
 }
 
 int ExpanderC::ADCC::give(int Port , int Pin){
@@ -165,8 +143,8 @@ int ExpanderC::ADCC::give(int Port , int Pin){
     else if (Port == CS_LineD){
         return lineD[Pin];
     }
-    else if (Port == CS_IR){
-        return IR[Pin] ;
+    else if(Port == CS_LineVW){
+        return lineOut[Pin];
     }
 }
 
@@ -198,6 +176,14 @@ int ExpanderC::ADCC::give_digital(int Port , int Pin){
     }
     else if (Port == CS_LineD){
         if(lineD[Pin]<Line_Schwelle){
+            return 0;
+        }
+        else {
+            return 1;
+        }
+    }
+    else if (Port == CS_LineVW){
+        if(lineOut[Pin]<Line_Schwelle){
             return 0;
         }
         else {

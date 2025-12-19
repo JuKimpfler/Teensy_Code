@@ -10,3 +10,11 @@ void LineC::read(){
     }
 }
 
+void LineC::read_VW(){
+    Summe_VW = 0;
+    for(int i = 0 ; i<8 ; i++){
+        Raw_VW[i] = Expander.ADC.give_digital(CS_LineVW,i);
+        Summe_VW = Summe_VW + Raw_VW[i];
+    }
+}
+

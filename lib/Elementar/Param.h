@@ -3,8 +3,8 @@
 
 // Parameter
 
-#define HighSpeed 100 // Speed im HS modus
-inline float LowSpeed = 70; // Speed im LS modus
+#define HighSpeed 70 // Speed im HS modus
+inline float LowSpeed = 30; // Speed im LS modus
 
 inline float Kp =  2.2; //2.2 
 inline float Kd =  12; //10
@@ -16,7 +16,7 @@ inline float PID_Konstante = 0.6; // 0.3
 
 inline int LDR_Schwelle =  500;
 
-inline int Line_Schwelle = 2000;
+inline int Line_Schwelle = 2900;
 
 inline int Motor_Frequency =  400;
 

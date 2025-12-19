@@ -72,14 +72,11 @@ enum I2C_Pin {
 };
 
 enum ADC_Port {
-    CS_LineA = 32,
-    CS_LineB = 12,
-    CS_LineC = 13,
-    CS_LineD = 22,
-    CS_LineOUT = 33,
-
-    CS_IR = 11,
-    IRQ_IR = 0,
+    CS_LineA = 19,
+    CS_LineB = 31,
+    CS_LineC = 30,
+    CS_LineD = 21,
+    CS_LineVW = 22
 };
 
 
@@ -90,7 +87,7 @@ enum ADC_Port {
 //Seriel Port
 #define UART_Debug Serial
 #define UART_Pixy Serial3
-#define UART_1 Serial//Serial6
+#define UART_1 Serial6
 #define UART_2 Serial7
 
 #endif
