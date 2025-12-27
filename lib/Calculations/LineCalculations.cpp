@@ -9,7 +9,6 @@ void LineCalcC::Calc(){
                 DriveAngle = ((i*45) - 135)-180; // Position * 45°(abstand zwischen Sensoren) -135(offset zum ersten Sensor) - 180(Wegfahren von Linie)
             }
         }
-        DriveAngle = (DriveAngle - 90)*-1;
     }
     else{ // Line Basic
         summex = 0;
@@ -20,10 +19,24 @@ void LineCalcC::Calc(){
             summex = summex + (Line.Raw[i]*sinf(((i*11.25)*DEG_TO_RAD))); // Linie Abstand in X Richtung
             summey = summey + (Line.Raw[i]*cosf(((i*11.25)*DEG_TO_RAD))); // Linie Abstand in Y Richtung
         }
-        RawAngle = atan2f(summex,summey)*RAD_TO_DEG - 90; // Winkel berechnung und drehung um 90 Grad 
+        RawAngle = (atan2f(summex,summey)*RAD_TO_DEG - 90)*-1; // Winkel berechnung und drehung um 90 Grad 
+        
+        if (abs(last_Angle-RawAngle) > 100 && ausen == false){
+            ausen == true;
+        }
+        else if (abs(last_Angle-RawAngle) > 100 && ausen == true){
+            ausen = false;
+        }
 
-        DriveAngle = -1*(RawAngle-180); // Links Rechtsvertauschen (wegen Spiegelverkehrt) und in gegenrichtung von Linie Wegbewegen
+        if(ausen == true){
+            DriveAngle = RawAngle; // Links Rechtsvertauschen (wegen Spiegelverkehrt) und in gegenrichtung von Linie Wegbewegen
+        }
+        else{
+            DriveAngle = RawAngle-180; // Links Rechtsvertauschen (wegen Spiegelverkehrt) und in gegenrichtung von Linie Wegbewegen
+        }
 
+        last_Angle = RawAngle;
+        
         if (DriveAngle<0){DriveAngle = DriveAngle+360;}
         else if (DriveAngle>359){DriveAngle = DriveAngle-360;}
         if(DriveAngle<=180){DriveAngle=DriveAngle;}
