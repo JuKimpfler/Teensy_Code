@@ -9,6 +9,7 @@ void LineCalcC::Calc(){
                 DriveAngle = ((i*45) - 135)-180; // Position * 45°(abstand zwischen Sensoren) -135(offset zum ersten Sensor) - 180(Wegfahren von Linie)
             }
         }
+        DriveAngle = (DriveAngle - 90)*-1;
     }
     else{ // Line Basic
         summex = 0;

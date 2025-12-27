@@ -41,7 +41,7 @@ void loop() {
 
         //Robot.Drive(BallSearchCalculations.OutAngle,0,MainSpeed);
         //Line.read();
-        Serial.println("Hallo1234");
+        //Serial.println("Hallo1234");
     }
     else{
         Robot.Stop();
@@ -51,11 +51,13 @@ void loop() {
         //UART_Debug.print("Ball angle: "); UART_Debug.println(IR.Angle);
         //UART_Debug.print("Ball distance: "); UART_Debug.println(IR.Distance);
         //UART_Debug.print("Ball Drive: "); UART_Debug.println(BallSearchCalculations.OutAngle);
-        Serial.println("1");
+        //Serial.println("1");
 
-        if(Serial.available() > 0){
-            Serial.println(Serial.readString());
+        if(UART_1.available()){
+            UART_Debug.println(UART_1.readString());
         }
+        else{UART_Debug.println("Hi");UART_Debug.println("Hi");}
+
     }
 
     if(System.Button[0]){

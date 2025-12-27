@@ -22,9 +22,8 @@ void IRC::read(){
         IR_Values[i] = calib_data[i];
     }
     Angle = ir_ring.read_ball_angle();
-    Distance_raw = ((ir_ring.read_ball_distance()-300)/10);
+    Distance_raw = ir_ring.read_ball_distance();
     Distance = (Distance_raw);
-    if(Distance < 0){Distance=0;}
 }
 
 int IRC::GetData(int Port){ // raw Data of the IR Sensors

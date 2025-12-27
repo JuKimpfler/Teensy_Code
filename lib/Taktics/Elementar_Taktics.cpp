@@ -6,7 +6,7 @@ void TakticsC::BallSearch(){
 }
 
 void TakticsC::GoalAttak(){
-    Robot.Drive(0, 0, MainSpeed);
+    Robot.Drive(0, 0, MainSpeed); 
 }
 
 
