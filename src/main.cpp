@@ -53,11 +53,6 @@ void loop() {
         //UART_Debug.print("Ball Drive: "); UART_Debug.println(BallSearchCalculations.OutAngle);
         //Serial.println("1");
 
-        if(UART_1.available()){
-            UART_Debug.println(UART_1.readString());
-        }
-        else{UART_Debug.println("Hi");UART_Debug.println("Hi");}
-
     }
 
     if(System.Button[0]){

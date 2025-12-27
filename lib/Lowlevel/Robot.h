@@ -8,6 +8,7 @@ class RobotC {
 public:
     void Turn(float Angel ,int Speed = HighSpeed);
     void Drive(float Dir , float Angel = 200000 ,int Speed = HighSpeed);
+    void Drive_Sond(float Dir);
     void Stop();
     
     class KickerC{

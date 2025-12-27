@@ -6,6 +6,7 @@ class LineC {
     private :
         int list[4] = {CS_LineA,CS_LineB,CS_LineC,CS_LineD};
     public:
+        float Summe; 
         void read();
         void read_VW();
         float Raw[32];
