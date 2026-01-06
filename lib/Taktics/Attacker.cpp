@@ -14,6 +14,9 @@ void AttackerTacticsC::step(){
 
 void AttackerTacticsC::BallCaught(){
 	//TODO: include BallCaught for attacker
+	Robot.Turn (0);
+	Robot.Kicker.Once(); //ist nur ein kleiner Programmierversuch ;) ~Felix
+    
 }
 
 void AttackerTacticsC::BallSearch(){
@@ -24,4 +27,3 @@ void AttackerTacticsC::BallSearch(){
 	//TODO: move motor towards RelativeBallDir;
 	
 }
-
