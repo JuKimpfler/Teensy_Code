@@ -1,7 +1,7 @@
 import os
 import time
 
-def count_lines_in_files(directory, extensions=('.cpp', '.c', '.h'), exclude_dirs=None):
+def count_lines_in_files(directory, extensions=('.cpp', '.c', '.h','.py'), exclude_dirs=None):
     if exclude_dirs is None:
         exclude_dirs = []
 
@@ -36,8 +36,8 @@ def count_lines_in_files(directory, extensions=('.cpp', '.c', '.h'), exclude_dir
 
 # Beispielaufruf
 count_lines_in_files(
-    directory="C:/Users/juki/OneDrive/Desktop/Bodenseekoalas/teensy_code",
-    exclude_dirs=[".pio", "include", ".vscode"]
+    directory="C:/Users/HP/OneDrive/Desktop/AG/Teensy_Code_2026",
+    exclude_dirs=[".pio", "include", ".vscode", "Xcp"]
 )
 
 time.sleep(20000)

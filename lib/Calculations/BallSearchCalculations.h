@@ -3,10 +3,10 @@
 #include <Param.h>
 #include <math.h>
 
-class BallSearchCalculationsC{
+class BallCalcC{
     public:
         float OutAngle;
-        void getAngleCurvature(float inAngle, float dist);
+        void getAngle(float inAngle, float dist);
 };
 
-extern BallSearchCalculationsC BallSearchCalculations;
+extern BallCalcC BallCalc;

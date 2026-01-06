@@ -39,7 +39,7 @@ void loop() {
         //    Serial.print(IR.IR_Values[i]); Serial.print("  ");
         //}
 
-        //Robot.Drive(BallSearchCalculations.OutAngle,0,MainSpeed);
+        //Robot.Drive(BallCalc.OutAngle,0,MainSpeed);
         //Line.read();
         //Serial.println("Hallo1234");
     }
@@ -50,7 +50,7 @@ void loop() {
         //RGB.write(2,"OFF");
         //UART_Debug.print("Ball angle: "); UART_Debug.println(IR.Angle);
         //UART_Debug.print("Ball distance: "); UART_Debug.println(IR.Distance);
-        //UART_Debug.print("Ball Drive: "); UART_Debug.println(BallSearchCalculations.OutAngle);
+        //UART_Debug.print("Ball Drive: "); UART_Debug.println(BallCalc.OutAngle);
         //Serial.println("1");
 
     }

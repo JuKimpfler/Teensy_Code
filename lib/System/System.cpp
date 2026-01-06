@@ -144,5 +144,5 @@ void SystemC::UpdateC::Sensors(){
 void SystemC::UpdateC::Calculations(){
     LineCalc.Calc();
     PID.Calculate();
-    BallSearchCalculations.getAngleCurvature(IR.Angle,IR.Distance);
+    BallCalc.getAngle(IR.Angle,IR.Distance);
 }
