@@ -1,26 +1,29 @@
 #include "Elementar.h"
 #include "System.h"
-#include "Cam.h"
-#include "RGB.h"
-
+//#include "Cam.h"
+//#include "RGB.h"
+String read = "";
 
 void setup() {
-    System.init.Sensors() ;
-    System.init.Motors() ;
-    System.init.Interface()   ;
+    //System.init.Sensors() ;
+    //System.init.Motors() ;
+    //System.init.Interface()   ;
+    Serial.begin(115200);
+    pinMode(LED_BUILTIN,INPUT);
+    
 }
 
 void loop() { 
     Cycle_Timer = 0 ;
 
-    System.Update.Sensors();
-    System.Update.Interface();
-    System.Update.Calculations();
+    //System.Update.Sensors();
+    //System.Update.Interface();
+    //System.Update.Calculations();
 
-    BNO055.showCal();
+    //BNO055.showCal();
  
-    if(System.Start){
-        Game.Run();
+    //if(System.Start){
+        //Game.Run();
 
         //Robot.Turn(0);
 
@@ -42,9 +45,9 @@ void loop() {
         //Robot.Drive(BallSearchCalculations.OutAngle,0,MainSpeed);
         //Line.read();
         //Serial.println("Hallo1234");
-    }
-    else{
-        Robot.Stop();
+    //}
+    //else{
+        //Robot.Stop();
         //RGB.write(0,"OFF");
         //RGB.write(1,"OFF");
         //RGB.write(2,"OFF");
@@ -53,11 +56,31 @@ void loop() {
         //UART_Debug.print("Ball Drive: "); UART_Debug.println(BallSearchCalculations.OutAngle);
         //Serial.println("1");
 
+    //}
+
+    delay(20);
+    Serial.print(">");
+    Serial.print("Cycle: ");
+    Serial.print(round(Cycletime));
+    Serial.print(",Test: ");
+    Serial.print(1234);
+
+    if(Serial.available()){
+        Serial.print("  Empfang   ");
+        read=Serial.readString();
+        if(read!="Hi12"){
+            digitalWrite(LED_BUILTIN,LOW);
+            Serial.print(read);
+        }
     }
 
-    if(System.Button[0]){
-        BNO055.Calibrate();
-    }   
+    if(read=="Hi12"){
+        digitalWrite(LED_BUILTIN,HIGH);
+    }
+
+    //if(System.Button[0]){
+        //BNO055.Calibrate();
+    //}   
 
     //if(System.Button[1]){
     //    Robot.Kicker.Once();
@@ -68,12 +91,12 @@ void loop() {
     //    RGB.write(1,"OFF");
     //}
 
-    if (System.Switches[0]){
-        MainSpeed = HighSpeed;
-    }
-    else {
-        MainSpeed = LowSpeed;
-    }
+    //if (System.Switches[0]){
+    //    MainSpeed = HighSpeed;
+    //}
+    //else {
+    //    MainSpeed = LowSpeed;
+    //}
     
     Cycletime = Cycle_Timer;
     
