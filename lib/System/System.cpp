@@ -129,6 +129,8 @@ void SystemC::UpdateC::Sensors(){
     Line.read();
     Line.read_VW();
 
+    Robot.Drive_Smoothed_Update();
+
     BNO055.read();
     /*
     if (US_Timer > 1000/US_Frequency){

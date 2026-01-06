@@ -38,6 +38,14 @@ void LineCalcC::Calc(){
                     DriveAngle = (((i*45) - 135)-90); // Position * 45°(abstand zwischen Sensoren) -135(offset zum ersten Sensor) - 180(Wegfahren von Linie)
                 }
             }
+            DriveAngle = (DriveAngle-180)*-1;
+            
+            if (DriveAngle<0){DriveAngle = DriveAngle+360;}
+            else if (DriveAngle>359){DriveAngle = DriveAngle-360;}
+            if(DriveAngle<=180){DriveAngle=DriveAngle;}
+            else if (DriveAngle>180){DriveAngle=DriveAngle-360;}
+            if (DriveAngle<-180){DriveAngle = DriveAngle+360;}
+            else if (DriveAngle>359){DriveAngle = DriveAngle-360;}
         }
     }
 }
