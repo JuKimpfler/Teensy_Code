@@ -10,6 +10,8 @@ inline float Kp =  2.2; //2.2
 inline float Kd =  12; //10
 inline float Ki =  0.0016; //.00016
 
+inline float Drive_Smoothed_Faktor = 0.5;
+
 inline float PID_Mult = 0.1;
 
 inline float PID_Konstante = 0.6; // 0.3

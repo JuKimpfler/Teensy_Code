@@ -1,8 +1,8 @@
 #include "BallSearchCalculations.h"
 
-BallSearchCalculationsC BallSearchCalculations;
+BallCalcC BallCalc;
 
-void BallSearchCalculationsC::getAngleCurvature(float inAngle, float dist){
+void BallCalcC::getAngle(float inAngle, float dist){
     // Berechnung 2024/2025
     /*if(abs(inAngle) >35){
         float dist_p = (dist/100)*0.7; // 0.7
