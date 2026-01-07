@@ -14,8 +14,8 @@ void AttackerTacticsC::step(){
 
 void AttackerTacticsC::BallCaught(){
 	//TODO: include BallCaught for attacker
-	Robot.Turn (0);
-	Robot.Kicker.Once(); //ist nur ein kleiner Programmierversuch ;) ~Felix
+	//Robot.Turn (0);
+	//Robot.Kicker.Once(); //ist nur ein kleiner Programmierversuch ;) ~Felix
     
 }
 
@@ -25,5 +25,5 @@ void AttackerTacticsC::BallSearch(){
 	//Angle RelativeBalDir = IrBall.getWeightedIr(IrValues);
 	//float BallDir = RelativeBalDir.theta - BNO055.give_TiltZ();
 	//TODO: move motor towards RelativeBallDir;
-	
+		
 }
