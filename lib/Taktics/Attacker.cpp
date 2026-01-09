@@ -3,8 +3,7 @@
 AttackerTacticsC AttackerTactics;
 
 void AttackerTacticsC::step(){
-	bool ballCaught = true;
-	if(ballCaught){
+	if(/*LDR.Aktiv()*/false){
 		BallCaught();
 	}
 	else{
@@ -19,15 +18,21 @@ void AttackerTacticsC::BallCaught(){
 		Robot.Drive(0, 0, HighSpeed);
 	}
 	else{
-		//vielleicht halb nach Tor ausgerichtet fahren
-		Robot.Drive(goalAngle.toDeg(), goalAngle.toDeg() /2, HighSpeed);
-
+		//get us daten
+		if(false) {
+			Robot.Drive(-115, 0, HighSpeed);
+		}
+		else{
+			//vielleicht halb nach Tor ausgerichtet fahren
+			Robot.Drive(goalAngle.toDeg(), goalAngle.toDeg() /2, HighSpeed);
+		}
 	}
 }
 
 void AttackerTacticsC::BallSearch(){
 	Taktics.BallSearch();
-	//vlt nur auf ball gehen falls er vor dem attacker ist sodass der defender den ball vorschießen kann?
+
+	//vlt für später nur auf ball gehen falls er vor dem attacker ist sodass der defender den ball vorschießen kann?
 	
 }
 
