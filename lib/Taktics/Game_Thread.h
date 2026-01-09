@@ -4,6 +4,7 @@
 #include "Calculations.h"
 #include "Elementar_Taktics.h"
 #include "System.h"
+#include "Attacker.h"
 
 class GameC{
     private:
