@@ -11,8 +11,10 @@ struct Vec2{
     float x;
     float y;
 
+    Vec2(float x = 0, float y = 0) : x(x), y(y) {}
+
     float magnitude(){
-        return sqrtf(x*x - y*y);
+        return sqrtf(x*x + y*y);
     };
     float angle(){
         return atanf(y/x);

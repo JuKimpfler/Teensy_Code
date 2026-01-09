@@ -13,7 +13,13 @@ void AttackerTacticsC::step(){
 }
 
 void AttackerTacticsC::BallCaught(){
-	//TODO: include BallCaught for attacker
+	Angle goalAngle = GoalCalculations.calculateAngle(Vec2(Cam.x, Cam.y));
+	if (abs(goalAngle.toDeg()) < 10){
+		Robot.Kicker.Once();
+	}
+	else{
+		
+	}
 }
 
 void AttackerTacticsC::BallSearch(){
