@@ -84,7 +84,9 @@ void SystemC::initC::Sensors(){
 
     BNO055.init();
 
-    Cam.init();
+    //Cam.init();
+
+    Mouse.init();
 
     //Ultrasonic.init(US_Back);
     //Ultrasonic.init(US_Front);
@@ -114,7 +116,9 @@ void SystemC::UpdateC::Interface(){
 
 void SystemC::UpdateC::Sensors(){
 
-    Cam.read();
+    //Cam.read();
+
+    Mouse.read();
     
     System.Start_Update();
 
@@ -147,4 +151,6 @@ void SystemC::UpdateC::Calculations(){
     LineCalc.Calc();
     PID.Calculate();
     BallCalc.getAngle(IR.Angle,IR.Distance);
+    BallCalc.CalcAngle();
+    BallCalc.CalcDist();
 }

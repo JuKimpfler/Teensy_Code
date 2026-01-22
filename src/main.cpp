@@ -1,34 +1,31 @@
 #include "Elementar.h"
 #include "System.h"
-//#include "Cam.h"
-//#include "RGB.h"
+
 String read = "";
 
 void setup() {
-    //System.init.Sensors() ;
-    //System.init.Motors() ;
-    //System.init.Interface()   ;
-    Serial.begin(115200);
-    pinMode(LED_BUILTIN,INPUT);
-    
+    System.init.Sensors() ;
+    System.init.Motors() ;
+    System.init.Interface()   ;
+    Mouse.init();
 }
 
 void loop() { 
-    Cycle_Timer = 0 ;
+    Mouse.read();
 
-    //System.Update.Sensors();
-    //System.Update.Interface();
-    //System.Update.Calculations();
+    System.Update.Sensors();
+    System.Update.Interface();
+    System.Update.Calculations();
 
-    //BNO055.showCal();
+    BNO055.showCal();
  
-    //if(System.Start){
+    if(System.Start){
         //Game.Run();
 
         //Robot.Turn(0);
 
-        //Robot.Drive(0,0,20); 
-
+        //Robot.Drive(IR.Angle,0,20); 
+        Robot.Drive(BallCalc.DriveAngle,0,20); 
         //Serial.print("Angle: "); Serial.println(BNO055.give_TiltX());
 
         //Serial.println(PID.Out);
@@ -42,30 +39,45 @@ void loop() {
         //    Serial.print(IR.IR_Values[i]); Serial.print("  ");
         //}
 
-        //Robot.Drive(BallCalc.OutAngle,0,MainSpeed);
+        //Robot.Drive(BallCalc.DriveAngle,0,MainSpeed);
         //Line.read();
         //Serial.println("Hallo1234");
-    //}
-    //else{
-        //Robot.Stop();
+    }
+    else{
+        Robot.Stop();
         //RGB.write(0,"OFF");
         //RGB.write(1,"OFF");
         //RGB.write(2,"OFF");
         //UART_Debug.print("Ball angle: "); UART_Debug.println(IR.Angle);
         //UART_Debug.print("Ball distance: "); UART_Debug.println(IR.Distance);
-        //UART_Debug.print("Ball Drive: "); UART_Debug.println(BallCalc.OutAngle);
+        //UART_Debug.print("Ball Drive: "); UART_Debug.println(BallCalc.DriveAngle);
         //Serial.println("1");
 
-    //}
-
-    delay(20);
+    }
+    /*
     Serial.print(">");
-    Serial.print("Cycle: ");
-    Serial.print(round(Cycletime));
-    Serial.print(",Test: ");
-    Serial.print(1234);
+    Serial.print("lift: ");
+    Serial.print(Mouse.lift);
+    Serial.print(",motion: ");
+    Serial.print(Mouse.movement);
+    Serial.print(",x: ");
+    Serial.print(Mouse.deltaX);
+    Serial.print(",y: ");
+    Serial.print(Mouse.deltaY);
+    Serial.print(",diagonal: ");
+    Serial.println(Mouse.delta_dist);*/
 
-    if(Serial.available()){
+    Serial.print(">");
+    Serial.print(",Distance: ");
+    Serial.print(IR.Distance);
+    Serial.print(",Distance_raw: ");
+    Serial.print(IR.Distance_raw);
+    Serial.print(",DistCal: ");
+    Serial.print(IR.DistCal);
+    Serial.print(",DistFaktor: ");
+    Serial.println(IR.DistFaktor);
+    delay(10);
+    /*if(Serial.available()){
         Serial.print("  Empfang   ");
         read=Serial.readString();
         if(read!="Hi12"){
@@ -76,27 +88,27 @@ void loop() {
 
     if(read=="Hi12"){
         digitalWrite(LED_BUILTIN,HIGH);
+    }*/
+
+    if(System.Button[0]){
+        BNO055.Calibrate();
+    }   
+    if(System.Button[1]){
+        IR.Calib_Offset();
+    }   
+    if(System.Button[2]){
+        IR.DistCal = IR.Distance_raw;
+    }   
+    if(System.Button[3]){
+        IR.Calib_Dist();
+    }   
+
+    if (System.Switches[0]){
+        MainSpeed = HighSpeed;
     }
-
-    //if(System.Button[0]){
-        //BNO055.Calibrate();
-    //}   
-
-    //if(System.Button[1]){
-    //    Robot.Kicker.Once();
-    //    RGB.write(1,"G");
-    //} 
-    //else{
-    //    Robot.Kicker.Off();
-    //    RGB.write(1,"OFF");
-    //}
-
-    //if (System.Switches[0]){
-    //    MainSpeed = HighSpeed;
-    //}
-    //else {
-    //    MainSpeed = LowSpeed;
-    //}
+    else {
+        MainSpeed = LowSpeed;
+    }
     
     Cycletime = Cycle_Timer;
     

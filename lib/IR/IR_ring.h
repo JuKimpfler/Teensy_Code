@@ -36,8 +36,8 @@ public:
   [[nodiscard]] int16_t read_offset(uint8_t sensor_id) const;
   void read_offsets(int16_t (&offsets)[16]) const;
   void write_offset(uint8_t sensor_id, int16_t offset) const;
-  void write_offsets(const int16_t (&offsets)[16]) const;
-
+  void write_offsets(const uint16_t (&offsets)[16]) const;
+  uint16_t offset_save[16];
 private:
   const Device_handle _handle;
 };

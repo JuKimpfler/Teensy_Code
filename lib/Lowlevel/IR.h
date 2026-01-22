@@ -5,19 +5,25 @@
 
 class IRC {
     private:
-
+    
     public:
         float Distance_raw;
-        float NullCall  = 100;
+        //float NullCall  = 100;
+        float Distance_raw2;
+        bool Ballsight;
         float Angle;
         float Distance;
-        int IR_Values[16] ;
+        float IR_Values[16];
         float TSSP;
+        float DistCal;
+        float DistFaktor;
 
         void read();
         int GetData(int Port);
         int GetTSSP();
         void init();
+        void Calib_Offset();
+        void Calib_Dist();
 
 };
 

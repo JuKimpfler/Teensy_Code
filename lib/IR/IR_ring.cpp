@@ -120,7 +120,7 @@ void IR_ring::write_offset(uint8_t sensor_id, int16_t offset) const
   _handle.write_register<uint8_t, int16_t>(addr, offset);
 }
 
-void IR_ring::write_offsets(const int16_t (&offsets)[16]) const
+void IR_ring::write_offsets(const uint16_t (&offsets)[16]) const
 {
   _handle.write_registers(static_cast<uint8_t>(Ir_ring_registers::ir1_offset_msb), offsets, 16);
 }

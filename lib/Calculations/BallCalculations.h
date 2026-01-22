@@ -5,8 +5,10 @@
 
 class BallCalcC{
     public:
-        float OutAngle;
+        float DriveAngle;
         void getAngle(float inAngle, float dist);
+        void CalcAngle();
+        void CalcDist();
 };
 
 extern BallCalcC BallCalc;

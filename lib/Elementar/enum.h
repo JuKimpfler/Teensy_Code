@@ -26,17 +26,13 @@ enum Motor_Port { // Portbelegung Direct an Teensy
 };
 
 enum Ultrasonic_Address{
-    US_Front = 0x70,
-    US_Left = 0x71,
-    US_Back = 0x72,
-    US_Right = 0x73,
+    US_Left = 0x70,
+    US_Right = 0x71,
 };
 
 enum Pinout {
     LDR_Port = 23,
     Start_Port = 10,
-    RCJ_Port = 7,
-    BT_State_Port = 31,
     Schuss_Port = 30,
     Kicker_Port = 3
 };

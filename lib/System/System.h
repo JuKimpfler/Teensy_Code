@@ -4,7 +4,6 @@
 #include "Expander.h"
 #include "Motor.h"
 #include "PidCalculations.h"
-//#include "XcpSxIMaster.h"
 #include "Line.h"
 #include "Calculations.h"
 #include "Taktics.h"
@@ -14,6 +13,8 @@
 #include "IR.h"
 #include "Robot.h"
 #include "RGB.h"
+#include "Cam.h"
+#include "Mouse.h"
 //#include "UltraSonic.h"
 
 

@@ -4,7 +4,7 @@ IRC IR;
 
 I2C_bus i2c1(I2C_BUS);
 Device_handle ir_ring_handle = {i2c1, I2C_target{0x0A}};
-IR_ring ir_ring(ir_ring_handle);
+IR_ring ir_lib(ir_ring_handle);
 
 void IRC::init(){
     I2C_BUS.begin();
@@ -16,14 +16,23 @@ int IRC::GetTSSP(){
 }
 
 void IRC::read(){
-    uint16_t calib_data[16];
-    ir_ring.read_calibrated_values(calib_data);
-    for (int i = 0 ; i++ ; i<16){
-        IR_Values[i] = calib_data[i];
+    uint16_t Values[16];
+    ir_lib.read_calibrated_values(Values);
+    for ( int i = 0 ; i<16 ; i++){
+        IR_Values[i] = Values[i] - (ir_lib.offset_save[i]);
+    } 
+}
+
+void IRC::Calib_Dist(){
+    DistFaktor = 50/Distance_raw2;
+}
+
+void IRC::Calib_Offset(){
+    uint16_t Values2[16];
+    ir_lib.read_raw_values(Values2);
+    for ( int i = 0 ; i<16 ; i++){
+        ir_lib.offset_save[i] = Values2[i];
     }
-    Angle = ir_ring.read_ball_angle();
-    Distance_raw = ir_ring.read_ball_distance();
-    Distance = (Distance_raw);
 }
 
 int IRC::GetData(int Port){ // raw Data of the IR Sensors
