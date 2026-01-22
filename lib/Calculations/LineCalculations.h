@@ -6,10 +6,8 @@ class LineCalcC{
     private:
         float summex = 0;
         float summey = 0;
-        float last_Angle = 600;      
+        float lastWinkel = 0;
     public:
-        bool overshoot = false;
-        bool ballFlag;
         float RawAngle;
         int Distance;
         float DriveAngle;
