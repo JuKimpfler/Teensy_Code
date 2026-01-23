@@ -20,17 +20,20 @@ void loop() {
     BNO055.showCal();
  
     if(System.Start){
-        Game.Run();
+        //Game.Run();
 
-        //Robot.Turn(0);
+        Taktics.BallSearch();
+
+        // Robot.Turn(0);
 
         //Robot.Drive(0,0,20); 
 
-        //Serial.print("Angle: "); Serial.println(BNO055.give_TiltX());
+        Serial.print("Angle: "); Serial.println(BallSearchCalculations.OutAngle);
 
         //Serial.println(PID.Out);
 
-        
+        //Serial.println("Hi:"+String(LineCalc.DriveAngle));
+        //Motor.On()
 
         //Serial.print("Calibrated data: ");
         //for (int i=0; i<16; i++)
@@ -53,11 +56,10 @@ void loop() {
         //UART_Debug.print("Ball Drive: "); UART_Debug.println(BallSearchCalculations.OutAngle);
         //Serial.println("1");
 
-        if(UART_1.available()){
-            UART_Debug.println(UART_1.readString());
-        }
-        else{UART_Debug.println("Hi");UART_Debug.println("Hi");}
-
+        //if(UART_1.available()){
+        //    UART_Debug.println(UART_1.readString());
+        //}
+        //else{UART_Debug.println("Hi");UART_Debug.println("Hi");}
     }
 
     if(System.Button[0]){
