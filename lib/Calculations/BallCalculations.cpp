@@ -83,12 +83,15 @@ void BallCalcC::getAngle(float inAngle, float dist){
             DriveAngle=inAngle*1.1;
         }
     }
-    else{
-        if(inAngle<0){
+    else if (inAngle>=25){
+        if(inAngle>90){
             DriveAngle=inAngle-(atanf(20/dist)*RAD_TO_DEG); // Versuchter Treffpunkt des roboters auf Kreisförmiger Bahn um Ball mit Radius 13 
         }
-        else{
+        else if (inAngle<-90){
             DriveAngle=inAngle+(atanf(20/dist)*RAD_TO_DEG); // Versuchter Treffpunkt des roboters auf Kreisförmiger Bahn um Ball mit Radius 13
+        }
+        else if (inAngle<=90 && inAngle>=-90){
+            DriveAngle=inAngle; // Versuchter Treffpunkt des roboters auf Kreisförmiger Bahn um Ball mit Radius 13
         }
     }
 }
