@@ -1,6 +1,7 @@
 #include "Game_Thread.h"
 #include "RGB.h"
 #include "LineCalculations.h"
+#include "Cam.h"
 GameC Game;
 
 void GameC::Run(){
@@ -14,7 +15,7 @@ void GameC::Run(){
     else{
         //if (LDR.Aktiv()){
             //vlt attacker / defender
-            Taktics.BallSearch();
+            Cam.Decode();
         //}
         //else{
             //Taktics.GoalAttak(); 

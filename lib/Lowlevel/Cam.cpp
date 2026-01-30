@@ -26,6 +26,7 @@ void CamC::Decode(String message){
     {
         if (message.substring(0,2) == "tf"){
             goal = true; // gelb
+            Serial.println("YELLOW GOAL");
         }
         else{
             goal = false; // blau
@@ -33,5 +34,7 @@ void CamC::Decode(String message){
         x = ((message.substring(2,6)).toInt());
         y = ((message.substring(6,10)).toInt());
         area = ((message.substring(10,14)).toInt());
+
+        Serial.println("x: "+String(x)+" y: "+String(y)+" area: "+String(area));
     }
 }

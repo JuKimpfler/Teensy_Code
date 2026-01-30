@@ -23,7 +23,7 @@ void loop() {
     BNO055.showCal();
  
     if(System.Start){
-        Game.Run();
+        //Game.Run();
         //LineCalc.Calc();
 
         //Taktics.BallSearch();

@@ -116,7 +116,7 @@ void SystemC::UpdateC::Interface(){
 
 void SystemC::UpdateC::Sensors(){
 
-    //Cam.read();
+    Cam.read();
 
     Mouse.read();
     
