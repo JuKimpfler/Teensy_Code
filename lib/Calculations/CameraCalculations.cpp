@@ -7,14 +7,14 @@ float CameraCalculationsC::DistanceByCamera(float PictureObjectHeight, Angle cam
     return realDistance;
 }
 
-Angle CameraCalculationsC::RotationByCamera(Vec2 ballPos){
+Angle CameraCalculationsC::RotationByCamera(Vec2 objPos){
     Angle angle = Angle{};
-    angle = (atanf((ballPos.x - (ImageWidth / 2)) / FocalLength));
+    angle = (atanf((objPos.x - (ImageWidth / 2)) / FocalLength));
     return angle;
 }
 
-Vec2 CameraCalculationsC::RelativePositionByCamera(Vec2 ballPos, float PictureObjectHeight){
-    Angle angle = RotationByCamera(ballPos);
+Vec2 CameraCalculationsC::RelativePositionByCamera(Vec2 objPos, float PictureObjectHeight){
+    Angle angle = RotationByCamera(objPos);
     float dist = DistanceByCamera(PictureObjectHeight, angle);
     float x = cosf(angle.theta) * dist;
     float y = sinf(angle.theta) + dist;
@@ -22,7 +22,7 @@ Vec2 CameraCalculationsC::RelativePositionByCamera(Vec2 ballPos, float PictureOb
     return Vec2{x,y};
 }
 
-Vec2 CameraCalculationsC::PositionByCamera(Vec2 ballPos, float PictureObjectHeight, Vec2 robotPos){
-    Vec2 relativePos = RelativePositionByCamera(ballPos, PictureObjectHeight);
+Vec2 CameraCalculationsC::PositionByCamera(Vec2 objPos, float PictureObjectHeight, Vec2 robotPos){
+    Vec2 relativePos = RelativePositionByCamera(objPos, PictureObjectHeight);
     return Vec2{relativePos.x + robotPos.x, relativePos.y + robotPos.y};
 }
