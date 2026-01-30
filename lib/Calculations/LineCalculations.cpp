@@ -16,9 +16,13 @@ void LineCalcC::Calc(){
         summey = 0;
         Distance = 0;
         for(int i = 0 ; i<32 ; i++){ // Positionen Durchgehen
-            Distance = Distance + Line.Raw[i]; // Nummern Zusammenählen
+            // i=9 hat nen schaden
+            if (i!=9){
+            Distance = Distance + Line.Raw[i]; // Nummern Zusammenzählen
+            
             summex = summex + (Line.Raw[i]*sinf(((i*11.25)*DEG_TO_RAD))); // Linie Abstand in X Richtung
             summey = summey + (Line.Raw[i]*cosf(((i*11.25)*DEG_TO_RAD))); // Linie Abstand in Y Richtung
+            }
         }
         RawAngle = atan2f(summex,summey)*RAD_TO_DEG - 90; // Winkel berechnung und drehung um 90 Grad 
 

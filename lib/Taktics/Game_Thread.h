@@ -5,6 +5,7 @@
 #include "Elementar_Taktics.h"
 #include "System.h"
 #include "Attacker.h"
+#include "LineCalculations.h"
 
 class GameC{
     private:

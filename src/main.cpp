@@ -2,6 +2,7 @@
 #include "System.h"
 #include "Cam.h"
 #include "RGB.h"
+#include "LineCalculations.h"
 
 
 void setup() {
@@ -20,9 +21,10 @@ void loop() {
     BNO055.showCal();
  
     if(System.Start){
-        //Game.Run();
+        Game.Run();
+        //LineCalc.Calc();
 
-        Taktics.BallSearch();
+        //Taktics.BallSearch();
 
         // Robot.Turn(0);
 
