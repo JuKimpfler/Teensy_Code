@@ -15,7 +15,7 @@ void GameC::Run(){
     else{
         //if (LDR.Aktiv()){
             //vlt attacker / defender
-            Cam.Decode();
+            //Cam.Decode();
         //}
         //else{
             //Taktics.GoalAttak(); 

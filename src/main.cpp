@@ -3,6 +3,7 @@
 #include "Cam.h"
 #include "RGB.h"
 #include "LineCalculations.h"
+#include "Calculations.h"
 
 String read = "";
 
@@ -32,7 +33,7 @@ void loop() {
 
         //Robot.Drive(0,0,20); 
 
-        Serial.print("Angle: "); Serial.println(BallSearchCalculations.OutAngle);
+        Serial.print("Angle: "); Serial.println(BallCalc.DriveAngle);
 
         //Serial.println(PID.Out);
 
