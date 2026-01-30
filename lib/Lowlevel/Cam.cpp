@@ -14,12 +14,24 @@ void CamC::read(){
             Decode(message);
         }
         else{
-            UART_Debug.println("E : "+String(message));
+            UART_Debug.println("E : "+String(message)); // %tt 1000 1000 1000 1000
         }
     }
+    Decode(message);
 }
 
-String CamC::Decode(String message){
-    String message_new = message;
-    return message_new;
+void CamC::Decode(String message){
+
+    if (!(message.substring(0,2) == "tt" || message.substring(0,2) == "ff"))
+    {
+        if (message.substring(0,2) == "tf"){
+            goal = true; // gelb
+        }
+        else{
+            goal = false; // blau
+        }
+        x = ((message.substring(2,6)).toInt());
+        y = ((message.substring(6,10)).toInt());
+        area = ((message.substring(10,14)).toInt());
+    }
 }

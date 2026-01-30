@@ -132,5 +132,6 @@ void RobotC::KickerC::Once(){
     digitalWrite(18,HIGH);
     delay(15);
     digitalWrite(18,LOW);
-    delay(1000);
+    Serial.println("KICK");
+    delay(2000);
 }

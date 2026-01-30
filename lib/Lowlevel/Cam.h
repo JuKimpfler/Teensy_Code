@@ -3,11 +3,12 @@
 
 class CamC{
     private:
-        String Decode(String message);
+        void Decode(String message);
     public:
         float x;
         float y;
-        float area;                    
+        float area;
+        bool goal; // true = gelb , false = blau                    
         String message;
         void init();
         void read();
