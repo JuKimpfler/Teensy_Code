@@ -81,7 +81,6 @@ enum ADC_Port {
 
 
 //Seriel Port
-#define UART_Debug Serial
 #define UART_Pixy Serial3
 #define UART_1 Serial6
 #define UART_2 Serial7

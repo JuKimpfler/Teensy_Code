@@ -2,17 +2,17 @@
 
 DefenderTacticsC DefenderTactics;
 
-void DefenderTacticsC:: step(){
-    bool ballcaught = true;
-    if (ballcaught == true){
-            Goaldirection();
+void DefenderTacticsC::step(){
+    if (LDR.Aktiv() == true){
+        Elem_Taktics.BallCaught();
     }
     else{
-        Ballsearch();
-
-    }
-    
+        Defens();
+    } 
 }
 
+void DefenderTacticsC::Defens(){
+    // Do homing and defend the goal
+}
 
 

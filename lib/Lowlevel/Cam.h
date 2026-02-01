@@ -8,9 +8,9 @@ class CamC{
         float x;
         float y;
         float area;
+        float rest;
         bool goal; // true = gelb , false = blau                    
         String message;
-        void init();
         void read();
 };
 

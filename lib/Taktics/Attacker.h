@@ -9,7 +9,7 @@ class AttackerTacticsC{
     public:
         void step();
         void BallCaught();
-        void BallSearch();
+        void Ballsearch();
 };
 
 extern AttackerTacticsC AttackerTactics;

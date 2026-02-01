@@ -3,23 +3,20 @@
 AttackerTacticsC AttackerTactics;
 
 void AttackerTacticsC::step(){
-	bool ballCaught = true;
-	if(ballCaught){
-		BallCaught();
+	if(LDR.Aktiv()){
+		Elem_Taktics.BallCaught();
 	}
 	else{
-		BallSearch();
+		Elem_Taktics.Ballsearch();
 	}
 }
 
 void AttackerTacticsC::BallCaught(){
 	//TODO: include BallCaught for attacker
 	//Robot.Turn (0);
-	//Robot.Kicker.Once(); //ist nur ein kleiner Programmierversuch ;) ~Felix
-    
 }
 
-void AttackerTacticsC::BallSearch(){
+void AttackerTacticsC::Ballsearch(){
 	//TODO: get ir values
 	//int IrValues[8];//Insert values
 	//Angle RelativeBalDir = IrBall.getWeightedIr(IrValues);

@@ -8,14 +8,15 @@
 String read = "";
 
 void setup() {
-    System.init.Sensors() ;
-    System.init.Motors() ;
-    System.init.Interface()   ;
-    Mouse.init();
+    System.init.Sensors();
+    System.init.Motors(); 
+    System.init.Interface();
+    Serial.begin(115200);
+    UART_1.begin(115200);
 }
 
-void loop() { 
-    Mouse.read();
+void loop() {  
+    Cycle_Timer = 0;
 
     System.Update.Sensors();
     System.Update.Interface();
@@ -24,49 +25,16 @@ void loop() {
     BNO055.showCal();
  
     if(System.Start){
-        //Game.Run();
-        //LineCalc.Calc();
-
-        //Taktics.BallSearch();
-
-        // Robot.Turn(0);
-
-        //Robot.Drive(0,0,20); 
-
-        Serial.print("Angle: "); Serial.println(BallCalc.DriveAngle);
-
-        //Serial.println(PID.Out);
-
-        //Serial.println("Hi:"+String(LineCalc.DriveAngle));
-        //Motor.On()
-
-        //Serial.print("Calibrated data: ");
-        //for (int i=0; i<16; i++)
-        //{
-        //    Serial.print(i+1); Serial.print(": ");
-        //    Serial.print(IR.IR_Values[i]); Serial.print("  ");
-        //}
-
-        //Robot.Drive(BallCalc.DriveAngle,0,MainSpeed);
-        //Line.read();
-        //Serial.println("Hallo1234");
+        Game.Run();
+        Serial.println("x: "+String(Cam.x)+" y: "+String(Cam.y)+" area: "+String(Cam.area));
     }
     else{
-        Robot.Stop();
-        //RGB.write(0,"OFF");
-        //RGB.write(1,"OFF");
-        //RGB.write(2,"OFF");
-        //UART_Debug.print("Ball angle: "); UART_Debug.println(IR.Angle);
-        //UART_Debug.print("Ball distance: "); UART_Debug.println(IR.Distance);
-        //UART_Debug.print("Ball Drive: "); UART_Debug.println(BallCalc.DriveAngle);
-        //Serial.println("1");
-
-        //if(UART_1.available()){
-        //    UART_Debug.println(UART_1.readString());
-        //}
-        //else{UART_Debug.println("Hi");UART_Debug.println("Hi");}
+        //Robot.Stop();
+        Game.Run();
+        Serial.println(Cycletime);
     }
-    /*
+
+    /* Mouse Sensor Test
     Serial.print(">");
     Serial.print("lift: ");
     Serial.print(Mouse.lift);
@@ -77,8 +45,10 @@ void loop() {
     Serial.print(",y: ");
     Serial.print(Mouse.deltaY);
     Serial.print(",diagonal: ");
-    Serial.println(Mouse.delta_dist);*/
+    Serial.println(Mouse.delta_dist);
+    */
 
+    /* Distance IR Test
     Serial.print(">");
     Serial.print(",Distance: ");
     Serial.print(IR.Distance);
@@ -89,18 +59,7 @@ void loop() {
     Serial.print(",DistFaktor: ");
     Serial.println(IR.DistFaktor);
     delay(10);
-    /*if(Serial.available()){
-        Serial.print("  Empfang   ");
-        read=Serial.readString();
-        if(read!="Hi12"){
-            digitalWrite(LED_BUILTIN,LOW);
-            Serial.print(read);
-        }
-    }
-
-    if(read=="Hi12"){
-        digitalWrite(LED_BUILTIN,HIGH);
-    }*/
+    */
 
     if(System.Button[0]){
         BNO055.Calibrate();
@@ -123,6 +82,8 @@ void loop() {
     }
     
     Cycletime = Cycle_Timer;
+
+    //delay(1);
     
 }
 

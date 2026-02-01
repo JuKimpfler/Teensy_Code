@@ -1,11 +1,11 @@
 #include "Elementar_Taktics.h"
-TakticsC Taktics;
+Elem_TakticsC Elem_Taktics;
 
-void TakticsC::BallSearch(){
-    Robot.Drive(-BallCalc.DriveAngle,0,15);
+void Elem_TakticsC::Ballsearch(){
+    Robot.Drive(-BallCalc.DriveAngle,0,30);
 }
 
-void TakticsC::GoalAttak(){
+void Elem_TakticsC::BallCaught(){
     Robot.Drive(0, 0, MainSpeed);
 }
 
