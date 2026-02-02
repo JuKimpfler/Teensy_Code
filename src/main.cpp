@@ -13,6 +13,7 @@ void setup() {
     System.init.Interface();
     Serial.begin(115200);
     UART_1.begin(115200);
+    UART_Pixy.begin(115200);
 }
 
 void loop() {  
@@ -25,13 +26,13 @@ void loop() {
     BNO055.showCal();
  
     if(System.Start){
-        Game.Run();
-        Serial.println("x: "+String(Cam.x)+" y: "+String(Cam.y)+" area: "+String(Cam.area));
+        //Game.Run();
+        //Serial.println("x: "+String(Cam.x)+" y: "+String(Cam.y)+" area: "+String(Cam.area));
     }
     else{
         //Robot.Stop();
-        Game.Run();
-        Serial.println(Cycletime);
+        //Game.Run();
+        //Serial.println(Cycletime);
     }
 
     /* Mouse Sensor Test

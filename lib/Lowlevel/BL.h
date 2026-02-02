@@ -6,7 +6,11 @@ class BLC {
     private:
         String decode(String message);
     public:
-        String Rolle;
+        String Rolle="N";
+        String message;
+
+        bool SinglePlayer; 
+        float Dist_Player2;
         
         void init();
         void showRolle();

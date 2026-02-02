@@ -37,8 +37,6 @@ void SystemC::initC::Interface(){
 void SystemC::initC::Sensors(){
     pinMode(Start_Port,INPUT);
 
-    BL.doRolle();
-
     IR.init();
 
     Expander.ADC.init(CS_LineA);
@@ -91,6 +89,8 @@ void SystemC::UpdateC::Sensors(){
         US_Timer = 0;
     }
         */
+
+    if(digitalReadFast(Start_Port)){BL.doRolle();}
 }
 
 void SystemC::UpdateC::Calculations(){

@@ -9,12 +9,6 @@ void CamC::read(){
         if (message.length() == 19){
             Decode(message);
         }
-        else{
-            Serial.println("E : "+String(message.length())); // %tt 1000 1000 1000 1000
-        }
-    }
-    else{
-        Serial.println(UART_1.available()); // %tt 1000 1000 1000 1000
     }
 }
 
