@@ -9,5 +9,14 @@ void Elem_TakticsC::BallCaught(){
     Robot.Drive(0, 0, MainSpeed);
 }
 
+void Elem_TakticsC::step(){
+    if (LDR.Aktiv() == true){
+        BallCaught();
+    }
+    else{
+        Ballsearch();
+    } 
+}
+
 
 

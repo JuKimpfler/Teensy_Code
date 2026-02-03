@@ -15,4 +15,18 @@ class CamC{
 };
 
 extern CamC Cam;
+
+class GoalC{
+    public:
+        float Angle;
+        float Distance;
+        float X;
+        float Y;
+        float Area;
+        bool inSight;
+        bool lastdir; // true = - / false = +
+    private:
+};
+
+extern GoalC Goal;
  

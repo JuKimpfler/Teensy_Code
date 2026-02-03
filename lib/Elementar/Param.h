@@ -33,6 +33,8 @@ inline int Motor_Frequency =  400;
 
 #define distFactor 2.3
 
+#define TURN_TO_GOAL true
+
 inline int IR_Pos[8] = {1,2,3,4,5,6,7,8};
 inline int Ir_Min[8] = {1,2,3,4,5,6,7,8};
 inline int Ir_Max[8] = {1,2,3,4,5,6,7,8};

@@ -1,6 +1,8 @@
 #include "Cam.h"
 #include "RGB.h"
+#include "BNO055.h"
 CamC Cam;
+GoalC Goal;
 
 void CamC::read(){
     if (UART_1.available()>0){
@@ -17,16 +19,18 @@ void CamC::Decode(String message){
     if (!(message.substring(1,3) == "tt" || message.substring(1,3) == "ff"))
     {
         if (message.substring(1,3) == "tf"){
-            goal = true; // gelb
+            goal = true;
             RGB.write(2,"Y");
+            Goal.inSight = false;
         }
         else if (message.substring(1,3) == "ft"){
-            goal = false; // blau
+            goal = false;
             RGB.write(2,"B");
+            Goal.inSight = true;
         }
         x = ((message.substring(3,7)).toFloat());
         y = ((message.substring(7,11)).toFloat());
-        area = ((message.substring(11,15)).toFloat())*20; // daten übertragung mit geminderter auflösung um große zahlen darzustellen
+        area = ((message.substring(11,15)).toFloat())*25; // daten übertragung mit geminderter auflösung um große zahlen darzustellen
         rest = ((message.substring(15,19)).toFloat());
     }
     else { 
@@ -35,5 +39,20 @@ void CamC::Decode(String message){
         y = 0;
         area = 0;
         rest = 0;
+        Goal.inSight = false;
     }
+    
+
+    Goal.Y = y;
+    Goal.X = x;
+    Goal.Area = area;
+    if(Goal.inSight==true){
+        if(Goal.Angle<0){Goal.lastdir = true;}
+        if(!Goal.Angle<0){Goal.lastdir = false;}
+        Goal.Angle = BNO055.give_TiltZ()+((x-140)/3);
+    }
+    else{
+        Goal.Angle = 0;
+    }
+
 }

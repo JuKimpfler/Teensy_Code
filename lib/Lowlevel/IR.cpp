@@ -1,6 +1,7 @@
 #include "IR.h"
 
 IRC IR;
+BallC Ball;
 
 I2C_bus i2c1(I2C_BUS);
 Device_handle ir_ring_handle = {i2c1, I2C_target{0x0A}};

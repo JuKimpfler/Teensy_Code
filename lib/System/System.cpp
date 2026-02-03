@@ -37,6 +37,8 @@ void SystemC::initC::Interface(){
 void SystemC::initC::Sensors(){
     pinMode(Start_Port,INPUT);
 
+    //Mouse.init();
+
     IR.init();
 
     Expander.ADC.init(CS_LineA);
@@ -64,6 +66,8 @@ void SystemC::UpdateC::Interface(){
 
 void SystemC::UpdateC::Sensors(){
 
+    //Mouse.read();
+
     Cam.read();
 
     System.Start_Update();
@@ -90,13 +94,14 @@ void SystemC::UpdateC::Sensors(){
     }
         */
 
-    if(digitalReadFast(Start_Port)){BL.doRolle();}
+    //if(digitalReadFast(Start_Port)){BL.doRolle();}
 }
 
 void SystemC::UpdateC::Calculations(){
     LineCalc.Calc();
     PID.Calculate();
-    BallCalc.getAngle(IR.Angle,IR.Distance);
+    BallCalc.getAngle(Ball.Angle,Ball.Distance);
     BallCalc.CalcAngle();
     BallCalc.CalcDist();
+    CamCalc.Angle();
 }

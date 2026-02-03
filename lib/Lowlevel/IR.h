@@ -10,7 +10,6 @@ class IRC {
         float Distance_raw;
         //float NullCall  = 100;
         float Distance_raw2;
-        bool Ballsight;
         float Angle;
         float Distance;
         float IR_Values[16];
@@ -27,4 +26,13 @@ class IRC {
 
 };
 
+class BallC{
+    public:
+        float Angle;
+        float Distance;
+        bool inSight;
+    private:
+};
+
+extern BallC Ball;
 extern IRC IR;

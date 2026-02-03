@@ -44,6 +44,9 @@ void RobotC::Drive(float Dir , float Angle = 200000 ,int Speed1 = HighSpeed){
         Angle = Goal_Calc.Angle;
     }
     */
+    if(TURN_TO_GOAL == true){
+        Angle = Goal.Angle;
+    }
     PID.setAngle(Angle);
     Dir_A = Dir - Angle;
 

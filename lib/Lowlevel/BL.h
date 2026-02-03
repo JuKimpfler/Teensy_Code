@@ -4,7 +4,7 @@
 class BLC {
 
     private:
-        String decode(String message);
+        String decode(String message1);
     public:
         String Rolle="N";
         String message;

@@ -16,6 +16,9 @@ void GameC::Run(){
         else if(BL.Rolle == "D"){
             DefenderTactics.step();
         }
+        else if(BL.Rolle == "N"){
+            Elem_Taktics.step();
+        }
     }
 }
 

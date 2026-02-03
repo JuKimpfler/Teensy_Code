@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 #include "Param.h"
 #include "enum.h"
 #include <wiring.h>
@@ -86,3 +86,4 @@ struct Angle{
 };
 
 #endif
+*/

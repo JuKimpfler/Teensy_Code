@@ -13,18 +13,18 @@ void BallCalcC::CalcAngle(){
         y = y +  IR.IR_Values[i] * cosf(((i*22.5)*DEG_TO_RAD));
     }
 
-    IR.Angle = atan2f(x,y)*RAD_TO_DEG;
+    Ball.Angle = atan2f(x,y)*RAD_TO_DEG;
 
-    if (IR.Angle<0){IR.Angle = IR.Angle+360;}
-    else if (IR.Angle>359){IR.Angle = IR.Angle-360;}
-    if(IR.Angle<=180){IR.Angle=IR.Angle;}
-    else if (IR.Angle>180){IR.Angle=IR.Angle-360;}
-    if (IR.Angle<-180){IR.Angle = IR.Angle+360;}
-    else if (IR.Angle>359){IR.Angle = IR.Angle-360;}
+    if (Ball.Angle<0){Ball.Angle = Ball.Angle+360;}
+    else if (Ball.Angle>359){Ball.Angle = Ball.Angle-360;}
+    if(Ball.Angle<=180){Ball.Angle=Ball.Angle;}
+    else if (Ball.Angle>180){Ball.Angle=Ball.Angle-360;}
+    if (Ball.Angle<-180){Ball.Angle = Ball.Angle+360;}
+    else if (Ball.Angle>359){Ball.Angle = Ball.Angle-360;}
 
-    IR.Angle = -IR.Angle;
+    Ball.Angle = -Ball.Angle;
 
-    if(IR.Distance<5){IR.Angle=0;}
+    if(Ball.Distance<5){Ball.Angle=0;}
 }
 
 void BallCalcC::CalcDist(){
@@ -38,21 +38,21 @@ void BallCalcC::CalcDist(){
 
     IR.Distance_raw = sum;
     if(sum<30){
-        IR.Distance = 1000;
-        IR.Ballsight = false;
+        Ball.Distance = 1000;
+        Ball.inSight = false;
     }
     else{
-        IR.Ballsight = true;
+        Ball.inSight = true;
         if(sum<130){
-            IR.Distance = 40+(100/sum)*80;
+            Ball.Distance = 40+(100/sum)*80;
         }
         else{
             IR.Distance_raw2 = (sum - 780)*-1;
-            IR.Distance = IR.Distance_raw2 * 0.12;//pow(IR.DistCal / sum, 1 / IR.DistFaktor);//IR.DistCal * (1/sqrt(sum));
+            Ball.Distance = IR.Distance_raw2 * 0.12;//pow(IR.DistCal / sum, 1 / IR.DistFaktor);//IR.DistCal * (1/sqrt(sum));
         }
         
-        if(IR.Distance< 0){
-            IR.Distance=0;
+        if(Ball.Distance< 0){
+            Ball.Distance=0;
         }
     }
 }

@@ -27,15 +27,15 @@ void loop() {
  
     if(System.Start){
         //Game.Run();
-        //Serial.println("x: "+String(Cam.x)+" y: "+String(Cam.y)+" area: "+String(Cam.area));
+        Serial.println("x: "+String(Goal.X)+" y: "+String(Goal.Y)+" Angle: "+String(Goal.Angle)+" Area: "+String(Goal.Area));
+        
     }
     else{
         //Robot.Stop();
         //Game.Run();
         //Serial.println(Cycletime);
     }
-
-    /* Mouse Sensor Test
+    /*/Mouse Sensor Test
     Serial.print(">");
     Serial.print("lift: ");
     Serial.print(Mouse.lift);
@@ -46,15 +46,15 @@ void loop() {
     Serial.print(",y: ");
     Serial.print(Mouse.deltaY);
     Serial.print(",diagonal: ");
-    Serial.println(Mouse.delta_dist);
-    */
+    Serial.println(Mouse.delta_dist);*/
+    
 
     /* Distance IR Test
     Serial.print(">");
     Serial.print(",Distance: ");
-    Serial.print(IR.Distance);
+    Serial.print(Ball.Distance);
     Serial.print(",Distance_raw: ");
-    Serial.print(IR.Distance_raw);
+    Serial.print(Ball.Distance_raw);
     Serial.print(",DistCal: ");
     Serial.print(IR.DistCal);
     Serial.print(",DistFaktor: ");
@@ -84,7 +84,7 @@ void loop() {
     
     Cycletime = Cycle_Timer;
 
-    //delay(1);
+    //delay(4);
     
 }
 

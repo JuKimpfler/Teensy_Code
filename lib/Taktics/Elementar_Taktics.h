@@ -10,6 +10,7 @@ class Elem_TakticsC{
         void BallCaught();
         void CornerRightEscape();
         void CornerLeftEscape();
+        void step();
 };
 
 extern Elem_TakticsC Elem_Taktics;

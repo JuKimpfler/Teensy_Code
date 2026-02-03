@@ -3,6 +3,8 @@
 #include "Motor.h"
 #include "Expander.h"
 #include "PidCalculations.h"
+#include "IR.h"
+#include "Cam.h"
 
 extern elapsedMicros Drive_Smoothed_Timer;
 

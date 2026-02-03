@@ -4,7 +4,7 @@
 
 class ReflectionCalc{
     public:
-        Vec2 getReflection(Vec2 first, Vec2 second);
+        //Vec2 getReflection(Vec2 first, Vec2 second);
 
 };
 
