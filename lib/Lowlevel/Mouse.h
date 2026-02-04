@@ -5,11 +5,11 @@
 class MouseC{
     private:
     public:
-        float deltaX; // X Geschwindigkeit
-        float deltaY; // Y Geschwindigkeit
-        float xPos = 0; // X Position
-        float yPos = 0; // Y Position
-        float delta_dist = 0; // Diagonale Geschwindigkeit
+        double deltaX; // X Geschwindigkeit
+        double deltaY; // Y Geschwindigkeit
+        double xPos = 0; // X Position
+        double yPos = 0; // Y Position
+        double delta_dist = 0; // Diagonale Geschwindigkeit
         bool lift; // Angehoben ?
         bool movement; // Bewegung ?
 

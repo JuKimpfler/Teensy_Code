@@ -10,7 +10,7 @@ class BLC {
         String message;
 
         bool SinglePlayer; 
-        float Dist_Player2;
+        double Dist_Player2;
         
         void init();
         void showRolle();

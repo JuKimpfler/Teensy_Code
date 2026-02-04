@@ -31,12 +31,12 @@ uint16_t IR_ring::read_TSSP() const
 }
 
 
-float IR_ring::read_ball_angle() const
+double IR_ring::read_ball_angle() const
 {
   int16_t ball_angle;
   _handle.read_register<uint8_t, int16_t>(static_cast<uint8_t>(Ir_ring_registers::ball_angle_msb),ball_angle);
 
-  return static_cast<float>(ball_angle) / 180.F;
+  return static_cast<double>(ball_angle) / 180.F;
 }
 
 uint16_t IR_ring::read_ball_distance() const

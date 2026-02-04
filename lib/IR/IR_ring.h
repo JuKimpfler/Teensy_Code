@@ -19,7 +19,7 @@ public:
 
   [[nodiscard]] uint16_t read_TSSP() const;
 
-  [[nodiscard]] float read_ball_angle() const;
+  [[nodiscard]] double read_ball_angle() const;
   [[nodiscard]] uint16_t read_ball_distance() const;
 
   [[nodiscard]] uint16_t read_raw_value(uint8_t sensor_id) const;

@@ -1,7 +1,7 @@
 
 #include "Utils.h"
 UtilsC Utils;
-bool UtilsC::isinRange(float In,float min, float max){
+bool UtilsC::isinRange(double In,double min, double max){
     if (In < max && In > min){
         return true;
     }

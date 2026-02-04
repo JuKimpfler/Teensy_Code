@@ -9,11 +9,15 @@ elapsedMillis BL_Timer;
 void BLC::doRolle(){
     int avail = UART_Pixy.available();
     if(avail>0){
-        Serial.println("read : "+UART_Pixy.readString());
-        //Dist_Player2 = decode(message).toFloat();
+        message = UART_Pixy.readStringUntil('$');
+        Serial.println("read : "+message);
+        if(message.length()==4){
+            Serial.println("code : "+decode(message));
+        }
+        //Dist_Player2 = decode(message).toDouble();
         BL_Timer = 0;
     }
-    Serial.println(String(BL_Timer)+" <- Timer / available -> "+String(avail));
+    //Serial.println(String(BL_Timer)+" <- Timer / available -> "+String(avail));
 
     if(BL_Timer>3000){SinglePlayer = true;}
     else{SinglePlayer = false;}
@@ -34,7 +38,7 @@ void BLC::showRolle(){
 }
 
 String BLC::decode(String message1){
-    Serial.println("Message:"+String(message1));
-    return message1;
+    //Serial.println("Message:"+String(message1));
+    return message1+"decode";
 }
 

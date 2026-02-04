@@ -7,15 +7,15 @@ class IRC {
     private:
     
     public:
-        float Distance_raw;
-        //float NullCall  = 100;
-        float Distance_raw2;
-        float Angle;
-        float Distance;
-        float IR_Values[16];
-        float TSSP;
-        float DistCal;
-        float DistFaktor;
+        double Distance_raw;
+        //double NullCall  = 100;
+        double Distance_raw2;
+        double Angle;
+        double Distance;
+        double IR_Values[16];
+        double TSSP;
+        double DistCal;
+        double DistFaktor;
 
         void read();
         int GetData(int Port);
@@ -28,8 +28,8 @@ class IRC {
 
 class BallC{
     public:
-        float Angle;
-        float Distance;
+        double Angle;
+        double Distance;
         bool inSight;
     private:
 };

@@ -8,15 +8,15 @@
 #define structs_h
 
 struct Vec2{
-    float x;
-    float y;
+    double x;
+    double y;
 
-    Vec2(float x = 0, float y = 0) : x(x), y(y) {}
+    Vec2(double x = 0, double y = 0) : x(x), y(y) {}
 
-    float magnitude(){
+    double magnitude(){
         return sqrtf(x*x + y*y);
     };
-    float angle(){
+    double angle(){
         return atanf(y/x);
     };
     Vec2 operator+(Vec2& other){
@@ -32,12 +32,12 @@ struct Vec2{
 };
 
 struct Angle{
-        float theta;
+        double theta;
 
-        void setDeg(float degAngle){
+        void setDeg(double degAngle){
             theta = degAngle * DEG_TO_RAD;
         };
-        void addDeg(float degAngle){
+        void addDeg(double degAngle){
             theta += degAngle * DEG_TO_RAD;
         };
         Angle& operator+=(const Angle& other){
@@ -60,27 +60,27 @@ struct Angle{
             theta = other.theta;
             return *this;
         };
-        Angle& operator+=(const float delta){
+        Angle& operator+=(const double delta){
             theta += delta;
             return *this;
         };
-        Angle& operator/=(const float delta){
+        Angle& operator/=(const double delta){
             theta /= delta;
             return *this;
         };
-        Angle& operator*=(const float delta){
+        Angle& operator*=(const double delta){
             theta *= delta;
             return *this;
         };
-        Angle& operator-=(const float delta){
+        Angle& operator-=(const double delta){
             theta -= delta;
             return *this;
         };
-        Angle& operator=(const float delta){
+        Angle& operator=(const double delta){
             theta = delta;
             return *this;
         };
-        float toDeg(){
+        double toDeg(){
             return theta * RAD_TO_DEG;
         };
 };

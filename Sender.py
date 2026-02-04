@@ -4,10 +4,10 @@ import time
 import sys
 
 # --- KONFIGURATION ---
-PORT = 'COM15'        # Deinen Port hier anpassen (z.B. 'COM3' oder '/dev/ttyUSB0')
+PORT = 'COM16'        # Deinen Port hier anpassen (z.B. 'COM3' oder '/dev/ttyUSB0')
 BAUDRATE = 115200    # Baudrate anpassen
-MESSAGE = "1234"    # Die Nachricht, die gesendet werden soll
-INTERVALL = 0.02     # 10 Millisekunden
+MESSAGE = "1234$"    # Die Nachricht, die gesendet werden soll
+INTERVALL = 0.01     # 10 Millisekunden
 
 # Globale Variable zur Steuerung
 sending_active = False

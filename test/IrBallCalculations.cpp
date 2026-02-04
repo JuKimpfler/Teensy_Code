@@ -1,10 +1,10 @@
 #include "IrBallCalculations.h"
 IrBallC IrBall;
 
-float IrBallC::getIrAngle(){
-    float totalx = 0;
-    float totaly = 0;
-    float totalAngle = 0;
+double IrBallC::getIrAngle(){
+    double totalx = 0;
+    double totaly = 0;
+    double totalAngle = 0;
     for(int i = 0; i < 8; i++){
         totalx = totalx + (IR.GetData(i)) * sinf(IR_Pos[i]);
         totaly = totaly + (IR.GetData(i)) * cosf(IR_Pos[i]);
@@ -13,15 +13,15 @@ float IrBallC::getIrAngle(){
     return totalAngle;
 }
 
-float IrBallC::getDriveAngle(float IRAngle){
-    float totalAngle = 0;
-    float Anfahrtsfaktor = 1.3;
+double IrBallC::getDriveAngle(double IRAngle){
+    double totalAngle = 0;
+    double Anfahrtsfaktor = 1.3;
     totalAngle = IRAngle * Anfahrtsfaktor;
     return totalAngle;
 }
 
-float IrBallC::getDistanceIr(){
-    float totalDist = 0;
+double IrBallC::getDistanceIr(){
+    double totalDist = 0;
     for(int i = 0; i < 8; i++){
         totalDist += IR.GetData(i);
     }

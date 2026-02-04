@@ -14,7 +14,7 @@ void BNO055C::read(){
     sensors_event_t event; 
     bno.getEvent(&event);
 
-    float Comp_Dir = event.orientation.x;
+    double Comp_Dir = event.orientation.x;
     Comp_Dir = Comp_Dir-BNO_Cal;
     if (Comp_Dir<0){Comp_Dir = Comp_Dir+360;}
     else if (Comp_Dir>359){Comp_Dir = Comp_Dir-360;}
@@ -62,14 +62,14 @@ void BNO055C::showCal(){
     else if (mag==3){RGB.write(0,"G");}// LED AN
 }
 
-float BNO055C::give_TiltX(){
+double BNO055C::give_TiltX(){
     return TiltX;
 }
 
-float BNO055C::give_TiltY(){
+double BNO055C::give_TiltY(){
     return TiltY;
 }
 
-float BNO055C::give_TiltZ(){
+double BNO055C::give_TiltZ(){
     return TiltZ;
 }

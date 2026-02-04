@@ -28,10 +28,10 @@ void CamC::Decode(String message){
             RGB.write(2,"B");
             Goal.inSight = true;
         }
-        x = ((message.substring(3,7)).toFloat());
-        y = ((message.substring(7,11)).toFloat());
-        area = ((message.substring(11,15)).toFloat())*25; // daten übertragung mit geminderter auflösung um große zahlen darzustellen
-        rest = ((message.substring(15,19)).toFloat());
+        x = ((message.substring(3,7)).toInt());
+        y = ((message.substring(7,11)).toInt());
+        area = ((message.substring(11,15)).toInt())*25; // daten übertragung mit geminderter auflösung um große zahlen darzustellen
+        rest = ((message.substring(15,19)).toInt());
     }
     else { 
         RGB.write(2,"R");

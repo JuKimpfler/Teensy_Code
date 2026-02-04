@@ -108,27 +108,27 @@ Returns true if the INA219 address (set in the constructor) is on the I2C bus.
 Note the power and the current are not meaningful without calibrating the sensor. 
 Also the value is not meaningful if there is no shunt connected.
 
-- **float getShuntVoltage()** idem, in volts.
-- **float getBusVoltage()** idem. in volts. Max 32 Volt.
-- **float getCurrent()** returns the current through the shunt in Ampere.
-- **float getPower()** returns the current x BusVoltage in Watt.
+- **double getShuntVoltage()** idem, in volts.
+- **double getBusVoltage()** idem. in volts. Max 32 Volt.
+- **double getCurrent()** returns the current through the shunt in Ampere.
+- **double getPower()** returns the current x BusVoltage in Watt.
 
 The library has helper functions to convert above output to a more appropriate scale of units.
 
 Helper functions for the milli scale.
 
-- **float getBusVoltage_mV()** idem, in milliVolts.
+- **double getBusVoltage_mV()** idem, in milliVolts.
 Note: returns -100 if the math overflow bit is set.
-- **float getShuntVoltage_mV()** idem, in milliVolts.
-- **float getCurrent_mA()** idem, in milliAmpere.
-- **float getPower_mW()** idem, in milliWatt.
+- **double getShuntVoltage_mV()** idem, in milliVolts.
+- **double getCurrent_mA()** idem, in milliAmpere.
+- **double getPower_mW()** idem, in milliWatt.
 
 Helper functions for the micro scale.
 
-- **float getBusVoltage_uV()** idem, in microVolts.
-- **float getShuntVoltage_uV()** idem, in microVolts.
-- **float getCurrent_uA()** idem, in microAmpere.
-- **float getPower_uW()** idem, in microWatt.
+- **double getBusVoltage_uV()** idem, in microVolts.
+- **double getShuntVoltage_uV()** idem, in microVolts.
+- **double getCurrent_uA()** idem, in microAmpere.
+- **double getPower_uW()** idem, in microWatt.
 
 
 ##### Indicator flags
@@ -263,7 +263,7 @@ See datasheet.
 
 Calibration is mandatory to get **getCurrent()** and **getPower()** to work.
 
-- **bool setMaxCurrentShunt(float ampere = 20.0, float ohm = 0.002)** 
+- **bool setMaxCurrentShunt(double ampere = 20.0, double ohm = 0.002)** 
 set the calibration register based upon the shunt and the max ampere. 
 From this the LSB is derived. 
 Note the function will round up the LSB to nearest round value by default. 
@@ -272,11 +272,11 @@ The user **must** check the return value == true, otherwise the calibration regi
 Returns false if parameter out of range.
 Returns false if it could not write settings to device.
 - **bool isCalibrated()** returns true if CurrentLSB has been calculated by **setMaxCurrentShunt()**. 
-- **float getCurrentLSB()** returns the LSB in Ampere == precision of the calibration.
-- **float getCurrentLSB_mA()** returns the LSB in milliAmpere.
-- **float getCurrentLSB_uA()** returns the LSB in microAmpere.
-- **float getShunt()** returns the value set for the shunt in Ohm.
-- **float getMaxCurrent()** returns the value for the maxCurrent which can be corrected.
+- **double getCurrentLSB()** returns the LSB in Ampere == precision of the calibration.
+- **double getCurrentLSB_mA()** returns the LSB in milliAmpere.
+- **double getCurrentLSB_uA()** returns the LSB in microAmpere.
+- **double getShunt()** returns the value set for the shunt in Ohm.
+- **double getMaxCurrent()** returns the value for the maxCurrent which can be corrected.
 
 To print these values one might use https://github.com/RobTillaart/printHelpers 
 to get the values in scientific notation like "3.5e-6"

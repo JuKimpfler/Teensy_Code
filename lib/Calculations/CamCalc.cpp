@@ -1,9 +1,9 @@
 #include "CamCalc.h"
 CamCalcC CamCalc;
 
-/*float CamCalcC::DistByCam(float PictureObjectHeight, Angle cameraYawOffset){
-    float slantDistance = (ObjectSize / PictureObjectHeight) * FocalLength;
-    float realDistance = slantDistance / cosf(cameraYawOffset.theta);
+/*double CamCalcC::DistByCam(double PictureObjectHeight, Angle cameraYawOffset){
+    double slantDistance = (ObjectSize / PictureObjectHeight) * FocalLength;
+    double realDistance = slantDistance / cosf(cameraYawOffset.theta);
     return realDistance;
 }
 
@@ -13,16 +13,16 @@ Angle CamCalcC::RotationByCam(Vec2 objPos){
     return angle;
 }
 
-Vec2 CamCalcC::RelaPosByCam(Vec2 objPos, float PictureObjectHeight){
+Vec2 CamCalcC::RelaPosByCam(Vec2 objPos, double PictureObjectHeight){
     Angle angle = RotationByCam(objPos);
-    float dist = DistByCam(PictureObjectHeight, angle);
-    float x = cosf(angle.theta) * dist;
-    float y = sinf(angle.theta) + dist;
+    double dist = DistByCam(PictureObjectHeight, angle);
+    double x = cosf(angle.theta) * dist;
+    double y = sinf(angle.theta) + dist;
 
     return Vec2{x,y};
 }
 
-Vec2 CamCalcC::PosByCam(Vec2 objPos, float PictureObjectHeight, Vec2 robotPos){
+Vec2 CamCalcC::PosByCam(Vec2 objPos, double PictureObjectHeight, Vec2 robotPos){
     Vec2 relativePos = RelaPosByCam(objPos, PictureObjectHeight);
     return Vec2{relativePos.x + robotPos.x, relativePos.y + robotPos.y};
 }*/

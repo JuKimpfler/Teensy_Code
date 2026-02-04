@@ -11,21 +11,21 @@ extern elapsedMicros Drive_Smoothed_Timer;
 class RobotC {
 public:
     int Drive_Smoothed_aktive = 0;
-    float Drive_Smoothed_start = 0;
-    float Drive_Smoothed_optimal = 0;
-    float Drive_Smoothed_Dir = 0;
-    float Drive_Smoothed_Angle = 0; 
-    float Drive_Smoothed_last = 0;
-    float Drive_Smoothed_diff = 0; 
-    float Drive_Smoothed_diffnow = 0;
+    double Drive_Smoothed_start = 0;
+    double Drive_Smoothed_optimal = 0;
+    double Drive_Smoothed_Dir = 0;
+    double Drive_Smoothed_Angle = 0; 
+    double Drive_Smoothed_last = 0;
+    double Drive_Smoothed_diff = 0; 
+    double Drive_Smoothed_diffnow = 0;
 
-    void Turn(float Angel);
+    void Turn(double Angel);
 
-    void Drive_Smoothed_set(float Dir , float Angle , int sollSpeed , int istSpeed);
+    void Drive_Smoothed_set(double Dir , double Angle , int sollSpeed , int istSpeed);
     void Drive_Smoothed_Update();
     void Drive_Smoothed_Kill();
 
-    void Drive(float Dir , float Angel = 200000 ,int Speed1 = HighSpeed);
+    void Drive(double Dir , double Angel = 200000 ,int Speed1 = HighSpeed);
     void Stop();
     void Break();
     
@@ -38,17 +38,17 @@ public:
     KickerC Kicker;
 
 private:
-    float newSpeed;
+    double newSpeed;
     int Dir0;
     int Dir1;
     int Dir2;
     int Dir3;
     int Dir_A;
-    float Error ;
-    float Vel_D[4];
-    float Vel[4];
+    double Error ;
+    double Vel_D[4];
+    double Vel[4];
     int speed;
-    float direction;
+    double direction;
 };
 
 extern RobotC Robot;

@@ -3,7 +3,6 @@
 SystemC System;
 
 elapsedMillis Interface_Timer;
-elapsedMillis US_Timer;
 elapsedMillis Schuss_Timer;
 elapsedMicros Cycle_Timer;
 
@@ -51,10 +50,7 @@ void SystemC::initC::Sensors(){
 
     BNO055.init();
 
-    //Ultrasonic.init(US_Back);
-    //Ultrasonic.init(US_Front);
-    //Ultrasonic.init(US_Left);
-    //Ultrasonic.init(US_Right);
+    US.init();
 }
 
 void SystemC::UpdateC::Interface(){
@@ -84,17 +80,10 @@ void SystemC::UpdateC::Sensors(){
     Line.read_VW();
 
     BNO055.read();
-    /*
-    if (US_Timer > 1000/US_Frequency){
-        Ultrasonic.read(US_Back);
-        Ultrasonic.read(US_Front);
-        Ultrasonic.read(US_Left);
-        Ultrasonic.read(US_Right);
-        US_Timer = 0;
-    }
-        */
 
-    //if(digitalReadFast(Start_Port)){BL.doRolle();}
+    US.read();
+
+    if(digitalReadFast(Start_Port)){BL.doRolle();}
 }
 
 void SystemC::UpdateC::Calculations(){

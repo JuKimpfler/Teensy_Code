@@ -4,8 +4,8 @@
 BallCalcC BallCalc;
 
 void BallCalcC::CalcAngle(){
-    float x = 0; 
-    float y = 0;
+    double x = 0; 
+    double y = 0;
 
     for (uint_fast8_t i=0; i<16; i++)
     {
@@ -28,7 +28,7 @@ void BallCalcC::CalcAngle(){
 }
 
 void BallCalcC::CalcDist(){
-    float sum = 0; 
+    double sum = 0; 
     for (int i=0; i<16; i++)
     {
         sum = sum + IR.IR_Values[i];
@@ -57,13 +57,13 @@ void BallCalcC::CalcDist(){
     }
 }
 
-void BallCalcC::getAngle(float inAngle, float dist){
+void BallCalcC::getAngle(double inAngle, double dist){
     // Berechnung 2024/2025
     /*if(abs(inAngle) >35){
-        float dist_p = (dist/100)*0.7; // 0.7
-        float dir_pi = ((abs(inAngle)/1.8)/100); // 0.5
-        float dir_p = (dir_pi)*0.3; // 0.15
-        float temp = ((dir_p + dist_p) * 0.5)+1; // 1.32 //180-(3705.3/(pow(dist, 1.19)+34.38));
+        double dist_p = (dist/100)*0.7; // 0.7
+        double dir_pi = ((abs(inAngle)/1.8)/100); // 0.5
+        double dir_p = (dir_pi)*0.3; // 0.15
+        double temp = ((dir_p + dist_p) * 0.5)+1; // 1.32 //180-(3705.3/(pow(dist, 1.19)+34.38));
         DriveAngle = temp * inAngle ; //
     }
     else{

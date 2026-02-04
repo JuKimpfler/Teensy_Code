@@ -5,8 +5,8 @@
 
 class BallCalcC{
     public:
-        float DriveAngle;
-        void getAngle(float inAngle, float dist);
+        double DriveAngle;
+        void getAngle(double inAngle, double dist);
         void CalcAngle();
         void CalcDist();
 };

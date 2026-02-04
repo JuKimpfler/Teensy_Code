@@ -4,11 +4,11 @@ PIDC PID;
 
 void PIDC::Calculate(){
     now = micros();
-    diffTime = float(now - last) / 1000;
+    diffTime = double(now - last) / 1000;
     last = now;
 
-    float error = Angle - BNO055.give_TiltZ();
-    esum = esum + float(error);
+    double error = Angle - BNO055.give_TiltZ();
+    esum = esum + double(error);
 
     const int max_error_sum = 6000;
 
@@ -21,7 +21,7 @@ void PIDC::Calculate(){
     if(Utils.isinRange(error, -1, 1)) {
         esum = 0;
     }
-    float derivative = (error - ealt) / diffTime;
+    double derivative = (error - ealt) / diffTime;
     ealt = error;
 
     if (error > 0){
@@ -32,6 +32,6 @@ void PIDC::Calculate(){
     last = micros(); 
 }
 
-void PIDC::setAngle(float Angle1){
+void PIDC::setAngle(double Angle1){
     Angle = Angle1;
 }

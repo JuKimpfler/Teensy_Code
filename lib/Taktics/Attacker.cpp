@@ -20,7 +20,7 @@ void AttackerTacticsC::Ballsearch(){
 	//TODO: get ir values
 	//int IrValues[8];//Insert values
 	//Angle RelativeBalDir = IrBall.getWeightedIr(IrValues);
-	//float BallDir = RelativeBalDir.theta - BNO055.give_TiltZ();
+	//double BallDir = RelativeBalDir.theta - BNO055.give_TiltZ();
 	//TODO: move motor towards RelativeBallDir;
 		
 }

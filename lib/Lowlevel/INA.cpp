@@ -8,6 +8,6 @@ void INAC::init(){
     INA219_lib.begin();
 }
 
-float INAC::readVoltage(){
+double INAC::readVoltage(){
     return INA219_lib.getBusVoltage();
 }

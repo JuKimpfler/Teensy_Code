@@ -5,18 +5,18 @@
 class PIDC {
 
     private:
-        float last;
-        float now;
-        float Angle;
+        double last;
+        double now;
+        double Angle;
 
     public:
-        float esum;
-        float ealt;  
-        float diffTime;
-        float Out;
+        double esum;
+        double ealt;  
+        double diffTime;
+        double Out;
 
         void Calculate();
-        void setAngle(float Angle1);
+        void setAngle(double Angle1);
 };
 
 extern PIDC PID;

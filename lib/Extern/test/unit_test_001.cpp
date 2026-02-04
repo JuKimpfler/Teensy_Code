@@ -21,9 +21,9 @@
 // assertFalse(actual);
 // assertNull(actual);
 
-// // special cases for floats
-// assertEqualFloat(expected, actual, epsilon);    // fabs(a - b) <= epsilon
-// assertNotEqualFloat(unwanted, actual, epsilon); // fabs(a - b) >= epsilon
+// // special cases for doubles
+// assertEqualdouble(expected, actual, epsilon);    // fabs(a - b) <= epsilon
+// assertNotEqualdouble(unwanted, actual, epsilon); // fabs(a - b) >= epsilon
 // assertInfinity(actual);                         // isinf(a)
 // assertNotInfinity(actual);                      // !isinf(a)
 // assertNAN(arg);                                 // isnan(a)
@@ -57,17 +57,17 @@ unittest(test_constructor)
 
   //  default is not calibrated.
   assertFalse(INA.isCalibrated());
-  assertEqualFloat(0.0, INA.getCurrentLSB(), 0.001);
-  assertEqualFloat(0.0, INA.getShunt(), 0.001);
-  assertEqualFloat(0.0, INA.getMaxCurrent(), 0.001);
+  assertEqualdouble(0.0, INA.getCurrentLSB(), 0.001);
+  assertEqualdouble(0.0, INA.getShunt(), 0.001);
+  assertEqualdouble(0.0, INA.getMaxCurrent(), 0.001);
 
   //  fails but will set the vars
   INA.setMaxCurrentShunt(5, 0.002);
 
   assertTrue(INA.isCalibrated());
-  assertEqualFloat(5.0/32768, INA.getCurrentLSB(), 0.0001);
-  assertEqualFloat(0.002,     INA.getShunt(), 0.001);
-  assertEqualFloat(5.000,     INA.getMaxCurrent(), 0.001);
+  assertEqualdouble(5.0/32768, INA.getCurrentLSB(), 0.0001);
+  assertEqualdouble(0.002,     INA.getShunt(), 0.001);
+  assertEqualdouble(5.000,     INA.getMaxCurrent(), 0.001);
 }
 
 

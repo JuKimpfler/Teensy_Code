@@ -27,8 +27,8 @@ void loop() {
  
     if(System.Start){
         //Game.Run();
-        Serial.println("x: "+String(Goal.X)+" y: "+String(Goal.Y)+" Angle: "+String(Goal.Angle)+" Area: "+String(Goal.Area));
-        
+        //Serial.println("x: "+String(Goal.X)+" y: "+String(Goal.Y)+" Angle: "+String(Goal.Angle)+" Area: "+String(Goal.Area));
+        Serial.println("l: "+String(US.Distance_raw[1])+" r: "+String(US.Distance_raw[0])+" timer1: "+String(US_Timer1)+" d: "+String(US.Distance));
     }
     else{
         //Robot.Stop();

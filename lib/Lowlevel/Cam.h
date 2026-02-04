@@ -5,10 +5,10 @@ class CamC{
     private:
         void Decode(String message);
     public:
-        float x;
-        float y;
-        float area;
-        float rest;
+        int x;
+        int y;
+        int area;
+        int rest;
         bool goal; // true = gelb , false = blau                    
         String message;
         void read();
@@ -18,11 +18,11 @@ extern CamC Cam;
 
 class GoalC{
     public:
-        float Angle;
-        float Distance;
-        float X;
-        float Y;
-        float Area;
+        double Angle;
+        double Distance;
+        double X;
+        double Y;
+        double Area;
         bool inSight;
         bool lastdir; // true = - / false = +
     private:

@@ -3,7 +3,7 @@ RobotC Robot;
 
 elapsedMicros Drive_Smoothed_Timer;
 
-void RobotC::Turn(float Angle){
+void RobotC::Turn(double Angle){
     PID.setAngle(Angle);
     Motor.On(PID.Out,VR_Motor);
     Motor.On(PID.Out,VL_Motor);
@@ -11,7 +11,7 @@ void RobotC::Turn(float Angle){
     Motor.On(PID.Out,HL_Motor);
 }
 
-void RobotC::Drive_Smoothed_set(float Dir , float Angle , int sollSpeed , int istSpeed){
+void RobotC::Drive_Smoothed_set(double Dir , double Angle , int sollSpeed , int istSpeed){
     Drive_Smoothed_Timer = 0;
     Drive_Smoothed_optimal = sollSpeed;
     Drive_Smoothed_start = istSpeed;
@@ -35,7 +35,7 @@ void RobotC::Drive_Smoothed_Kill(){
     Drive_Smoothed_aktive=false;
 }
 
-void RobotC::Drive(float Dir , float Angle = 200000 ,int Speed1 = HighSpeed){
+void RobotC::Drive(double Dir , double Angle = 200000 ,int Speed1 = HighSpeed){
     // Links -> Minus (Counter-Clock)
     // Rechts -> Plus (Clock)
 

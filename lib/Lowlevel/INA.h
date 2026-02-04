@@ -6,7 +6,7 @@ class INAC{
     private:
     public:
         void init();
-        float readVoltage();
+        double readVoltage();
 };
 
 extern INAC INA;

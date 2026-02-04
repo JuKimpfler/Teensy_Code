@@ -28,24 +28,24 @@ public:
 
 
   //  CORE FUNCTIONS               //  Register
-  float    getShuntVoltage();      //  01
-  float    getBusVoltage();        //  02
-  float    getPower();             //  03
-  float    getCurrent();           //  04
+  double    getShuntVoltage();      //  01
+  double    getBusVoltage();        //  02
+  double    getPower();             //  03
+  double    getCurrent();           //  04
   bool     getMathOverflowFlag();  //  02
   bool     getConversionFlag();    //  02
 
 
   //  Scale helpers milli range
-  float    getBusVoltage_mV()   { return getBusVoltage()   * 1e3; };
-  float    getShuntVoltage_mV() { return getShuntVoltage() * 1e3; };
-  float    getCurrent_mA()      { return getCurrent()      * 1e3; };
-  float    getPower_mW()        { return getPower()        * 1e3; };
+  double    getBusVoltage_mV()   { return getBusVoltage()   * 1e3; };
+  double    getShuntVoltage_mV() { return getShuntVoltage() * 1e3; };
+  double    getCurrent_mA()      { return getCurrent()      * 1e3; };
+  double    getPower_mW()        { return getPower()        * 1e3; };
   //  Scale helpers micro range
-  float    getBusVoltage_uV()   { return getBusVoltage()   * 1e6; };
-  float    getShuntVoltage_uV() { return getShuntVoltage() * 1e6; };
-  float    getCurrent_uA()      { return getCurrent()      * 1e6; };
-  float    getPower_uW()        { return getPower()        * 1e6; };
+  double    getBusVoltage_uV()   { return getBusVoltage()   * 1e6; };
+  double    getShuntVoltage_uV() { return getShuntVoltage() * 1e6; };
+  double    getCurrent_uA()      { return getCurrent()      * 1e6; };
+  double    getPower_uW()        { return getPower()        * 1e6; };
 
 
   //  Configuration
@@ -76,17 +76,17 @@ public:
   //  mandatory to set these! read datasheet.
   //  maxCurrent >= 0.001
   //  shunt      >= 0.001
-  bool     setMaxCurrentShunt(float maxCurrent = 3.4,
-                              float shunt = 0.002);
+  bool     setMaxCurrentShunt(double maxCurrent = 3.4,
+                              double shunt = 0.002);
 
   bool     isCalibrated()     { return _current_LSB != 0.0; };
 
   //  These functions return zero if not calibrated!
-  float    getCurrentLSB()    { return _current_LSB;       };
-  float    getCurrentLSB_mA() { return _current_LSB * 1e3; };
-  float    getCurrentLSB_uA() { return _current_LSB * 1e6; };
-  float    getShunt()         { return _shunt;             };
-  float    getMaxCurrent()    { return _maxCurrent;        };
+  double    getCurrentLSB()    { return _current_LSB;       };
+  double    getCurrentLSB_mA() { return _current_LSB * 1e3; };
+  double    getCurrentLSB_uA() { return _current_LSB * 1e6; };
+  double    getShunt()         { return _shunt;             };
+  double    getMaxCurrent()    { return _maxCurrent;        };
 
 
   //  Operating mode = 0..7
@@ -110,9 +110,9 @@ private:
 
   uint16_t _readRegister(uint8_t reg);
   uint16_t _writeRegister(uint8_t reg, uint16_t value);
-  float    _current_LSB;
-  float    _shunt;
-  float    _maxCurrent;
+  double    _current_LSB;
+  double    _shunt;
+  double    _maxCurrent;
 
   uint8_t   _address;
 };
