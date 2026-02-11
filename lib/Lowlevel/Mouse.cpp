@@ -2,12 +2,13 @@
 #include "BNO055.h"
 
 MouseC Mouse;
-PMW3389 pmw = PMW3389(&SPI, 28); // SPI CS vom Moussensor kommt auf PixyTx
+PMW3389 pmw = PMW3389(&SPI, 24); // SPI CS vom Moussensor kommt auf PixyTx
 
 void MouseC::init(){
+    delay(1000);
     pmw.begin();
     delay(50);
-    pmwId = pmw.getProductID();
+    //pmwId = pmw.getProductID();
 }
 
 void MouseC::read(){
@@ -18,8 +19,8 @@ void MouseC::read(){
 
     delta_dist = sqrtf(pow(deltaY,2)+pow(deltaX,2));
 
-    xPos = xPos + deltaX * cos(BNO055.give_TiltZ()*DEG_TO_RAD) - deltaY * sin(BNO055.give_TiltZ()*DEG_TO_RAD);
-    yPos = yPos + deltaX * sin(BNO055.give_TiltZ()*DEG_TO_RAD) + deltaY * cos(BNO055.give_TiltZ()*DEG_TO_RAD);
+    xPos = xPos + deltaX ;//* cos(BNO055.give_TiltZ()*DEG_TO_RAD) - deltaY * sin(BNO055.give_TiltZ()*DEG_TO_RAD);
+    yPos = yPos + deltaX ;//* sin(BNO055.give_TiltZ()*DEG_TO_RAD) + deltaY * cos(BNO055.give_TiltZ()*DEG_TO_RAD);
 
     lift = mouseData.isOnSurface;
     movement = mouseData.isMotion;

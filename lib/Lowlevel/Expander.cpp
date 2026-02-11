@@ -96,10 +96,6 @@ void ExpanderC::I2CC::write(int Add , int Port , bool Zustand){
 
 
 void ExpanderC::ADCC::init(int Port){
-        #ifndef Spi0_Start
-        #define Spi0_Start
-            SPI.begin();
-        #endif
         pinMode(Port, OUTPUT);  /* ADC chip select */
         digitalWrite(Port, HIGH);  /* prepare default state of ADC chip select */
 }
@@ -128,6 +124,7 @@ void ExpanderC::ADCC::read(int Port){
     }
 
     digitalWrite(Port, HIGH);  // prepare default state of ADC chip select 
+    SPI.endTransaction();
 }
 
 int ExpanderC::ADCC::give(int Port , int Pin){

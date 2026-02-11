@@ -36,7 +36,7 @@ void SystemC::initC::Interface(){
 void SystemC::initC::Sensors(){
     pinMode(Start_Port,INPUT);
 
-    //Mouse.init();
+    Mouse.init();
 
     IR.init();
 
@@ -62,7 +62,7 @@ void SystemC::UpdateC::Interface(){
 
 void SystemC::UpdateC::Sensors(){
 
-    //Mouse.read();
+    Mouse.read();
 
     Cam.read();
 

@@ -4,35 +4,14 @@ RobotC Robot;
 elapsedMicros Drive_Smoothed_Timer;
 
 void RobotC::Turn(double Angle){
+    if(TURN_TO_GOAL == true){
+        Angle = Goal.Angle;
+    }
     PID.setAngle(Angle);
     Motor.On(PID.Out,VR_Motor);
     Motor.On(PID.Out,VL_Motor);
     Motor.On(PID.Out,HR_Motor);
     Motor.On(PID.Out,HL_Motor);
-}
-
-void RobotC::Drive_Smoothed_set(double Dir , double Angle , int sollSpeed , int istSpeed){
-    Drive_Smoothed_Timer = 0;
-    Drive_Smoothed_optimal = sollSpeed;
-    Drive_Smoothed_start = istSpeed;
-    Drive_Smoothed_aktive = true;
-}
-
-void RobotC::Drive_Smoothed_Update(){
-    if(Drive_Smoothed_aktive==true){
-        Drive_Smoothed_diff = Drive_Smoothed_optimal-Drive_Smoothed_start;
-        newSpeed = Drive_Smoothed_start + ((1/Drive_Smoothed_Faktor)*Drive_Smoothed_Timer/1000000) * Drive_Smoothed_diff;
-        Drive_Smoothed_diffnow = abs(Drive_Smoothed_optimal - newSpeed);
-        if(Drive_Smoothed_diffnow > 2){
-            Drive_Smoothed_aktive = false;
-        }
-        Drive(Drive_Smoothed_Dir,Drive_Smoothed_Angle,newSpeed);
-        Drive_Smoothed_last = newSpeed;
-    }
-}
-
-void RobotC::Drive_Smoothed_Kill(){
-    Drive_Smoothed_aktive=false;
 }
 
 void RobotC::Drive(double Dir , double Angle = 200000 ,int Speed1 = HighSpeed){

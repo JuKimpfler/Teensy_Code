@@ -5,8 +5,8 @@ CamC Cam;
 GoalC Goal;
 
 void CamC::read(){
-    if (UART_1.available()>0){
-        message = UART_1.readStringUntil('$');
+    if (UART_2.available()>0){
+        message = UART_2.readStringUntil('$');
     
         if (message.length() == 19){
             Decode(message);

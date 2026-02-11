@@ -6,13 +6,14 @@
 #define HighSpeed 30 // Speed im HS modus
 inline double LowSpeed = 10; // Speed im LS modus
 
-inline double Kp =  2.2; //2.2 
-inline double Kd =  12; //10
-inline double Ki =  0.0016; //.00016
+inline double Kp =  0.6; //2.2 m
+inline double Kd =  12
+ ; //10
+inline double Ki =  0; //.00016
 
 inline double Drive_Smoothed_Faktor = 0.5;
 
-inline double PID_Mult = 0.1;
+inline double PID_Mult = 0.2;
 
 inline double PID_Konstante = 0.6; // 0.3
 
@@ -33,7 +34,7 @@ inline int Motor_Frequency =  400;
 
 #define distFactor 2.3
 
-#define TURN_TO_GOAL true
+#define TURN_TO_GOAL false
 
 inline int IR_Pos[8] = {1,2,3,4,5,6,7,8};
 inline int Ir_Min[8] = {1,2,3,4,5,6,7,8};
