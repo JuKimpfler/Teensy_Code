@@ -12,15 +12,17 @@ void AttackerTacticsC::step(){
 }
 
 void AttackerTacticsC::BallCaught(){
-	//TODO: include BallCaught for attacker
-	//Robot.Turn (0);
+	if(US.Distance > -180 && US.Distance < 0){
+		Robot.Drive(20,10,30);
+	}
+	else if (US.Distance < 180 && US.Distance > 0){
+		Robot.Drive(-20,-10,30);
+	}
+	else{
+		Robot.Drive(0,0,30);
+	}
 }
 
 void AttackerTacticsC::Ballsearch(){
-	//TODO: get ir values
-	//int IrValues[8];//Insert values
-	//Angle RelativeBalDir = IrBall.getWeightedIr(IrValues);
-	//double BallDir = RelativeBalDir.theta - BNO055.give_TiltZ();
-	//TODO: move motor towards RelativeBallDir;
-		
+    Robot.Drive(-BallCalc.DriveAngle,0,30);
 }
