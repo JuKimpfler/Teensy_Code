@@ -7,12 +7,13 @@ void DefenderTacticsC::step(){
         Elem_Taktics.BallCaught();
     }
     else{
-        Defens();
+        Defence();
     } 
 }
 
-void DefenderTacticsC::Defens(){
+void DefenderTacticsC::Defence(){
     // Do homing and defend the goal
+    
 }
 
 

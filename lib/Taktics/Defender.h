@@ -9,6 +9,6 @@ class DefenderTacticsC{
     public:
         void step();
         void BallCaught();
-        void Defens();
+        void Defence();
 };
 extern DefenderTacticsC DefenderTactics;

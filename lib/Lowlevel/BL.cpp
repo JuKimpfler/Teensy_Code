@@ -33,7 +33,7 @@ void BLC::doRolle(){
 
 void BLC::showRolle(){
     if (Rolle=="A"){RGB.write(1,"R");}// LED AN
-    else if (Rolle=="B"){RGB.write(1,"G");}// LED AN
+    else if (Rolle=="D"){RGB.write(1,"G");}// LED AN
     else if (Rolle=="N"){RGB.write(1,"B");}// LED AN
 }
 
