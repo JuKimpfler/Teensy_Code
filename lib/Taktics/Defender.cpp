@@ -24,6 +24,6 @@ void DefenderTacticsC::Defence()
     }
     else
     {
-        Robot.Drive(abs(US.Distance) / US.Distance * -45);
+        Robot.Drive(((int)US.Distance >> 31) * -90 - 45);
     }
 }
