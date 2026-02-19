@@ -95,3 +95,7 @@ void BallCalcC::getAngle(double inAngle, double dist){
         }
     }
 }
+
+void BallCalcC::calcTorAngle(){
+    //TODO
+}
