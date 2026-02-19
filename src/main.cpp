@@ -30,9 +30,8 @@ void loop() {
 
     BNO055.showCal();
  
-    if(System.Start && Mouse.lift == false){
+    if(System.Start && Mouse.lift == true){
         Game.Run();
-        //Robot.Turn(0);
         //Serial.println("x: "+String(Goal.X)+" y: "+String(Goal.Y)+" Angle: "+String(Goal.Angle)+" Area: "+String(Goal.Area));
         //Serial.println("l: "+String(US.Distance_raw[1])+" r: "+String(US.Distance_raw[0])+" timer1: "+String(US_Timer1)+" d: "+String(US.Distance));
     }
@@ -43,6 +42,8 @@ void loop() {
     }
 
     //Mouse Sensor Test
+    Serial.print(" ,line: ");
+    Serial.print(Line.Summe+Line.Summe_VW);
     Serial.print(" ,lift: ");
     Serial.print(Mouse.lift);
     Serial.print(",motion: ");
