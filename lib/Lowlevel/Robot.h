@@ -7,6 +7,7 @@
 #include "Cam.h"
 
 extern elapsedMicros Drive_Smoothed_Timer;
+extern elapsedMillis Kicker_Timer; // timer for kicker operations
 
 class RobotC {
 public:
@@ -31,9 +32,14 @@ public:
     
     class KickerC{
         public:
-            void Once();
-            void On(int Cycletime);
-            void Off();
+            void Once(); // single pulse
+            void On(int Cycletime); // start pulse cycling
+            void Off(); // stop cycling
+            void Update(); // internal timer handling
+        private:
+            bool active = false;
+            bool onceActive = false;
+            int cycleTime = 0;
     };
     KickerC Kicker;
 

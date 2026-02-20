@@ -2,6 +2,7 @@
 RobotC Robot;
 
 elapsedMicros Drive_Smoothed_Timer;
+elapsedMillis Kicker_Timer; // used by kicker logic
 
 void RobotC::Turn(double Angle){
     if(TURN_TO_GOAL == true){
@@ -103,17 +104,51 @@ void RobotC::Break(){
 }
 
 void RobotC::KickerC::Off(){
-    digitalWrite(18,LOW);
+    pinMode(Kicker_Port, OUTPUT);
+    digitalWrite(Kicker_Port, LOW);
+    active = false;
+    onceActive = false;
+}
+
+void RobotC::KickerC::Update(){
+    // one-shot pulse handling
+    if(onceActive){
+        if(Kicker_Timer > 150){
+            digitalWrite(Kicker_Port, LOW);
+            onceActive = false;
+        }
+        if(Kicker_Timer > 1000){
+            // safety: never hold high longer than 1s
+            digitalWrite(Kicker_Port, LOW);
+            onceActive = false;
+        }
+    }
+    
+    // cyclic pulse handling
+    if(active){
+        if(Kicker_Timer > 150){
+            digitalWrite(Kicker_Port, LOW);
+        }
+        if(Kicker_Timer > cycleTime){
+            digitalWrite(Kicker_Port, HIGH);
+            Kicker_Timer = 0;
+        }
+    }
 }
 
 void RobotC::KickerC::On(int Cycletime){
-    
+    pinMode(Kicker_Port, OUTPUT);
+    cycleTime = Cycletime;
+    active = true;
+    onceActive = false;
+    digitalWrite(Kicker_Port, HIGH);
+    Kicker_Timer = 0;
 }
 
 void RobotC::KickerC::Once(){
-    digitalWrite(18,HIGH);
-    delay(15);
-    digitalWrite(18,LOW);
-    Serial.println("KICK");
-    delay(2000);
+    pinMode(Kicker_Port, OUTPUT);
+    active = false;
+    onceActive = true;
+    digitalWrite(Kicker_Port, HIGH);
+    Kicker_Timer = 0;
 }

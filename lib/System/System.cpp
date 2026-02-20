@@ -40,6 +40,9 @@ void SystemC::initC::Sensors(){
 
     IR.init();
 
+    // configure kicker output
+    pinMode(Kicker_Port, OUTPUT);
+
     Expander.ADC.init(CS_LineA);
     Expander.ADC.init(CS_LineB);
     Expander.ADC.init(CS_LineC);
@@ -82,6 +85,8 @@ void SystemC::UpdateC::Sensors(){
     BNO055.read();
 
     US.read();
+
+    Robot.Kicker.Update();
 
     if(digitalReadFast(Start_Port)){BL.doRolle();}
 }

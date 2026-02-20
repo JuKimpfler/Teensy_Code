@@ -15,7 +15,7 @@ void GameC::Run(){
         }
     }
     else{
-        /*if(BL.Rolle == "A"){
+        if(BL.Rolle == "A"){
             AttackerTactics.step();
         }
         else if(BL.Rolle == "D"){
@@ -24,8 +24,7 @@ void GameC::Run(){
         else if(BL.Rolle == "N"){
             //Elem_Taktics.step();
             Elem_Taktics.Ballsearch();
-        }*/
-        Robot.Drive(MainSpeed);
+        }
     }
 }
 

@@ -1,44 +1,49 @@
 #pragma once
 #include "Arduino.h"
 
-// Parameter
+// === Projektweite Parameter mit Beschreibungen ===
 
-#define HighSpeed 30 // Speed im HS modus
-inline double LowSpeed = 10; // Speed im LS modus
+// Motor-/Geschwindigkeitswerte
+#define HighSpeed 30 // maximale Fahrgeschwindigkeit: genutzt von Robot::Drive beim schnellen Fahren
+inline double LowSpeed = 10; // reduzierte Geschwindigkeit für langsames Manövrieren
 
-inline double Kp =  0.6; //2.2 m
-inline double Kd =  12
- ; //10
-inline double Ki =  0; //.00016
+// PID-Reglerkoeffizienten (Heading-Control)
+inline double Kp = 0.6; // proportionaler Anteil für PIDC::Calculate
+inline double Kd = 12;  // differentieller Anteil
+inline double Ki = 0;   // integraler Anteil
 
-inline double Drive_Smoothed_Faktor = 0.5;
+// Glättungsfaktor für Drive_Smoothed_Set/Update
+inline double Drive_Smoothed_Faktor = 0.5; // bestimmt Schrittgröße beim Anpassen der Geschwindigkeit
 
-inline double PID_Mult = 0.2;
+// allgemeine Multiplikatoren
+inline double PID_Mult = 0.2;    // zusätzlicher Multiplikator in vielen Regelkreisen
+inline double PID_Konstante = 0.6; // alternative PID-Konstante (Fallback)
 
-inline double PID_Konstante = 0.6; // 0.3
+// Schwellwerte für Sensoren
+inline int LDR_Schwelle = 500;   // Grenzwert für LDR-basierte Ball-Erkennung
+inline int Line_Schwelle = 2900; // Schwellwert für Linensensoren
 
-inline int LDR_Schwelle =  500;
+// Hardware‑Parameter
+inline int Motor_Frequency = 400; // PWM-Frequenz für Motoren (Hz)
 
-inline int Line_Schwelle = 2900;
+// Aktualisierungsraten (Hz)
+#define Interface_Frequency 10 // UI-/Taster-Abfragefrequenz
+#define US_Frequency 10        // Ultraschall-Sensor-Polling-Rate
 
-inline int Motor_Frequency =  400;
-
-#define Interface_Frequency 10 // angegeben in Hz (wie oft pro sekunde wird das Interface upgedated)
-#define US_Frequency 10 // angegeben in Hz (wie oft pro sekunde wird das US upgedated)
-
-// CalculationsParameter
+// Vision/Abstandsberechnung
 #define FocalLength 2040
 #define ImageWidth 2952
 #define ImageHeight 1944
 #define ObjectSize 4.267
-
 #define distFactor 2.3
 
-#define TURN_TO_GOAL false
+// Feature-Flags
+#define TURN_TO_GOAL false // wenn true, nutzen Drive/Turn immer Goal.Angle statt des übergebenen Winkels
 
-inline int IR_Pos[8] = {1,2,3,4,5,6,7,8};
-inline int Ir_Min[8] = {1,2,3,4,5,6,7,8};
-inline int Ir_Max[8] = {1,2,3,4,5,6,7,8};
+// IR-Sensor Konfiguration
+inline int IR_Pos[8] = {1,2,3,4,5,6,7,8}; // physikalische Positionen der IR-Sensoren
+inline int Ir_Min[8] = {1,2,3,4,5,6,7,8}; // Kalibrierungs-Mindestwerte
+inline int Ir_Max[8] = {1,2,3,4,5,6,7,8}; // Kalibrierungs-Maximalwerte
 
 //#define XCP_BL 
 //#define XCP_USB
