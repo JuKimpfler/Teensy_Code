@@ -1,20 +1,25 @@
 #pragma once
 #include "Elementar.h"
 
+// Klasse zur Steuerung der Ballrolle und Kommunikation
 class BLC {
 
     private:
-        String decode(String message1);
+        // Dekodiert eingehende Nachrichten
+        void decode(String message1);
     public:
-        String Rolle="N";
-        String message;
+        String Rolle="N"; // Aktuelle Rolle (z.B. "N" für Neutral)
+        String message;   // Letzte empfangene Nachricht
 
-        bool SinglePlayer; 
-        double Dist_Player2;
+        bool SinglePlayer; // True, wenn nur ein Spieler aktiv ist
         
+        // Initialisiert die Rolle
         void init();
+        // Zeigt die aktuelle Rolle an
         void showRolle();
+        // Führt die Rollenlogik aus (Kommunikation, Steuerung)
         void doRolle();
 };
 
+// Globale Instanz der Rollenklasse
 extern BLC BL;

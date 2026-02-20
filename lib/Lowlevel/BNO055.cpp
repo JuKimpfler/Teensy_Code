@@ -5,15 +5,18 @@ Adafruit_BNO055 bno(55, 0x28, &Wire1);
 
 BNO055C BNO055;
 
+// Initialisiert den BNO055 Sensor
 void BNO055C::init(){
     bno.begin();
     bno.setExtCrystalUse(true);
 }
 
+// Liest die aktuellen Orientierungsdaten vom BNO055 Sensor und berechnet die Tilt-Werte
 void BNO055C::read(){
     sensors_event_t event; 
     bno.getEvent(&event);
 
+    // Berechnung für TiltZ (Rotation um Z-Achse)
     double Comp_Dir = event.orientation.x;
     Comp_Dir = Comp_Dir-BNO_Cal;
     if (Comp_Dir<0){Comp_Dir = Comp_Dir+360;}
@@ -24,6 +27,7 @@ void BNO055C::read(){
     else if (Comp_Dir>359){Comp_Dir = Comp_Dir-360;}
     TiltZ = Comp_Dir;
 
+    // Berechnung für TiltX (Rotation um X-Achse)
     Comp_Dir = event.orientation.y;
     if (Comp_Dir<0){Comp_Dir = Comp_Dir+360;}
     else if (Comp_Dir>359){Comp_Dir = Comp_Dir-360;}
@@ -33,6 +37,7 @@ void BNO055C::read(){
     else if (Comp_Dir>359){Comp_Dir = Comp_Dir-360;}
     TiltX = Comp_Dir;
 
+    // Berechnung für TiltY (Rotation um Y-Achse)
     Comp_Dir = event.orientation.z;
     if (Comp_Dir<0){Comp_Dir = Comp_Dir+360;}
     else if (Comp_Dir>359){Comp_Dir = Comp_Dir-360;}

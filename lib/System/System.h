@@ -5,8 +5,8 @@
 #include "Motor.h"
 #include "PidCalculations.h"
 #include "Line.h"
-#include "Calculations.h"
 #include "Taktics.h"
+#include "Calculations.h"
 #include "Cam.h"
 #include "INA.h"
 #include "LDR.h"
@@ -26,10 +26,6 @@ class SystemC {
         int last_MF=0;
 
     public:
-        bool Start;
-        bool Button[4];
-        bool Switches[4];
-        bool Sys_LED;
 
         class initC{
             public:

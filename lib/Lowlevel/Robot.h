@@ -11,6 +11,12 @@ extern elapsedMillis Kicker_Timer; // timer for kicker operations
 
 class RobotC {
 public:
+
+    bool Start;
+    bool Button[4];
+    bool Switches[4];
+    bool Sys_LED;
+
     int Drive_Smoothed_aktive = 0;
     double Drive_Smoothed_start = 0;
     double Drive_Smoothed_optimal = 0;

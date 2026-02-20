@@ -3,9 +3,9 @@
 #include "Cam.h"
 #include "RGB.h"
 #include "LineCalculations.h"
-#include "Calculations.h"
+#include "Debug.h"
 
-String read = "";
+
 
 void setup() {
     SPI.begin();
@@ -18,9 +18,8 @@ void setup() {
 }
 
 void loop() {  
-    Serial.print(">");
-    Serial.print("CT: ");
-    Serial.print(Cycletime);
+    Debug.Start();
+    Debug.Plot("Time",Cycletime);
 
     Cycle_Timer = 0;
     //Mouse.read();
@@ -30,71 +29,45 @@ void loop() {
 
     BNO055.showCal();
  
-    if(System.Start && Mouse.lift == true){
-        Game.Run();
-        //Serial.println("x: "+String(Goal.X)+" y: "+String(Goal.Y)+" Angle: "+String(Goal.Angle)+" Area: "+String(Goal.Area));
-        //Serial.println("l: "+String(US.Distance_raw[1])+" r: "+String(US.Distance_raw[0])+" timer1: "+String(US_Timer1)+" d: "+String(US.Distance));
-    }
+    if(Robot.Start && Mouse.lift == true){
+        Game.Run();}
     else{
         Robot.Stop();
         //Game.Run();
-        //Serial.println(Cycletime);
     }
 
     //Mouse Sensor Test
-    Serial.print(" ,line: ");
-    Serial.print(Line.Summe+Line.Summe_VW);
-    Serial.print(" ,lift: ");
-    Serial.print(Mouse.lift);
-    Serial.print(",motion: ");
-    Serial.print(Mouse.movement);
-    Serial.print(",x: ");
-    Serial.print(Mouse.deltaX);
-    Serial.print(",y: ");
-    Serial.print(Mouse.deltaY);
-    Serial.print(",diagonal: ");
-    Serial.println(Mouse.delta_dist);
+    Debug.Plot("line",Line.Summe+Line.Summe_VW);
+    Debug.Plot("lift",Mouse.lift);
+    Debug.Plot("move",Mouse.movement);
+    Debug.Plot("x",Mouse.deltaX);
+    Debug.Plot("y",Mouse.deltaY);
+    Debug.Plot("xpos",Mouse.xPos);
+    Debug.Plot("ypos",Mouse.yPos);
+    Debug.Plot("speed",Mouse.delta_dist);
+    Debug.Send();
+        
 
-    /*Serial.print(",A: ");
-    Serial.print(Ball.Angle);
-    Serial.print(",z: ");
-    Serial.print(BNO055.give_TiltZ());
-    Serial.print(",pid: ");
-    Serial.println(PID.Out);*/
-
-    /*//Distance IR Test
-    Serial.print(",Distance: ");
-    Serial.print(Ball.Distance);
-    Serial.print(",DistCal: ");
-    Serial.print(IR.DistCal);
-    Serial.print(",DistFaktor: ");
-    Serial.println(IR.DistFaktor);
-    delay(10);*/
-    
-
-    if(System.Button[0]){
+    if(Robot.Button[0]){
         BNO055.Calibrate();
     }   
-    if(System.Button[1]){
+    if(Robot.Button[1]){
         IR.Calib_Offset();
     }   
-    if(System.Button[2]){
+    if(Robot.Button[2]){
         IR.DistCal = IR.Distance_raw;
     }   
-    if(System.Button[3]){
+    if(Robot.Button[3]){
         IR.Calib_Dist();
     }   
 
-    if (System.Switches[0]){
+    if (Robot.Switches[0]){
         MainSpeed = HighSpeed;
     }
     else {
         MainSpeed = LowSpeed;
     }
     
-    Cycletime = Cycle_Timer;
-
-    delay(10);
-    
+    Cycletime = Cycle_Timer;    
 }
 

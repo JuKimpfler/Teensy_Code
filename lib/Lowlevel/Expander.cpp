@@ -1,7 +1,7 @@
 #include "Expander.h"
 ExpanderC Expander;
 
-void ExpanderC::I2CC::init(int Add , int Mode , int on_off = All_Off){ // on_off -> write all Outputs to low or high
+void ExpanderC::I2CC::init(int Add, int Mode, int on_off){
 
     Wire1.begin(); 
     Wire1.beginTransmission(Add);
@@ -23,7 +23,7 @@ void ExpanderC::I2CC::read(int Add){
     byte last = Wire1.read();     // read Register
     Wire1.endTransmission(); // end of transmittion
 
-    int rest=0;
+
 
     if(Add == I2C_ITF_Main){
         Switch[0] = (last & 1);
@@ -41,6 +41,7 @@ bool ExpanderC::I2CC::give(int Add , int Port){
     if (Add == I2C_ITF_Main){
         return Switch[Port];
     }
+    return false;
 }
 
 
@@ -48,13 +49,13 @@ void ExpanderC::I2CC::write_Single(int Add , int Port , bool Zustand){
     if ( Zustand == true ){
         Wire1.beginTransmission(Add); //address second port expander
         Wire1.write(Output_Reg);             // select output register
-        Wire1.write(00000001);            // update output ports Port_Seting
+        Wire1.write(0x01);            // update output ports Port_Seting
         Wire1.endTransmission();
     }
     else if ( Zustand == false ){
         Wire1.beginTransmission(Add); //address second port expander
         Wire1.write(Output_Reg);             // select output register
-        Wire1.write(00000000);            // update output ports Port_Seting
+        Wire1.write(0x00);            // update output ports Port_Seting
         Wire1.endTransmission();
     }
 }
@@ -143,6 +144,7 @@ int ExpanderC::ADCC::give(int Port , int Pin){
     else if(Port == CS_LineVW){
         return lineOut[Pin];
     }
+    return 0;
 }
 
 
@@ -187,4 +189,5 @@ int ExpanderC::ADCC::give_digital(int Port , int Pin){
             return 1;
         }
     }
+    return 0;
 }

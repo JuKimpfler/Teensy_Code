@@ -31,6 +31,8 @@ class BallC{
         double Angle;
         double Distance;
         bool inSight;
+        int Angle_P2; // Ballwinkel von Player2 
+        int Distance_P2; // Balldistance von Player2 
     private:
 };
 

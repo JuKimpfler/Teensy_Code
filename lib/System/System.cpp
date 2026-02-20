@@ -7,20 +7,20 @@ elapsedMillis Schuss_Timer;
 elapsedMicros Cycle_Timer;
 
 void SystemC::Start_Update(){
-    Start = digitalReadFast(Start_Port);
+    Robot.Start = digitalReadFast(Start_Port);
 }
 
 void SystemC::Button_Update(){
     Expander.I2C.read(I2C_ITF_Main);
 
-    Button[0] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_BT0);
-    Button[1] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_BT1);
-    Button[2] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_BT2);
-    Button[3] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_BT3);
+    Robot.Button[0] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_BT0);
+    Robot.Button[1] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_BT1);
+    Robot.Button[2] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_BT2);
+    Robot.Button[3] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_BT3);
 
-    Switches[0] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW0);
-    Switches[1] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW1);
-    Switches[2] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW2);
+    Robot.Switches[0] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW0);
+    Robot.Switches[1] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW1);
+    Robot.Switches[2] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW2);
     
 }
 
