@@ -9,6 +9,7 @@ public:
     void Turn(float Angel ,int Speed = HighSpeed);
     void Drive(float Dir , float Angel = 200000 ,int Speed = HighSpeed);
     void Stop();
+    void Break();   
     
     class KickerC{
         public:

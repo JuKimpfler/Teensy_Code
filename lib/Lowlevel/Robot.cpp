@@ -1,4 +1,5 @@
 #include  "Robot.h"
+#include "Mouse.h"
 RobotC Robot;
 
 void RobotC::Turn(float Angle ,int Speed1 = HighSpeed){
@@ -74,6 +75,10 @@ void RobotC::Drive(float Dir , float Angle = 200000 ,int Speed1 = HighSpeed){
     Motor.On(Vel_D[VL_Motor],VL_Motor);
     Motor.On(Vel_D[HR_Motor],HR_Motor);
     Motor.On(Vel_D[HL_Motor],HL_Motor);
+
+    if (abs(Angle-Mouse.delta_angle)< 50){
+        Mouse.delta_sure = Mouse.delta_dist;
+    }
 }
 
 void RobotC::Stop(){
@@ -81,6 +86,13 @@ void RobotC::Stop(){
     Motor.Off(VL_Motor);
     Motor.Off(HR_Motor);
     Motor.Off(HL_Motor);
+}
+
+void RobotC::Break(){
+    Motor.Break(VR_Motor);
+    Motor.Break(VL_Motor);
+    Motor.Break(HR_Motor);
+    Motor.Break(HL_Motor);
 }
 
 void RobotC::KickerC::Off(){

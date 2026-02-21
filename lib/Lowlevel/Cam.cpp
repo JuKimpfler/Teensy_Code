@@ -10,11 +10,11 @@ void CamC::read(){
         message = UART_1.readStringUntil('$');
     
         if (message.length() == 20){
-            UART_Debug.println(message);
+            Serial.println(message);
             Decode(message);
         }
         else{
-            UART_Debug.println("E : "+String(message));
+            Serial.println("E : "+String(message));
         }
     }
 }

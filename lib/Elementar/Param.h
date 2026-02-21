@@ -3,8 +3,8 @@
 
 // Parameter
 
-#define HighSpeed 70 // Speed im HS modus
-inline float LowSpeed = 30; // Speed im LS modus
+#define HighSpeed 50 // Speed im HS modus
+inline float LowSpeed = 20; // Speed im LS modus
 
 inline float Kp =  2.2; //2.2 
 inline float Kd =  12; //10

@@ -2,12 +2,23 @@
 #include "System.h"
 #include "Cam.h"
 #include "RGB.h"
+#include "Mouse.h"
+#include "US.h"
+#include "Debug.h"
 
 
 void setup() {
+    SPI.begin();
+    Serial.begin(115200);
+    UART_2.begin(115200);
+    UART_Pixy.begin(115200);
     System.init.Sensors() ;
     System.init.Motors() ;
     System.init.Interface()   ;
+
+    Mouse.init();
+
+    US.init();
 }
 
 void loop() { 
@@ -18,6 +29,10 @@ void loop() {
     System.Update.Calculations();
 
     BNO055.showCal();
+
+    Mouse.read();
+    US.read();
+    Debug.Start();
  
     if(System.Start){
         Game.Run();
@@ -27,9 +42,8 @@ void loop() {
         // Robot.Turn(0);
 
         //Robot.Drive(IR.Angle,0,20); 
-
-        Serial.print("Angle: "); Serial.println(BallSearchCalculations.OutAngle);
-
+        //Robot.Drive(0,0,20);
+        
         //Serial.println(PID.Out);
 
         //Serial.println("Hi:"+String(LineCalc.DriveAngle));
@@ -51,21 +65,25 @@ void loop() {
         //RGB.write(0,"OFF");
         //RGB.write(1,"OFF");
         //RGB.write(2,"OFF");
-        //UART_Debug.print("Ball angle: "); UART_Debug.println(IR.Angle);
-        //UART_Debug.print("Ball distance: "); UART_Debug.println(IR.Distance);
-        //UART_Debug.print("Ball Drive: "); UART_Debug.println(BallSearchCalculations.OutAngle);
+        //Serial.print("Ball angle: "); Serial.println(IR.Angle);
+        //Serial.print("Ball distance: "); Serial.println(IR.Distance);
+        //Serial.print("Ball Drive: "); Serial.println(BallSearchCalculations.OutAngle);
         //Serial.println("1");
 
         //if(UART_1.available()){
-        //    UART_Debug.println(UART_1.readString());
+        //    Serial.println(UART_1.readString());
         //}
-        //else{UART_Debug.println("Hi");UART_Debug.println("Hi");}
+        //else{Serial.println("Hi");Serial.println("Hi");}
     }
 
     if(System.Button[0]){
         BNO055.Calibrate();
     }   
 
+    Debug.Plot("M",Mouse.delta_angle);
+    Debug.Plot("L",LineCalc.DriveAngle);
+    Debug.Plot("diff",abs(LineCalc.DriveAngle-Mouse.delta_angle));
+    Debug.Send();
     //if(System.Button[1]){
     //    Robot.Kicker.Once();
     //    RGB.write(1,"G");
@@ -83,6 +101,7 @@ void loop() {
     }
     
     Cycletime = Cycle_Timer;
+    delay(10);
     
 }
 
