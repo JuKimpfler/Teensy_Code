@@ -3,15 +3,14 @@
 #include "Lowlevel.h"
 #include "Calculations.h"
 
-class Elem_TakticsC{
+class TakticsC{
     private:
     public:
-        void Ballsearch();
-        void BallCaught();
+        void BallSearch();
+        void GoalAttak();
         void CornerRightEscape();
         void CornerLeftEscape();
-        void step();
 };
 
-extern Elem_TakticsC Elem_Taktics;
+extern TakticsC Taktics;
  

@@ -1,78 +1,88 @@
-#include "Cam.h"
-#include "Debug.h"
 #include "Elementar.h"
-#include "LineCalculations.h"
-#include "RGB.h"
 #include "System.h"
+#include "Cam.h"
+#include "RGB.h"
+
 
 void setup() {
-  SPI.begin();
-  System.init.Sensors();
-  System.init.Motors();
-  System.init.Interface();
-  Serial.begin(115200);
-  UART_2.begin(115200);
-  UART_Pixy.begin(115200);
+    System.init.Sensors() ;
+    System.init.Motors() ;
+    System.init.Interface()   ;
 }
 
-void loop() {
-  Debug.Start();
-  Debug.Plot("Time", Cycletime);
+void loop() { 
+    Cycle_Timer = 0 ;
 
-  Cycle_Timer = 0;
-  // Mouse.read();
-  System.Update.Sensors();
-  System.Update.Interface();
-  System.Update.Calculations();
+    System.Update.Sensors();
+    System.Update.Interface();
+    System.Update.Calculations();
 
-  BNO055.showCal();
+    BNO055.showCal();
+ 
+    if(System.Start){
+        Game.Run();
 
-  if (Robot.Start == true) {
-    //Game.Run();
-    Robot.Turn(0);
-    //Motor.On(100,VL_Motor);  
-    //Motor.On(100,HR_Motor);
-  } else {
-    Robot.Stop();
-    // Game.Run();
-  }
+        //Taktics.BallSearch();
 
-  delay(5);
+        // Robot.Turn(0);
 
-  Debug.Plot("Pid",PID.Out);
-  Debug.Plot("Pid_in",PID.ealt);
-  Debug.Plot("bno",BNO055.TiltZ);
+        //Robot.Drive(IR.Angle,0,20); 
 
-  // Mouse Sensor Test
-  //Debug.Plot_List("line",Line.Raw,32);
-  //Debug.Plot_List("line_VW",Line.Raw_VW,8);
-  //Debug.Plot("lift", Mouse.lift);
-  //Debug.Plot("move", Mouse.movement);
-  //Debug.Plot("x", Mouse.deltaX);
-  //Debug.Plot("y", Mouse.deltaY);
-  //Debug.Plot("xpos", Mouse.xPos);
-  //Debug.Plot("ypos", Mouse.yPos);
-  //Debug.Plot("speed", Mouse.delta_dist);
-  Debug.Send();
+        Serial.print("Angle: "); Serial.println(BallSearchCalculations.OutAngle);
 
-  if (Robot.Button[0]) {
-    BNO055.Calibrate();
-  }
-  if (Robot.Button[1]) {
-    IR.Calib_Offset();
-  }
-  if (Robot.Button[2]) {
-    IR.DistCal = IR.Distance_raw;
-  }
-  if (Robot.Button[3]) {
-    IR.Calib_Dist();
-  }
+        //Serial.println(PID.Out);
 
-  if (Robot.Switches[0]) {
-    MainSpeed = HighSpeed;
-  } else {
-    MainSpeed = LowSpeed;
-  }
+        //Serial.println("Hi:"+String(LineCalc.DriveAngle));
+        //Motor.On()
 
-  Cycletime = Cycle_Timer;
+        //Serial.print("Calibrated data: ");
+        //for (int i=0; i<16; i++)
+        //{
+        //    Serial.print(i+1); Serial.print(": ");
+        //    Serial.print(IR.IR_Values[i]); Serial.print("  ");
+        //}
+
+        //Robot.Drive(BallSearchCalculations.OutAngle,0,MainSpeed);
+        //Line.read();
+        //Serial.println("Hallo1234");
+    }
+    else{
+        Robot.Stop();
+        //RGB.write(0,"OFF");
+        //RGB.write(1,"OFF");
+        //RGB.write(2,"OFF");
+        //UART_Debug.print("Ball angle: "); UART_Debug.println(IR.Angle);
+        //UART_Debug.print("Ball distance: "); UART_Debug.println(IR.Distance);
+        //UART_Debug.print("Ball Drive: "); UART_Debug.println(BallSearchCalculations.OutAngle);
+        //Serial.println("1");
+
+        //if(UART_1.available()){
+        //    UART_Debug.println(UART_1.readString());
+        //}
+        //else{UART_Debug.println("Hi");UART_Debug.println("Hi");}
+    }
+
+    if(System.Button[0]){
+        BNO055.Calibrate();
+    }   
+
+    //if(System.Button[1]){
+    //    Robot.Kicker.Once();
+    //    RGB.write(1,"G");
+    //} 
+    //else{
+    //    Robot.Kicker.Off();
+    //    RGB.write(1,"OFF");
+    //}
+
+    if (System.Switches[0]){
+        MainSpeed = HighSpeed;
+    }
+    else {
+        MainSpeed = LowSpeed;
+    }
+    
+    Cycletime = Cycle_Timer;
+    
 }
+

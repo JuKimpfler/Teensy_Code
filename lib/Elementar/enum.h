@@ -4,37 +4,42 @@
 #ifndef enums_h
 #define enums_h
 
-enum Motor_Port { // Portbelegung Direct an Teensy
-    VR_Motor = 4, //
-    VL_Motor = 3, //
-    HR_Motor = 1, //
-    HL_Motor = 2, //
+enum Motor_Port { // Portbelegung
+    VR_Motor = 0, //76
+    VL_Motor = 3, //10
+    HR_Motor = 1, //54
+    HL_Motor = 2, //32
+    Dribbler_Motor = 4,
 
-    VR_Speed_Port = 9, //+
-    VL_Speed_Port = 6, //+
-    HR_Speed_Port = 4, //+
-    HL_Speed_Port = 5, //+
+    VR_Speed_Port = 4,
+    VL_Speed_Port =  9,
+    HR_Speed_Port = 5,
+    HL_Speed_Port = 6,
+    DR_Speed_Port = 33,
 
-    VR_ExpanderA = 26, //+
-    VR_ExpanderB = 32, //+
-    VL_ExpanderA = 8, //+
-    VL_ExpanderB = 7, //+
-    HR_ExpanderA = 0, //+
-    HR_ExpanderB = 1, //+
-    HL_ExpanderA = 2, //+
-    HL_ExpanderB = 3, //+
+    VR_ExpanderA = 7,
+    VR_ExpanderB = 6,
+    VL_ExpanderA = 1,
+    VL_ExpanderB = 0,
+    HR_ExpanderA = 5,
+    HR_ExpanderB = 4,
+    HL_ExpanderA = 3,
+    HL_ExpanderB = 2,
+    DR_ExpanderA = 5,
+    DR_ExpanderB = 6,
 };
 
 enum Ultrasonic_Address{
-    US_Left = 0x72,
-    US_Right = 0x71,
+    US_Front = 0x70,
+    US_Left = 0x71,
+    US_Back = 0x72,
+    US_Right = 0x73,
 };
 
 enum Pinout {
     LDR_Port = 23,
-    Start_Port = 10,
-    Schuss_Port = 30,
-    Kicker_Port = 3
+    Batterie_check = 25,
+    Start_Port = 10
 };
 
 enum I2C_Befehle {
@@ -50,39 +55,28 @@ enum I2C_Befehle {
 };
 
 enum I2C_Port {
-    I2C_ITF_Main = 0x20, // Buttons und Switches Main Platine
-    I2C_Motor = 0x21, // Motoren
-    I2C_ITF_Ex  = 0x22, // Interface_Platine
+    I2C_Button = 0x20, // Buttons und Switches Main Platine
+    I2C_Dip_SW = 0x21, // Switches und 2x? Main Platine
+    I2C_Motor  = 0x22, // Motoren Line Platine (ACHTUNG !!!: Wire1)
+    I2C_Schuss = 0x23, // Schuss und 3x? Line PLatine (ACHTUNG !!!: Wire1)
     I2C_INA219 = 0x40 // Batterie Voltage
 };
 
-enum I2C_Pin {
-    ITF_Main_LED = 7,
-    ITF_Main_SW0 = 4,
-    ITF_Main_SW1 = 5,
-    ITF_Main_SW2 = 6,
-    ITF_Main_BT0 = 0,
-    ITF_Main_BT1 = 1,
-    ITF_Main_BT2 = 2,
-    ITF_Main_BT3 = 3, 
-};
-
 enum ADC_Port {
-    CS_LineA = 19,
-    CS_LineB = 31,
-    CS_LineC = 30,
-    CS_LineD = 21,
-    CS_LineVW = 22
+    CS_LineA = 2,
+    CS_LineB = 3,
+    CS_LineC = 7,
+    CS_LineD = 8,
+
+    CS_IR = 0
 };
 
-
-#define I2C_BUS Wire1     // IRL-Ring on Wire1
-#define I2C_SPEED 1000000 // 1 MHz
-
+//Bitmasken
+#define LINE_EN_OFF ( (uint8_t)(1 << 2)) 
+#define LINE_EN_ON  (~(uint8_t)(1 << 2))
 
 //Seriel Port
-#define UART_Pixy Serial3
-#define UART_1 Serial6
-#define UART_2 Serial7
+#define UART_Debug Serial7
+#define UART_Cam Serial3
 
-#endif 
+#endif

@@ -4,19 +4,17 @@
 #include "Expander.h"
 #include "Motor.h"
 #include "PidCalculations.h"
+//#include "XcpSxIMaster.h"
 #include "Line.h"
-#include "Taktics.h"
 #include "Calculations.h"
+#include "Taktics.h"
 #include "Cam.h"
 #include "INA.h"
 #include "LDR.h"
 #include "IR.h"
 #include "Robot.h"
 #include "RGB.h"
-#include "Cam.h"
-#include "Mouse.h"
-#include "BL.h"
-#include "US.h"
+//#include "UltraSonic.h"
 
 
 class SystemC {
@@ -26,6 +24,10 @@ class SystemC {
         int last_MF=0;
 
     public:
+        bool Start;
+        bool Button[4];
+        bool Switches[4];
+        bool Sys_LED;
 
         class initC{
             public:
@@ -45,6 +47,7 @@ class SystemC {
 
 
 extern elapsedMillis Interface_Timer;
+extern elapsedMillis US_Timer;
 extern elapsedMillis Schuss_Timer;
 extern elapsedMicros Cycle_Timer;
 

@@ -71,26 +71,26 @@ uint8_t INA219::getAddress()
 //
 //  CORE FUNCTIONS
 //
-double INA219::getShuntVoltage()
+float INA219::getShuntVoltage()
 {
   uint16_t value = _readRegister(INA219_SHUNT_VOLTAGE);
   return value * 1e-5;  //  fixed 10 uV
 }
 
 
-double INA219::getBusVoltage()
+float INA219::getBusVoltage()
 {
   uint16_t value = _readRegister(INA219_BUS_VOLTAGE);
   uint8_t flags = value & 0x03;
   //  math overflow handling
   if (flags & 0x01) return -100;
   //  if flags && 0x02 ==> convert flag;  not handled
-  double voltage = (value >> 3) * 4e-3;  //  fixed 4 mV
+  float voltage = (value >> 3) * 4e-3;  //  fixed 4 mV
   return voltage;
 }
 
 
-double INA219::getPower()
+float INA219::getPower()
 {
   uint16_t value = _readRegister(INA219_POWER);
   return value * (_current_LSB * 20);  //  fixed 20 Watt
@@ -98,7 +98,7 @@ double INA219::getPower()
 
 //  TODO CHECK
 //  needs _current_LSB factor?
-double INA219::getCurrent()
+float INA219::getCurrent()
 {
   int16_t value = _readRegister(INA219_CURRENT);
   return value * _current_LSB;
@@ -322,7 +322,7 @@ uint8_t INA219::getMode()
 //
 //  CALIBRATION
 //
-bool INA219::setMaxCurrentShunt(double maxCurrent, double shunt)
+bool INA219::setMaxCurrentShunt(float maxCurrent, float shunt)
 {
   // #define PRINTDEBUG
   if (maxCurrent < 0.001) return false;

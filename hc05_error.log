@@ -1,9 +1,0 @@
-
-============================================================
-Zeitstempel: 2026-02-04 12:06:16
-Traceback (most recent call last):
-  File "c:\Users\HP\OneDrive\Desktop\AG\TeensyCode_2026\hc05_configurator.py", line 609, in refresh_ports
-    def refresh_ports(self):
-    
-KeyboardInterrupt
-============================================================

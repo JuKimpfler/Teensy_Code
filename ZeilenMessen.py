@@ -1,7 +1,7 @@
 import os
 import time
 
-def count_lines_in_files(directory, extensions=('.cpp', '.c', '.h','.py'), exclude_dirs=None):
+def count_lines_in_files(directory, extensions=('.cpp', '.c', '.h'), exclude_dirs=None):
     if exclude_dirs is None:
         exclude_dirs = []
 
@@ -9,7 +9,7 @@ def count_lines_in_files(directory, extensions=('.cpp', '.c', '.h','.py'), exclu
     file_count = 0
 
     # Normalisiere auszuschließende Ordnerpfade
-    exclude_dirs = c[os.path.abspath(os.path.join(directory, d)) for d in exclude_dirs]
+    exclude_dirs = [os.path.abspath(os.path.join(directory, d)) for d in exclude_dirs]
 
     for root, dirs, files in os.walk(directory):
         abs_root = os.path.abspath(root)
@@ -36,8 +36,8 @@ def count_lines_in_files(directory, extensions=('.cpp', '.c', '.h','.py'), exclu
 
 # Beispielaufruf
 count_lines_in_files(
-    directory="C:/Users/HP/OneDrive/Desktop/AG/Teensy_Code_2026",
-    exclude_dirs=[".pio", "include", ".vscode", "Xcp"]
+    directory="C:/Users/juki/OneDrive/Desktop/Bodenseekoalas/teensy_code",
+    exclude_dirs=[".pio", "include", ".vscode"]
 )
 
 time.sleep(20000)

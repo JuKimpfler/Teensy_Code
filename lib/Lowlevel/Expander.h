@@ -10,20 +10,15 @@ class ExpanderC {
     public:
         class I2CC {
             private :
-                bool Switch[8] ; // Schalterzustände
-                bool Dip[4]; // DIP-Schalter
+                bool Switch[8] ;
+                bool Dip[4];
             public:
-                // Initialisiert I2C-Portexpander
                 void init(int Add , int Mode , int on_off = All_Off);
-                // Liest den Zustand der Eingänge
                 void read(int Add);
-                // Gibt den Zustand eines Ports zurück
                 bool give(int Add , int Port);
-                // Schreibt einen Zustand auf einen Port
                 void write(int Add , int Port , bool Zustand);
-                // Schreibt einen Zustand auf einen einzelnen Port
                 void write_Single(int Add , int Port , bool Zustand);
-                // Step 1: Initialisierung, Step 2: Lesen, Step 3: Schreiben
+                
         };
         I2CC I2C;
         

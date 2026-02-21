@@ -6,9 +6,9 @@
 class IrBallC{
 
     public:
-        double getIrAngle();
-        double getDriveAngle(double I);
-        double getDistanceIr();
+        float getIrAngle();
+        float getDriveAngle(float I);
+        float getDistanceIr();
 };
 
 extern IrBallC IrBall;

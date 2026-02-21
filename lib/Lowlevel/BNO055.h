@@ -2,32 +2,24 @@
 #include "Adafruit_BNO055.h"
 #include "Elementar.h"
 
-// Klasse zur Steuerung und Auswertung des BNO055 Sensors
 class BNO055C {
 
     private:
-        // Hier könnten interne Variablen für Kalibrierung etc. stehen
     public:
 
-        double BNO_Cal; // Kalibrierungswert für den Kompass
+        float BNO_Cal;
 
-        double TiltX;   // Neigung um X-Achse
-        double TiltY;   // Neigung um Y-Achse
-        double TiltZ;   // Neigung um Z-Achse
+        float TiltX;
+        float TiltY;
+        float TiltZ;
 
-        // Initialisiert den Sensor
         void init();
-        // Liest aktuelle Sensordaten und berechnet Tilt-Werte
         void read();
-        // Führt Kalibrierung durch
         void Calibrate();
-        // Zeigt Kalibrierungsstatus an
         void showCal();
-        // Gibt TiltX zurück
-        double give_TiltX();
-        // Gibt TiltY zurück
-        double give_TiltY();
+        float give_TiltZ();
+        float give_TiltX();
+        float give_TiltY();
 };
 
-// Globale Instanz des Sensors
 extern BNO055C BNO055;

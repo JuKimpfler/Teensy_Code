@@ -31,12 +31,12 @@ uint16_t IR_ring::read_TSSP() const
 }
 
 
-double IR_ring::read_ball_angle() const
+float IR_ring::read_ball_angle() const
 {
   int16_t ball_angle;
   _handle.read_register<uint8_t, int16_t>(static_cast<uint8_t>(Ir_ring_registers::ball_angle_msb),ball_angle);
 
-  return static_cast<double>(ball_angle) / 180.F;
+  return static_cast<float>(ball_angle) / 180.F;
 }
 
 uint16_t IR_ring::read_ball_distance() const
@@ -120,7 +120,7 @@ void IR_ring::write_offset(uint8_t sensor_id, int16_t offset) const
   _handle.write_register<uint8_t, int16_t>(addr, offset);
 }
 
-void IR_ring::write_offsets(const uint16_t (&offsets)[16]) const
+void IR_ring::write_offsets(const int16_t (&offsets)[16]) const
 {
   _handle.write_registers(static_cast<uint8_t>(Ir_ring_registers::ir1_offset_msb), offsets, 16);
 }

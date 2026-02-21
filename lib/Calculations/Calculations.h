@@ -1,4 +1,6 @@
-#include "CamCalc.h"
+#include "CameraCalculations.h"
+#include "GoalCalculations.h"
+#include "IrBallCalculations.h"
 #include "LineCalculations.h"
-#include "BallCalculations.h"
+#include "BallSearchCalculations.h"
 #include "ReflectionCalculations.h"

@@ -3,26 +3,36 @@
 AttackerTacticsC AttackerTactics;
 
 void AttackerTacticsC::step(){
-	if(LDR.Aktiv()){
-		Elem_Taktics.BallCaught();
+	if(/*LDR.Aktiv()*/false){
+		BallCaught();
 	}
 	else{
-		Elem_Taktics.Ballsearch();
+		BallSearch();
 	}
 }
 
 void AttackerTacticsC::BallCaught(){
-	if(US.Distance > -180 && US.Distance < 0){
-		Robot.Drive(20,10,30);
-	}
-	else if (US.Distance < 180 && US.Distance > 0){
-		Robot.Drive(-20,-10,30);
+	Angle goalAngle = GoalCalculations.calculateAngle(Vec2(Cam.x, Cam.y));
+	if (abs(goalAngle.toDeg()) < 10){
+		Robot.Kicker.Once();
+		Robot.Drive(0, 0, HighSpeed);
 	}
 	else{
-		Robot.Drive(0,0,30);
+		//get us daten
+		if(false) {
+			Robot.Drive(-115, 0, HighSpeed);
+		}
+		else{
+			//vielleicht halb nach Tor ausgerichtet fahren
+			Robot.Drive(goalAngle.toDeg(), goalAngle.toDeg() /2, HighSpeed);
+		}
 	}
 }
 
-void AttackerTacticsC::Ballsearch(){
-    Robot.Drive(-BallCalc.DriveAngle,0,30);
+void AttackerTacticsC::BallSearch(){
+	Taktics.BallSearch();
+
+	//vlt für später nur auf ball gehen falls er vor dem attacker ist sodass der defender den ball vorschießen kann?
+	
 }
+

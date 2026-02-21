@@ -1,14 +1,7 @@
 #include  "Robot.h"
-#include "Debug.h"
 RobotC Robot;
 
-elapsedMicros Drive_Smoothed_Timer;
-elapsedMillis Kicker_Timer; // used by kicker logic
-
-void RobotC::Turn(double Angle){
-    if(TURN_TO_GOAL == true){
-        Angle = Goal.Angle;
-    }
+void RobotC::Turn(float Angle ,int Speed1 = HighSpeed){
     PID.setAngle(Angle);
     Motor.On(PID.Out,VR_Motor);
     Motor.On(PID.Out,VL_Motor);
@@ -16,7 +9,7 @@ void RobotC::Turn(double Angle){
     Motor.On(PID.Out,HL_Motor);
 }
 
-void RobotC::Drive(double Dir , double Angle = 200000 ,int Speed1 = HighSpeed){
+void RobotC::Drive(float Dir , float Angle = 200000 ,int Speed1 = HighSpeed){
     // Links -> Minus (Counter-Clock)
     // Rechts -> Plus (Clock)
 
@@ -25,13 +18,9 @@ void RobotC::Drive(double Dir , double Angle = 200000 ,int Speed1 = HighSpeed){
         Angle = Goal_Calc.Angle;
     }
     */
-    //if(TURN_TO_GOAL == true){
-    ///    Angle = Goal.Angle;
-    //}
     PID.setAngle(Angle);
     Dir_A = Dir - Angle;
-    
-    
+
     Vel[VR_Motor] = sinf((Dir_A+45)*DEG_TO_RAD)*15 + (-PID.Out);
     Vel[VL_Motor] = sinf((Dir_A+315)*DEG_TO_RAD)*15 + (-PID.Out);
     Vel[HR_Motor] = sinf((Dir_A+135)*DEG_TO_RAD)*15 + (-PID.Out);
@@ -85,10 +74,6 @@ void RobotC::Drive(double Dir , double Angle = 200000 ,int Speed1 = HighSpeed){
     Motor.On(Vel_D[VL_Motor],VL_Motor);
     Motor.On(Vel_D[HR_Motor],HR_Motor);
     Motor.On(Vel_D[HL_Motor],HL_Motor);
-
-    if (Dir == 1000){
-        Stop();
-    }
 }
 
 void RobotC::Stop(){
@@ -98,59 +83,18 @@ void RobotC::Stop(){
     Motor.Off(HL_Motor);
 }
 
-void RobotC::Break(){
-    Motor.Break(VR_Motor);
-    Motor.Break(VL_Motor);
-    Motor.Break(HR_Motor);
-    Motor.Break(HL_Motor);
-}
-
 void RobotC::KickerC::Off(){
-    pinMode(Kicker_Port, OUTPUT);
-    digitalWrite(Kicker_Port, LOW);
-    active = false;
-    onceActive = false;
+    digitalWrite(18,LOW);
 }
 
-void RobotC::KickerC::Update(){
-    // one-shot pulse handling
-    if(onceActive){
-        if(Kicker_Timer > 150){
-            digitalWrite(Kicker_Port, LOW);
-            onceActive = false;
-        }
-        if(Kicker_Timer > 1000){
-            // safety: never hold high longer than 1s
-            digitalWrite(Kicker_Port, LOW);
-            onceActive = false;
-        }
-    }
+void RobotC::KickerC::On(int Cycletime){
     
-    // cyclic pulse handling
-    if(active){
-        if(Kicker_Timer > 150){
-            digitalWrite(Kicker_Port, LOW);
-        }
-        if(Kicker_Timer > cyclet){
-            digitalWrite(Kicker_Port, HIGH);
-            Kicker_Timer = 0;
-        }
-    }
-}
-
-void RobotC::KickerC::On(int Cycle){
-    pinMode(Kicker_Port, OUTPUT);
-    cyclet = Cycle;
-    active = true;
-    onceActive = false;
-    digitalWrite(Kicker_Port, HIGH);
-    Kicker_Timer = 0;
 }
 
 void RobotC::KickerC::Once(){
-    pinMode(Kicker_Port, OUTPUT);
-    active = false;
-    onceActive = true;
-    digitalWrite(Kicker_Port, HIGH);
-    Kicker_Timer = 0;
+    digitalWrite(18,HIGH);
+    delay(15);
+    digitalWrite(18,LOW);
+    Serial.println("KICK");
+    delay(2000);
 }

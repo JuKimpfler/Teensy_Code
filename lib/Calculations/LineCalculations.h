@@ -4,13 +4,13 @@
 
 class LineCalcC{
     private:
-        double summex = 0;
-        double summey = 0;
-        double lastWinkel = 0;
+        float summex = 0;
+        float summey = 0;
+        float lastWinkel = 0;
     public:
-        double RawAngle;
+        float RawAngle;
         int Distance;
-        double DriveAngle;
+        float DriveAngle;
         void Calc();
 };
 
