@@ -35,7 +35,7 @@ void BLC::doRolle(){
     }
 
     // SinglePlayer, wenn P2-Daten 9999
-    if(Ball.Angle_P2 == 9999 && Ball.Distance_P2 == 9999){SinglePlayer = true;}
+    if((Ball.Angle_P2 == 9999 && Ball.Distance_P2 == 9999)||(BL_Timer_RX>3000)){SinglePlayer = true;}
     else{SinglePlayer = false;}
 
     if(!SinglePlayer){

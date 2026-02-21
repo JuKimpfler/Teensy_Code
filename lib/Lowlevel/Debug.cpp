@@ -6,6 +6,7 @@
 void DebugC::Start() {
     // clear buffer and add marker
     mainList = "> ";
+        // Step 1: Initialize the debug output by clearing the buffer and setting the start marker.
 }
 
 void DebugC::Plot(const String &Name, double Value) {
@@ -13,6 +14,7 @@ void DebugC::Plot(const String &Name, double Value) {
     if (mainList.length() == 0) {
         Start();
     }
+        // Step 2: Add a name-value pair to the debug output.
     mainList += Name;
     mainList += ":";
     mainList += String(Value);
@@ -29,6 +31,7 @@ void DebugC::Plot_List(const String names[], const double Values[], size_t count
             mainList += ", ";
         }
     }
+        // Step 3: Add a list of name-value pairs to the debug output.
 }
 
 void DebugC::Send(bool BLE) {
@@ -37,6 +40,7 @@ void DebugC::Send(bool BLE) {
     } else {
         UART_Pixy.println(mainList);
     }
+        // Step 4: Send the debug output via Serial or UART_Pixy based on the BLE flag.
 }
 
 // global instance
