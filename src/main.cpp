@@ -41,7 +41,7 @@ void loop() {
 
         // Robot.Turn(0);
 
-        //Robot.Drive(IR.Angle,0,20); 
+        //Robot.Drive(Ball.Angle,0,20); 
         //Robot.Drive(0,0,20);
         
         //Serial.println(PID.Out);
@@ -56,7 +56,7 @@ void loop() {
         //    Serial.print(IR.IR_Values[i]); Serial.print("  ");
         //}
 
-        //Robot.Drive(BallSearchCalculations.OutAngle,0,MainSpeed);
+        //Robot.Drive(BallCalc.OutAngle,0,MainSpeed);
         //Line.read();
         //Serial.println("Hallo1234");
     }
@@ -65,9 +65,9 @@ void loop() {
         //RGB.write(0,"OFF");
         //RGB.write(1,"OFF");
         //RGB.write(2,"OFF");
-        //Serial.print("Ball angle: "); Serial.println(IR.Angle);
-        //Serial.print("Ball distance: "); Serial.println(IR.Distance);
-        //Serial.print("Ball Drive: "); Serial.println(BallSearchCalculations.OutAngle);
+        //Serial.print("Ball angle: "); Serial.println(Ball.Angle);
+        //Serial.print("Ball distance: "); Serial.println(Ball.Distance);
+        //Serial.print("Ball Drive: "); Serial.println(BallCalc.OutAngle);
         //Serial.println("1");
 
         //if(UART_1.available()){
@@ -80,9 +80,8 @@ void loop() {
         BNO055.Calibrate();
     }   
 
-    Debug.Plot("M",Mouse.delta_angle);
-    Debug.Plot("L",LineCalc.DriveAngle);
-    Debug.Plot("diff",abs(LineCalc.DriveAngle-Mouse.delta_angle));
+    Debug.Plot("L",BNO055.TiltZ);
+    Debug.Plot("error",PID.Out);
     Debug.Send();
     //if(System.Button[1]){
     //    Robot.Kicker.Once();

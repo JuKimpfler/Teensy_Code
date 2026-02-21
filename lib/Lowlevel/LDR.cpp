@@ -7,10 +7,10 @@ void LDRC::init(){
 }
 
 bool LDRC::Aktiv(bool check = false){
-    if (analogRead(LDR_Port) < LDR_Schwelle){
-        return true;
+    if (analogRead(LDR_Port) > LDR_Schwelle){
+        return false;
     }
     else{
-        return false;
+        return true;
     }
 }

@@ -23,12 +23,16 @@ void PIDC::Calculate(){
     }
     float derivative = (error - ealt) / diffTime;
     ealt = error;
-
-    if (error > 0){
-        Out  = (error * Kp  * PID_Mult) + (esum * Ki * diffTime * PID_Mult) + (derivative * Kd);
-    }else{
-        Out  = (error * Kp  * PID_Mult) + -(esum * Ki * diffTime * PID_Mult) + -(derivative * Kd);
+    
+    if(error < 0){
+        error = abs(error);
+        Out  = -((error * Kp  * PID_Mult) + (esum * Ki * diffTime * PID_Mult) + (derivative * Kd));
     }
+    else{
+        error = abs(error);
+        Out  = ((error * Kp  * PID_Mult) + (esum * Ki * diffTime * PID_Mult) + (derivative * Kd));
+    }
+
     last = micros(); 
 }
 

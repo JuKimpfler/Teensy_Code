@@ -19,7 +19,7 @@ public:
 
   [[nodiscard]] uint16_t read_TSSP() const;
 
-  [[nodiscard]] float read_ball_angle() const;
+  [[nodiscard]] double read_ball_angle() const;
   [[nodiscard]] uint16_t read_ball_distance() const;
 
   [[nodiscard]] uint16_t read_raw_value(uint8_t sensor_id) const;
@@ -36,8 +36,8 @@ public:
   [[nodiscard]] int16_t read_offset(uint8_t sensor_id) const;
   void read_offsets(int16_t (&offsets)[16]) const;
   void write_offset(uint8_t sensor_id, int16_t offset) const;
-  void write_offsets(const int16_t (&offsets)[16]) const;
-
+  void write_offsets(const uint16_t (&offsets)[16]) const;
+  uint16_t offset_save[16];
 private:
   const Device_handle _handle;
 };
