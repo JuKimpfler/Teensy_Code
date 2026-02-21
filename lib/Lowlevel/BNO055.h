@@ -23,8 +23,6 @@ class BNO055C {
         void Calibrate();
         // Zeigt Kalibrierungsstatus an
         void showCal();
-        // Gibt TiltZ zurück
-        double give_TiltZ();
         // Gibt TiltX zurück
         double give_TiltX();
         // Gibt TiltY zurück

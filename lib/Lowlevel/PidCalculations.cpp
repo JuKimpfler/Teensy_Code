@@ -7,7 +7,7 @@ void PIDC::Calculate(){
     diffTime = double(now - last) / 1000;
     last = now;
 
-    double error = Angle - BNO055.give_TiltZ();
+    double error = Angle - BNO055.TiltZ;
     esum = esum + double(error);
 
     const int max_error_sum = 6000;

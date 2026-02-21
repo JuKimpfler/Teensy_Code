@@ -7,7 +7,7 @@ elapsedMillis Schuss_Timer;
 elapsedMicros Cycle_Timer;
 
 void SystemC::Start_Update(){
-    Robot.Start = digitalReadFast(Start_Port);
+    Robot.Start = digitalRead(Start_Port);
 }
 
 void SystemC::Button_Update(){
@@ -88,7 +88,7 @@ void SystemC::UpdateC::Sensors(){
 
     Robot.Kicker.Update();
 
-    if(digitalReadFast(Start_Port)){BL.doRolle();}
+    //if(digitalReadFast(Start_Port)){BL.doRolle();}
 }
 
 void SystemC::UpdateC::Calculations(){

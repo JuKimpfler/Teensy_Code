@@ -106,7 +106,6 @@ void ExpanderC::I2CC::write_Single(int Add , int Port , bool Zustand){
 }
 
 
-/*************  ✨ Windsurf Command ⭐  *************/
 /**
  * @brief Schreibt einen Schalterzustand auf einen Port
  * 
@@ -119,7 +118,6 @@ void ExpanderC::I2CC::write_Single(int Add , int Port , bool Zustand){
  * 
  * @return void
  */
-/*******  0ad956b8-6659-4450-a2b5-85dc24042dc7  *******/
 void ExpanderC::I2CC::write(int Add , int Port , bool Zustand){
     Wire1.beginTransmission(Add); //address second port expander
     Wire1.write(Output_Reg);             // select output register
@@ -155,7 +153,6 @@ void ExpanderC::I2CC::write(int Add , int Port , bool Zustand){
 }
 
 
-/*************  ✨ Windsurf Command ⭐  *************/
 /**
  * @brief Initialisiert ADC
  * 
@@ -167,13 +164,11 @@ void ExpanderC::I2CC::write(int Add , int Port , bool Zustand){
  * 
  * @return void
  */
-/*******  dcedd7ed-9db9-4245-8005-34105934c394  *******/
 void ExpanderC::ADCC::init(int Port){
         pinMode(Port, OUTPUT);  /* ADC chip select */
         digitalWrite(Port, HIGH);  /* prepare default state of ADC chip select */
 }
 
-/*************  ✨ Windsurf Command ⭐  *************/
 /**
  * @brief Reads the ADC values from the Expander
  * 
@@ -188,7 +183,6 @@ void ExpanderC::ADCC::init(int Port){
  * 
  * @return void
  */
-/*******  804d9cf1-0b40-433f-a2cb-6f94fb5d9a1a  *******/
 void ExpanderC::ADCC::read(int Port){
     SPI.beginTransaction(SPISettings(14000000, MSBFIRST, SPI_MODE3)); //Start SPI und Einstellern der Übertragungsparameter
 
@@ -216,7 +210,6 @@ void ExpanderC::ADCC::read(int Port){
     SPI.endTransaction();
 }
 
-/*************  ✨ Windsurf Command ⭐  *************/
 /**
  * @brief Returns the ADC value of a given pin on a given port
  * 
@@ -227,7 +220,6 @@ void ExpanderC::ADCC::read(int Port){
  * @param Pin ADC pin
  * @return ADC value of the pin on the port, or 0 if the port is not valid
  */
-/*******  0457c852-2de1-4318-88f7-bc62b2c607ed  *******/
 int ExpanderC::ADCC::give(int Port , int Pin){
     if (Port == CS_LineA){
         return lineA[Pin];
@@ -248,7 +240,6 @@ int ExpanderC::ADCC::give(int Port , int Pin){
 }
 
 
-/*************  ✨ Windsurf Command ⭐  *************/
 /**
  * @brief Returns the digital value of a given pin on a given port
  * 
@@ -259,7 +250,6 @@ int ExpanderC::ADCC::give(int Port , int Pin){
  * @param Pin ADC pin
  * @return Digital value of the pin on the port, or 0 if the port is not valid
  */
-/*******  dcc04c4a-f7e0-4314-83a9-e9e11d36a1b5  *******/
 int ExpanderC::ADCC::give_digital(int Port , int Pin){
     if (Port == CS_LineA){
         if(lineA[Pin]<Line_Schwelle){

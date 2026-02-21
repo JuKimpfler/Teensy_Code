@@ -19,8 +19,12 @@ void MouseC::read(){
 
     delta_dist = sqrtf(pow(deltaY,2)+pow(deltaX,2));
 
-    xPos = xPos + deltaX ;//* cos(BNO055.give_TiltZ()*DEG_TO_RAD) - deltaY * sin(BNO055.give_TiltZ()*DEG_TO_RAD);
-    yPos = yPos + deltaX ;//* sin(BNO055.give_TiltZ()*DEG_TO_RAD) + deltaY * cos(BNO055.give_TiltZ()*DEG_TO_RAD);
+    if (delta_dist>0.5){
+        delta_dist=0.5;
+    }
+
+    xPos = xPos + deltaX ;//* cos(BNO055.TiltZ*DEG_TO_RAD) - deltaY * sin(BNO055.TiltZ*DEG_TO_RAD);
+    yPos = yPos + deltaX ;//* sin(BNO055.TiltZ*DEG_TO_RAD) + deltaY * cos(BNO055.TiltZ*DEG_TO_RAD);
 
     lift = mouseData.isOnSurface;
     movement = mouseData.isMotion;

@@ -118,11 +118,3 @@ double BNO055C::give_TiltY(){
     return TiltY;
 }
 
-/**
- * Returns the tilt angle around the z-axis in degrees.
- * This value is calculated based on the calibration register and the current orientation of the sensor.
- * @return The tilt angle around the z-axis in degrees.
- */
-double BNO055C::give_TiltZ(){
-    return TiltZ;
-}

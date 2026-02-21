@@ -4,6 +4,12 @@
 CamC Cam;
 GoalC Goal;
 
+/**
+ * @brief Reads a message from the serial port and decodes it if it is a valid message.
+ * 
+ * @details Checks if there is a message available in the serial port. If there is, it reads the message and checks if it is a valid message (19 characters long). If it is, it decodes the message and updates the goal and ball positions.
+ */
+
 void CamC::read(){
     if (UART_2.available()>0){
         message = UART_2.readStringUntil('$');
@@ -13,6 +19,14 @@ void CamC::read(){
         }
     }
 }
+
+/**
+ * @brief Decodes a message from the serial port and updates the goal and ball positions.
+ * 
+ * @details Checks if the message is valid (19 characters long and contains "tt" or "ff" as the first three characters). If it is, it decodes the message and updates the goal and ball positions. If not, it sets the goal and ball positions to default values.
+ * 
+ * @param message The message to decode.
+ */
 
 void CamC::Decode(String message){
 
@@ -49,7 +63,7 @@ void CamC::Decode(String message){
     if(Goal.inSight==true){
         if(Goal.Angle<0){Goal.lastdir = true;}
         if(Goal.Angle >= 0){Goal.lastdir = false;}
-        Goal.Angle = BNO055.give_TiltZ()+((x-140)/3);
+        //Goal.Angle = BNO055.TiltZ+((x-140)/3);
     }
     else{
         Goal.Angle = 0;

@@ -39,13 +39,13 @@ public:
     class KickerC{
         public:
             void Once(); // single pulse
-            void On(int Cycletime); // start pulse cycling
+            void On(int Cycle); // start pulse cycling
             void Off(); // stop cycling
             void Update(); // internal timer handling
         private:
             bool active = false;
             bool onceActive = false;
-            int cycleTime = 0;
+            int cyclet = 0;
     };
     KickerC Kicker;
 

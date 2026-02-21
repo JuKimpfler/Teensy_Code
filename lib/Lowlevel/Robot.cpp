@@ -1,4 +1,5 @@
 #include  "Robot.h"
+#include "Debug.h"
 RobotC Robot;
 
 elapsedMicros Drive_Smoothed_Timer;
@@ -24,12 +25,13 @@ void RobotC::Drive(double Dir , double Angle = 200000 ,int Speed1 = HighSpeed){
         Angle = Goal_Calc.Angle;
     }
     */
-    if(TURN_TO_GOAL == true){
-        Angle = Goal.Angle;
-    }
+    //if(TURN_TO_GOAL == true){
+    ///    Angle = Goal.Angle;
+    //}
     PID.setAngle(Angle);
     Dir_A = Dir - Angle;
-
+    
+    
     Vel[VR_Motor] = sinf((Dir_A+45)*DEG_TO_RAD)*15 + (-PID.Out);
     Vel[VL_Motor] = sinf((Dir_A+315)*DEG_TO_RAD)*15 + (-PID.Out);
     Vel[HR_Motor] = sinf((Dir_A+135)*DEG_TO_RAD)*15 + (-PID.Out);
@@ -129,16 +131,16 @@ void RobotC::KickerC::Update(){
         if(Kicker_Timer > 150){
             digitalWrite(Kicker_Port, LOW);
         }
-        if(Kicker_Timer > cycleTime){
+        if(Kicker_Timer > cyclet){
             digitalWrite(Kicker_Port, HIGH);
             Kicker_Timer = 0;
         }
     }
 }
 
-void RobotC::KickerC::On(int Cycletime){
+void RobotC::KickerC::On(int Cycle){
     pinMode(Kicker_Port, OUTPUT);
-    cycleTime = Cycletime;
+    cyclet = Cycle;
     active = true;
     onceActive = false;
     digitalWrite(Kicker_Port, HIGH);

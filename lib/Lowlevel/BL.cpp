@@ -9,6 +9,13 @@ BLC BL;
 elapsedMillis BL_Timer_RX;
 elapsedMillis BL_Timer_TX;
 
+/**
+ * @brief Reads data from UART_Pixy, decodes the message, updates the robots state and sends data back to the Pixy.
+ * 
+ * @details Reads data from UART_Pixy, decodes the message and updates the robots state. If the robot is in start mode and the mouse is above the surface, it sends the ball angle and distance to the Pixy. Otherwise it sends 9999 for both values. Additionally, it sends a boolean value for info1 and info2, which are currently just example values, and an integer value for extra, which is also currently just an example value.
+ * 
+ * @note The function is split into three parts: Reading data from UART_Pixy, sending data to the Pixy and updating the robots state.
+ */
 void BLC::doRolle(){
     int avail = UART_Pixy.available();
     if(avail>0){
@@ -22,8 +29,8 @@ void BLC::doRolle(){
 
     // Senden alle 10ms
     if(BL_Timer_TX > 10){
-        int angle = (Robot.Start && Mouse.lift) ? (int)round(Ball.Angle) : 9999;
-        int dist = (Robot.Start && Mouse.lift) ? (int)round(Ball.Distance) : 9999;
+        int angle; //= (Robot.Start && Mouse.lift) ? (int)round(Ball.Angle) : 9999;
+        int dist; //= (Robot.Start && Mouse.lift) ? (int)round(Ball.Distance) : 9999;
         bool info1 = true; // Beispielwert, anpassen!
         bool info2 = false; // Beispielwert, anpassen!
         int extra = 123; // Beispielwert, anpassen!
@@ -47,12 +54,25 @@ void BLC::doRolle(){
     showRolle();
 }
 
+/**
+ * @brief Schreibt die aktuelle Rolle an
+ * 
+ * @details Schreibt die aktuelle Rolle an, indem die entsprechende Farbe auf dem LED schreibt.
+ * "A" = Rot, "D" = Grün, "N" = Blau
+ */
 void BLC::showRolle(){
     if (Rolle=="A"){RGB.write(1,"R");}
     else if (Rolle=="D"){RGB.write(1,"G");}
     else if (Rolle=="N"){RGB.write(1,"B");}
 }
 
+
+/**
+ * @brief Decodes a message received from the Pixy
+ * 
+ * @details Decodes a message received from the Pixy into its individual values. The message format is 0AAA0DDD0I10I20EEE$, where AAA is the angle, DDD is the distance, I is info1, 10 is info2, and EEE is extra.
+ * @param message1 The message to be decoded
+ */
 void BLC::decode(String message1){
     // 0AAA0DDD0I10I20EEE$
     if(message1.length() < 14) return;

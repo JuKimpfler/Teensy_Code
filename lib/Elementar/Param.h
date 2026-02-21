@@ -21,7 +21,7 @@ inline double PID_Konstante = 0.6; // alternative PID-Konstante (Fallback)
 
 // Schwellwerte für Sensoren
 inline int LDR_Schwelle = 500;   // Grenzwert für LDR-basierte Ball-Erkennung
-inline int Line_Schwelle = 2900; // Schwellwert für Linensensoren
+inline int Line_Schwelle = 3000; // Schwellwert für Linensensoren
 
 // Hardware‑Parameter
 inline int Motor_Frequency = 400; // PWM-Frequenz für Motoren (Hz)
