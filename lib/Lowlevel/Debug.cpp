@@ -50,6 +50,18 @@ void DebugC::Plot(const String &Name, double Value) {
     mainList += ", ";
 }
 
+void DebugC::Plot(const String &Name, String Value) {
+    // ensure we have a start marker
+    if (mainList.length() == 0) {
+        Start();
+    }
+        // Step 2: Add a name-value pair to the debug output.
+    mainList += Name;
+    mainList += ":";
+    mainList += Value;
+    mainList += ", ";
+}
+
 /**
  * Adds a list of name-value pairs to the debug output.
  * This function is used to add multiple name-value pairs to the debug output.

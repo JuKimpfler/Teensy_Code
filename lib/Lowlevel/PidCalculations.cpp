@@ -8,30 +8,24 @@ void PIDC::Calculate(){
     last = now;
 
     float error = Angle - BNO055.give_TiltZ();
+    if (error > 180) error -= 360;
+    if (error < -180) error += 360;
     esum = esum + float(error);
 
     const int max_error_sum = 6000;
-
-    if(esum > 0) // limit error sum
+    if(esum > 0)
         esum = min(esum, max_error_sum);
     else
         esum = max(esum, -max_error_sum);
 
-    
     if(Utils.isinRange(error, -1, 1)) {
         esum = 0;
     }
     float derivative = (error - ealt) / diffTime;
     ealt = error;
-    
-    if(error < 0){
-        error = abs(error);
-        Out  = -((error * Kp  * PID_Mult) + (esum * Ki * diffTime * PID_Mult) + (derivative * Kd));
-    }
-    else{
-        error = abs(error);
-        Out  = ((error * Kp  * PID_Mult) + (esum * Ki * diffTime * PID_Mult) + (derivative * Kd));
-    }
+
+    // Korrekte PID-Berechnung ohne abs() und ohne Vorzeichenwechsel!
+    Out = (error * Kp * PID_Mult) + (esum * Ki * diffTime * PID_Mult) + (derivative * Kd);
 
     last = micros(); 
 }

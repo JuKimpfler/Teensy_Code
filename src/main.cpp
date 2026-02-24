@@ -5,6 +5,7 @@
 #include "Mouse.h"
 #include "US.h"
 #include "Debug.h"
+#include "BL.h"
 
 
 void setup() {
@@ -17,11 +18,13 @@ void setup() {
     System.init.Interface()   ;
 
     Mouse.init();
-
+    //BL.init();
     US.init();
 }
 
 void loop() { 
+    Debug.Start();
+
     Cycle_Timer = 0 ;
 
     System.Update.Sensors();
@@ -32,14 +35,16 @@ void loop() {
 
     Mouse.read();
     US.read();
-    Debug.Start();
+    BL.doRolle();
+    Robot.Kicker.Update();
  
     if(System.Start){
-        Game.Run();
+        //Robot.Kicker.On();
+        //Game.Run();
 
         //Taktics.BallSearch();
 
-        // Robot.Turn(0);
+        //Robot.Drive(0,0,30); 
 
         //Robot.Drive(Ball.Angle,0,20); 
         //Robot.Drive(0,0,20);
@@ -62,6 +67,7 @@ void loop() {
     }
     else{
         Robot.Stop();
+        Robot.Kicker.Off();
         //RGB.write(0,"OFF");
         //RGB.write(1,"OFF");
         //RGB.write(2,"OFF");
@@ -80,9 +86,9 @@ void loop() {
         BNO055.Calibrate();
     }   
 
-    Debug.Plot("L",BNO055.TiltZ);
-    Debug.Plot("error",PID.Out);
-    Debug.Send();
+    Debug.Plot("BL",Ball.Angle_P2);
+    Debug.Plot("Sing1",BL.SinglePlayer);
+    
     //if(System.Button[1]){
     //    Robot.Kicker.Once();
     //    RGB.write(1,"G");
@@ -98,9 +104,12 @@ void loop() {
     else {
         MainSpeed = LowSpeed;
     }
+    if (System.Button[1]){
+        Robot.Kicker.Once();
+    }
     
     Cycletime = Cycle_Timer;
-    delay(10);
-    
+    delay(5);
+    Debug.Send();
 }
 

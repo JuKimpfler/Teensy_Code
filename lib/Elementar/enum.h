@@ -36,7 +36,7 @@ enum Pinout {
     RCJ_Port = 7,
     BT_State_Port = 31,
     Schuss_Port = 30,
-    Kicker_Port = 3
+    Kicker_Port = 18
 };
 
 enum I2C_Befehle {

@@ -2,6 +2,8 @@
 #include "Mouse.h"
 RobotC Robot;
 
+elapsedMillis Kicker_Timer;
+
 void RobotC::Turn(float Angle ,int Speed1 = HighSpeed){
     PID.setAngle(Angle);
     Motor.On(PID.Out,VR_Motor);
@@ -94,19 +96,47 @@ void RobotC::Break(){
     Motor.Break(HR_Motor);
     Motor.Break(HL_Motor);
 }
-
 void RobotC::KickerC::Off(){
-    digitalWrite(18,LOW);
+    digitalWrite(Kicker_Port, LOW);
+    active = false;
+    onceActive = false;
 }
 
-void RobotC::KickerC::On(int Cycletime){
+void RobotC::KickerC::Update(){
+    // one-shot pulse handling
+    if(onceActive){
+        if(Kicker_Timer > 150){
+            digitalWrite(Kicker_Port, LOW);
+            onceActive = false;
+        }
+        if(Kicker_Timer > 5000){
+            // safety: never hold high longer than 1s
+            digitalWrite(Kicker_Port, LOW);
+            onceActive = false;
+        }
+    }
     
+    // cyclic pulse handling
+    if(active){
+        if(Kicker_Timer > 150){
+            digitalWrite(Kicker_Port, LOW);
+        }
+        if(Kicker_Timer > cyclet){
+            digitalWrite(Kicker_Port, HIGH);
+            Kicker_Timer = 0;
+        }
+    }
+}
+
+void RobotC::KickerC::On(int Cycle = 400){
+    cyclet = Cycle;
+    active = true;
+    onceActive = false;
 }
 
 void RobotC::KickerC::Once(){
-    digitalWrite(18,HIGH);
-    delay(15);
-    digitalWrite(18,LOW);
-    Serial.println("KICK");
-    delay(2000);
+    active = false;
+    onceActive = true;
+    digitalWrite(Kicker_Port, HIGH);
+    Kicker_Timer = 0;
 }

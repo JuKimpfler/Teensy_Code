@@ -13,9 +13,14 @@ public:
     
     class KickerC{
         public:
-            void Once();
-            void On(int Cycletime);
-            void Off();
+            void Once(); // single pulse
+            void On(int Cycle = 400); // start pulse cycling
+            void Off(); // stop cycling
+            void Update(); // internal timer handling
+        private:
+            bool active = false;
+            bool onceActive = false;
+            int cyclet = 0;
     };
     KickerC Kicker;
 

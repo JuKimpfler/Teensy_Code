@@ -18,6 +18,8 @@ void MotorC::init(){
     pinMode(HL_ExpanderB,OUTPUT);
     pinMode(VR_ExpanderB,OUTPUT);
 
+    pinMode(Kicker_Port, OUTPUT);
+
     analogWriteFrequency(VR_Speed_Port,Motor_Frequency);
     analogWriteFrequency(VL_Speed_Port,Motor_Frequency);
     analogWriteFrequency(HR_Speed_Port,Motor_Frequency);
