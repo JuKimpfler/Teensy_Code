@@ -71,7 +71,7 @@ void SystemC::UpdateC::Sensors(){
         IR.read(); 
         Mouse.read(); // P2
         US.read(); // p2
-        BallCalc.getAngle(Ball.Angle,Ball.Distance);
+        BallCalc.getAngle();
         BallCalc.CalcAngle();
         BallCalc.CalcDist();
         PID.Calculate();

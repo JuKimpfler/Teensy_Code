@@ -18,7 +18,7 @@ void PIDC::Calculate(){
     else
         esum = max(esum, -max_error_sum);
 
-    if(Utils.isinRange(error, -1, 1)) {
+    if(U.Ran(error, -1, 1)) {
         esum = 0;
     }
     float derivative = (error - ealt) / diffTime;

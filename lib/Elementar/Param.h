@@ -13,6 +13,9 @@ inline float PID_Mult = 0.1; // Belassen
 
 inline float PID_Konstante = 0.5; // 0.3
 
+inline double E_Faktor = 1.2;
+inline double B_Faktor = 1.2;
+
 inline int LDR_Schwelle =  500;
 
 inline int Line_Schwelle = 3200;

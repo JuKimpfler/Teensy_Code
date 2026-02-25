@@ -53,44 +53,54 @@ void BallCalcC::CalcDist(){
     }
 }
 
-void BallCalcC::getAngle(double inAngle, double dist){
+void BallCalcC::getAngle(){
     // Berechnung 2024/2025
-    /*if(abs(inAngle) >35){
-        double dist_p = (dist/100)*0.7; // 0.7
-        double dir_pi = ((abs(inAngle)/1.8)/100); // 0.5
+    /*if(abs(Ball.Angle) >35){
+        double Ball.Distance_p = (Ball.Distance/100)*0.7; // 0.7
+        double dir_pi = ((abs(Ball.Angle)/1.8)/100); // 0.5
         double dir_p = (dir_pi)*0.3; // 0.15
-        double temp = ((dir_p + dist_p) * 0.5)+1; // 1.32 //180-(3705.3/(pow(dist, 1.19)+34.38));
-        DriveAngle = temp * inAngle ; //
+        double temp = ((dir_p + Ball.Distance_p) * 0.5)+1; // 1.32 //180-(3705.3/(pow(Ball.Distance, 1.19)+34.38));
+        DriveAngle = temp * Ball.Angle ; //
     }
     else{
-        DriveAngle = inAngle;
+        DriveAngle = Ball.Angle;
     }
     */
 
-    if(U.Ran(Ball.Angle,-10,10)&&(Ball.Distance<20)){ /* Zone A*/ }
-    else if(U.Ran(Ball.Angle,-10,10)&&(Ball.Distance<20)){ /* Zone A*/ }
+    if(U.Ran(Ball.Angle,-10,10)&&(Ball.Distance<20)){DriveAngle=Ball.Angle;  /* Zone A*/ }
+    else if(U.Ran(Ball.Angle,-10,10)&&(Ball.Distance>=20)){DriveAngle=Ball.Angle*B_Faktor; /* Zone B*/ }
+    else if(U.Ran(Ball.Angle,10,135)&&(Ball.Distance<20)){DriveAngle=(Ball.Angle-180)*-1; /* Zone C1*/ }
+    else if(U.Ran(Ball.Angle,-10,-135)&&(Ball.Distance<20)){DriveAngle=(Ball.Angle-180)*-1; /* Zone C2*/ }
+    else if(U.Ran(Ball.Angle,135,180)&&(Ball.Distance<40)){DriveAngle=-90; /* Zone D1*/ }
+    else if(U.Ran(Ball.Angle,-10,-180)&&(Ball.Distance<40)){DriveAngle=90; /* Zone D2*/ }
+    else if(U.Ran(Ball.Angle,10,90)&&(Ball.Distance>=20)){DriveAngle=Ball.Angle*E_Faktor; /* Zone E1*/ }
+    else if(U.Ran(Ball.Angle,-10,-90)&&(Ball.Distance>=20)){DriveAngle=Ball.Angle*E_Faktor; /* Zone E2*/ }
+    else if(U.Ran(Ball.Angle,90,135)&&(Ball.Distance>=20)){DriveAngle=160; /* Zone F1*/ }
+    else if(U.Ran(Ball.Angle,-90,-135)&&(Ball.Distance>=20)){DriveAngle=-160; /* Zone F2*/ }
+    else if(U.Ran(Ball.Angle,135,180)&&(Ball.Distance>=40)){DriveAngle=140; /* Zone G1*/ }
+    else if(U.Ran(Ball.Angle,-135,-180)&&(Ball.Distance>=40)){DriveAngle=-140; /* Zone G2*/ }
 
     //Berechnung 2026 Rafael
-    if(dist<25 && dist>15){ // Wenn richtiger Abstand zum Ball 
-        if(inAngle<-20){ // CW Kreis um Ball Fahren
-            DriveAngle=inAngle-90;
+    if(Ball.Distance<25 && Ball.Distance>15){ // Wenn richtiger Abstand zum Ball 
+        if(Ball.Angle<-20){ // CW Kreis um Ball Fahren
+            DriveAngle=Ball.Angle-90;
         }
-        else if(inAngle>20){ // CCW Kreis um Ball Fahren
-            DriveAngle=inAngle+90;
+        else if(Ball.Angle>20){ // CCW Kreis um Ball Fahren
+            DriveAngle=Ball.Angle+90;
         }
         else { // Mit leichter Kurve entanfahrt machen.
-            DriveAngle=inAngle*1.1;
+            DriveAngle=Ball.Angle*1.1;
         }
     }
-    else if (inAngle>=25){
-        if(inAngle>90){
-            DriveAngle=inAngle-(atanf(20/dist)*RAD_TO_DEG); // Versuchter Treffpunkt des roboters auf Kreisförmiger Bahn um Ball mit Radius 13 
+    else if (Ball.Angle>=25){
+        if(Ball.Angle>90){
+            DriveAngle=Ball.Angle-(atanf(20/Ball.Distance)*RAD_TO_DEG); // Versuchter Treffpunkt des roboters auf Kreisförmiger Bahn um Ball mit Radius 13 
         }
-        else if (inAngle<-90){
-            DriveAngle=inAngle+(atanf(20/dist)*RAD_TO_DEG); // Versuchter Treffpunkt des roboters auf Kreisförmiger Bahn um Ball mit Radius 13
+        else if (Ball.Angle<-90){
+            DriveAngle=Ball.Angle+(atanf(20/Ball.Distance)*RAD_TO_DEG); // Versuchter Treffpunkt des roboters auf Kreisförmiger Bahn um Ball mit Radius 13
         }
-        else if (inAngle<=90 && inAngle>=-90){
-            DriveAngle=inAngle; // Versuchter Treffpunkt des roboters auf Kreisförmiger Bahn um Ball mit Radius 13
+        else if (Ball.Angle<=90 && Ball.Angle>=-90){
+            DriveAngle=Ball.Angle; // Versuchter Treffpunkt des roboters auf Kreisförmiger Bahn um Ball mit Radius 13
         }
     }
 
