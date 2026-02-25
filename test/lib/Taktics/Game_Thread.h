@@ -14,5 +14,6 @@ class GameC{
         void Run();
 };
 
+extern elapsedMillis Line_Timer;
 extern GameC Game;
  

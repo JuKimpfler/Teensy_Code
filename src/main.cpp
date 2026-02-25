@@ -6,7 +6,7 @@
 #include "US.h"
 #include "Debug.h"
 #include "BL.h"
-
+#include "Game_Thread.h"
 
 void setup() {
     SPI.begin();
@@ -19,28 +19,25 @@ void setup() {
 
     Mouse.init();
     //BL.init();
-    US.init();
+    //US.init();
 }
 
 void loop() { 
-    Debug.Start();
-
     Cycle_Timer = 0 ;
 
     System.Update.Sensors();
     System.Update.Interface();
-    System.Update.Calculations();
 
-    BNO055.showCal();
+    //BNO055.showCal();
 
-    Mouse.read();
-    US.read();
-    BL.doRolle();
+    //Mouse.read();
+    //US.read();
+    //BL.doRolle();
     Robot.Kicker.Update();
  
     if(System.Start){
         //Robot.Kicker.On();
-        //Game.Run();
+        Game.Run();
 
         //Taktics.BallSearch();
 
@@ -85,19 +82,6 @@ void loop() {
     if(System.Button[0]){
         BNO055.Calibrate();
     }   
-
-    Debug.Plot("BL",Ball.Angle_P2);
-    Debug.Plot("Sing1",BL.SinglePlayer);
-    
-    //if(System.Button[1]){
-    //    Robot.Kicker.Once();
-    //    RGB.write(1,"G");
-    //} 
-    //else{
-    //    Robot.Kicker.Off();
-    //    RGB.write(1,"OFF");
-    //}
-
     if (System.Switches[0]){
         MainSpeed = HighSpeed;
     }
@@ -107,9 +91,21 @@ void loop() {
     if (System.Button[1]){
         Robot.Kicker.Once();
     }
+    if (System.Button[2]){
+        Line.Calibrate(1);
+    }
+    if (System.Button[3]){
+        Line.Calibrate(2);
+        Line.Calibrate(3);
+    }
+
+    Motor.Enable = System.Switches[1];
+    
+    
+    Cycle_P2++;
+    Cycle_P3++;
     
     Cycletime = Cycle_Timer;
-    delay(5);
-    Debug.Send();
+    //delay(10);
 }
 

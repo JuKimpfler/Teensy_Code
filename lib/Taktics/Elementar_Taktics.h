@@ -10,6 +10,7 @@ class TakticsC{
         void GoalAttak();
         void CornerRightEscape();
         void CornerLeftEscape();
+        void step();
 };
 
 extern TakticsC Taktics;

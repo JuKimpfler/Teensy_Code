@@ -1,16 +1,19 @@
 #pragma once
 #include "Elementar.h"
-#include "Expander.h" 
 
 class LineC {
     private :
-        int list[4] = {CS_LineA,CS_LineB,CS_LineC,CS_LineD};
+        int ADC_Befehle[8] = {2048,4096,6144,8192,10240,12288,14336,16384};
     public:
-        void read();
-        void read_VW();
-        float Raw[32];
-        float Raw_VW[8];
-        float Summe_VW;
+        float min_schwelle=5000;
+        float max_schwelle=10000;
+        int VW_Summe;
+        int Summe;
+        bool line[32] ;
+        bool lineVW[8];
+        void read_Fast(); 
+        void init();
+        void Calibrate(int Modes);
 };
 
 extern LineC Line;

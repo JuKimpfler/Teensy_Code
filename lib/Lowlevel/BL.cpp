@@ -94,4 +94,4 @@ void BLC::decode(String message1){
     Ball.Distance_P2 = dist;
     // info1, info2, extra können hier weiterverarbeitet werden
 }
-
+ 

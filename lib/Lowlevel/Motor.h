@@ -13,6 +13,7 @@ class MotorC
     void On(int Speed , int Motor); // +- Speed für Richtung
     void Off(int Motor);
     void Break(int Motor);
+    bool Enable ;
 };
 
 extern MotorC Motor;

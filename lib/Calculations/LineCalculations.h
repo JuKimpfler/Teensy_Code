@@ -11,6 +11,7 @@ class LineCalcC{
         float RawAngle;
         int Distance;
         float DriveAngle;
+        float Distance2;
         void Calc();
 };
 

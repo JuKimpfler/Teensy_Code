@@ -1,4 +1,6 @@
 #include "System.h"
+#include "Debug.h"
+#include "Game_Thread.h"
 
 SystemC System;
 
@@ -40,20 +42,17 @@ void SystemC::initC::Sensors(){
 
     IR.init();
 
-    // configure kicker output
     pinMode(Kicker_Port, OUTPUT);
 
-    Expander.ADC.init(CS_LineA);
-    Expander.ADC.init(CS_LineB);
-    Expander.ADC.init(CS_LineC);
-    Expander.ADC.init(CS_LineD);
-    Expander.ADC.init(CS_LineVW);
+    LDR.init(); 
 
-    LDR.init();
+    BNO055.init(); 
 
-    BNO055.init();
+    //US.init(); 
 
-    US.init();
+    Line.init();
+
+    BNO055.Calibrate();
 }
 
 void SystemC::UpdateC::Interface(){
@@ -64,35 +63,35 @@ void SystemC::UpdateC::Interface(){
 }
 
 void SystemC::UpdateC::Sensors(){
+    System.Start_Update(); // p1
+    Line.read_Fast(); // p1
 
-    Mouse.read();
+    if (Cycle_P2 > 5){
+        US.read(); // p2
+        IR.read(); 
+        Mouse.read(); // P2
+        US.read(); // p2
+        BallCalc.getAngle(Ball.Angle,Ball.Distance);
+        BallCalc.CalcAngle();
+        BallCalc.CalcDist();
+        PID.Calculate();
+        BNO055.read(); // p2
+        Cam.read(); // P3
+        Cycle_P2 = 0;
+    }
 
-    Cam.read();
+    if (Cycle_P3 > 10){
+        Debug.Start();
+        Debug.Plot("diff",Game.dead_diff);
+        Debug.Plot("outside",Game.outside);
+        Debug.Plot("L_Summe",Line.Summe+Line.VW_Summe);
+        //Debug.Plot("Line_min",Line.min_schwelle);
+        //Debug.Plot("Line_max",Line.max_schwelle);
+        //Debug.Plot_List("Line",Line.lineVW,8);
+        Debug.Send();
+        Cycle_P3 = 0;
+    }
 
-    System.Start_Update();
-
-    Expander.ADC.read(CS_LineA);
-    Expander.ADC.read(CS_LineB);
-    Expander.ADC.read(CS_LineC);
-    Expander.ADC.read(CS_LineD);
-    Expander.ADC.read(CS_LineVW);
-
-    IR.read();
-
-    Line.read();
-    Line.read_VW();
-
-    BNO055.read();
-
-    US.read();
-
-    //if(digitalReadFast(Start_Port)){BL.doRolle();}
-}
-
-void SystemC::UpdateC::Calculations(){
     LineCalc.Calc();
-    PID.Calculate();
-    BallCalc.getAngle(Ball.Angle,Ball.Distance);
-    BallCalc.CalcAngle();
-    BallCalc.CalcDist();
+    //if(digitalReadFast(Start_Port)){BL.doRolle();}
 }

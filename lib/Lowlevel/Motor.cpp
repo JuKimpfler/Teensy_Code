@@ -27,6 +27,8 @@ void MotorC::init(){
 }
 
 void MotorC::On(int Speed , int Motor){
+    if (Enable){ 
+
     Speed = Speed*2.55;
     bool Dir;
     if (Speed < 0){
@@ -40,71 +42,71 @@ void MotorC::On(int Speed , int Motor){
     if (Dir == true){
         if (Motor == VR_Motor){
             analogWrite(VR_Speed_Port,Speed);
-            digitalWrite(VR_ExpanderA,0);
-            digitalWrite(VR_ExpanderB,1);
+            digitalWriteFast(VR_ExpanderA,0);
+            digitalWriteFast(VR_ExpanderB,1);
         }
         else if (Motor == VL_Motor){
             analogWrite(VL_Speed_Port,Speed);
-            digitalWrite(VL_ExpanderA,0);
-            digitalWrite(VL_ExpanderB,1);
+            digitalWriteFast(VL_ExpanderA,0);
+            digitalWriteFast(VL_ExpanderB,1);
         }
         else if (Motor == HR_Motor){
             analogWrite(HR_Speed_Port,Speed);
-            digitalWrite(HR_ExpanderA,0);
-            digitalWrite(HR_ExpanderB,1);
+            digitalWriteFast(HR_ExpanderA,0);
+            digitalWriteFast(HR_ExpanderB,1);
         }
         else if (Motor == HL_Motor){
             analogWrite(HL_Speed_Port,Speed);
-            digitalWrite(HL_ExpanderA,0);
-            digitalWrite(HL_ExpanderB,1); 
+            digitalWriteFast(HL_ExpanderA,0);
+            digitalWriteFast(HL_ExpanderB,1); 
         }
     }
     else{
         if (Motor == VR_Motor){
             analogWrite(VR_Speed_Port,Speed);
-            digitalWrite(VR_ExpanderA,1);
-            digitalWrite(VR_ExpanderB,0);
+            digitalWriteFast(VR_ExpanderA,1);
+            digitalWriteFast(VR_ExpanderB,0);
         }
         else if (Motor == VL_Motor){
             analogWrite(VL_Speed_Port,Speed);
-            digitalWrite(VL_ExpanderA,1);
-            digitalWrite(VL_ExpanderB,0);
+            digitalWriteFast(VL_ExpanderA,1);
+            digitalWriteFast(VL_ExpanderB,0);
         }
         else if (Motor == HR_Motor){
             analogWrite(HR_Speed_Port,Speed);
-            digitalWrite(HR_ExpanderA,1);
-            digitalWrite(HR_ExpanderB,0);
+            digitalWriteFast(HR_ExpanderA,1);
+            digitalWriteFast(HR_ExpanderB,0);
         }
         else if (Motor == HL_Motor){
             analogWrite(HL_Speed_Port,Speed);
-            digitalWrite(HL_ExpanderA,1);
-            digitalWrite(HL_ExpanderB,0); 
+            digitalWriteFast(HL_ExpanderA,1);
+            digitalWriteFast(HL_ExpanderB,0); 
         }
     }
 
-    
+    }
 }
 
 void MotorC::Off(int Motor){
     if (Motor == VR_Motor){
         analogWrite(VR_Speed_Port,0);
-        digitalWrite(VR_ExpanderA,0);
-        digitalWrite(VR_ExpanderB,0);
+        digitalWriteFast(VR_ExpanderA,0);
+        digitalWriteFast(VR_ExpanderB,0);
     }
     else if (Motor == VL_Motor){
         analogWrite(VL_Speed_Port,0);
-        digitalWrite(VL_ExpanderA,0);
-        digitalWrite(VL_ExpanderB,0);
+        digitalWriteFast(VL_ExpanderA,0);
+        digitalWriteFast(VL_ExpanderB,0);
     }
     else if (Motor == HR_Motor){
         analogWrite(HR_Speed_Port,0);
-        digitalWrite(HR_ExpanderA,0);
-        digitalWrite(HR_ExpanderB,0);
+        digitalWriteFast(HR_ExpanderA,0);
+        digitalWriteFast(HR_ExpanderB,0);
     }
     else if (Motor == HL_Motor){
         analogWrite(HL_Speed_Port,0);
-        digitalWrite(HL_ExpanderA,0);
-        digitalWrite(HL_ExpanderB,0); 
+        digitalWriteFast(HL_ExpanderA,0);
+        digitalWriteFast(HL_ExpanderB,0); 
     }
 }
 
@@ -113,23 +115,23 @@ void MotorC::Off(int Motor){
 void MotorC::Break(int Motor){
     if (Motor == VR_Motor){
         analogWrite(VR_Speed_Port,255);
-        digitalWrite(VR_ExpanderA,0);
-        digitalWrite(VR_ExpanderB,0);
+        digitalWriteFast(VR_ExpanderA,0);
+        digitalWriteFast(VR_ExpanderB,0);
     }
     else if (Motor == VL_Motor){
         analogWrite(VL_Speed_Port,255);
-        digitalWrite(VL_ExpanderA,0);
-        digitalWrite(VL_ExpanderB,0);
+        digitalWriteFast(VL_ExpanderA,0);
+        digitalWriteFast(VL_ExpanderB,0);
     }
     else if (Motor == HR_Motor){
         analogWrite(HR_Speed_Port,255);
-        digitalWrite(HR_ExpanderA,0);
-        digitalWrite(HR_ExpanderB,0);
+        digitalWriteFast(HR_ExpanderA,0);
+        digitalWriteFast(HR_ExpanderB,0);
     }
     else if (Motor == HL_Motor){
         analogWrite(HL_Speed_Port,255);
-        digitalWrite(HL_ExpanderA,0);
-        digitalWrite(HL_ExpanderB,0); 
+        digitalWriteFast(HL_ExpanderA,0);
+        digitalWriteFast(HL_ExpanderB,0); 
     }
 }
 

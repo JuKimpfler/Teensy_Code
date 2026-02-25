@@ -12,7 +12,7 @@ void RobotC::Turn(float Angle ,int Speed1 = HighSpeed){
     Motor.On(PID.Out,HL_Motor);
 }
 
-void RobotC::Drive(float Dir , float Angle = 200000 ,int Speed1 = HighSpeed){
+void RobotC::Drive(float Dir , float Angle = 0 ,int Speed1 = HighSpeed){
     // Links -> Minus (Counter-Clock)
     // Rechts -> Plus (Clock)
 
@@ -21,6 +21,11 @@ void RobotC::Drive(float Dir , float Angle = 200000 ,int Speed1 = HighSpeed){
         Angle = Goal_Calc.Angle;
     }
     */
+    if(Dir<-180){Dir = Dir+ 360;}
+    else if (Dir > 180){Dir = Dir - 360;}
+    if(Angle<-180){Angle = Angle+ 360;}
+    else if (Angle > 180){Angle = Angle - 360;}
+
     PID.setAngle(Angle);
     Dir_A = Dir - Angle;
 

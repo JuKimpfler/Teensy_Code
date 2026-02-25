@@ -9,5 +9,14 @@ void TakticsC::GoalAttak(){
     Robot.Drive(Goal.Angle, 0, MainSpeed); 
 }
 
+void TakticsC::step(){
+    if (LDR.Aktiv() == true){
+        GoalAttak();
+    }
+    else{
+        BallSearch();
+    } 
+}
+
 
 

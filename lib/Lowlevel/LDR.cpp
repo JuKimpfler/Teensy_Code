@@ -8,9 +8,9 @@ void LDRC::init(){
 
 bool LDRC::Aktiv(bool check = false){
     if (analogRead(LDR_Port) > LDR_Schwelle){
-        return false;
+        return true;
     }
     else{
-        return true;
+        return false;
     }
 }

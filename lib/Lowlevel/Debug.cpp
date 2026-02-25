@@ -84,6 +84,32 @@ void DebugC::Plot_List(String name, const double Values[], size_t count) {
         // Step 3: Add a list of name-value pairs to the debug output.
 }
 
+
+void DebugC::Plot_List(String name, bool Values[], size_t count) {
+    for (size_t i = 0; i < count; ++i) {
+        mainList += (name + String(i));
+        mainList += ":";
+        mainList += String((Values[i])*300);
+        if (i + 1 < count) {
+            mainList += ", ";
+        }
+    }
+        // Step 3: Add a list of name-value pairs to the debug output.
+}
+
+
+void DebugC::Plot_List(String name, String Values[], size_t count) {
+    for (size_t i = 0; i < count; ++i) {
+        mainList += (name + String(i));
+        mainList += ":";
+        mainList += Values[i];
+        if (i + 1 < count) {
+            mainList += ", ";
+        }
+    }
+        // Step 3: Add a list of name-value pairs to the debug output.
+}
+
 /**
  * Sends the debug output via Serial or UART_Pixy based on the BLE flag.
  * @param BLE true to send via Serial, false to send via UART_Pixy.

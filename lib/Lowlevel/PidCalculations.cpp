@@ -7,7 +7,7 @@ void PIDC::Calculate(){
     diffTime = float(now - last) / 1000;
     last = now;
 
-    float error = Angle - BNO055.give_TiltZ();
+    float error = Angle - BNO055.TiltZ;
     if (error > 180) error -= 360;
     if (error < -180) error += 360;
     esum = esum + float(error);

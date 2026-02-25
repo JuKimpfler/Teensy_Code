@@ -2,11 +2,11 @@
 Elem_TakticsC Elem_Taktics;
 
 void Elem_TakticsC::Ballsearch(){
-    Robot.Drive(-BallCalc.DriveAngle,0,30);
+    Robot.Drive(-BallCalc.DriveAngle,0,MainSpeed);
 }
 
 void Elem_TakticsC::BallCaught(){
-    Robot.Drive(0, 0, MainSpeed);
+    Robot.Drive(Goal.Angle, 0, MainSpeed);
 }
 
 void Elem_TakticsC::step(){

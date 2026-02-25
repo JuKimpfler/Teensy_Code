@@ -3,8 +3,8 @@
 
 // Parameter
 
-#define HighSpeed 50 // Speed im HS modus
-inline float LowSpeed = 20; // Speed im LS modus
+#define HighSpeed 40 // Speed im HS modus
+inline float LowSpeed = 30; // Speed im LS modus
 
 inline float Kp = 3; // Startwert, dann erhöhen
 inline float Kd = 17.0; // Startwert, dann erhöhen
@@ -15,11 +15,11 @@ inline float PID_Konstante = 0.5; // 0.3
 
 inline int LDR_Schwelle =  500;
 
-inline int Line_Schwelle = 2900;
+inline int Line_Schwelle = 3200;
 
 inline int Motor_Frequency =  400;
 
-#define Interface_Frequency 10 // angegeben in Hz (wie oft pro sekunde wird das Interface upgedated)
+#define Interface_Frequency 5 // angegeben in Hz (wie oft pro sekunde wird das Interface upgedated)
 #define US_Frequency 10 // angegeben in Hz (wie oft pro sekunde wird das US upgedated)
 
 // CalculationsParameter
