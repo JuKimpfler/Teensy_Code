@@ -82,9 +82,9 @@ void SystemC::UpdateC::Sensors(){
 
     if (Cycle_P3 > 10){
         Debug.Start();
-        Debug.Plot("diff",Game.dead_diff);
-        Debug.Plot("outside",Game.outside);
-        Debug.Plot("L_Summe",Line.Summe+Line.VW_Summe);
+        Debug.Plot("Ball_Angle",Ball.Angle);
+        Debug.Plot("Ball_dist",Ball.Distance);
+        Debug.Plot("Drive",BallCalc.DriveAngle);
         //Debug.Plot("Line_min",Line.min_schwelle);
         //Debug.Plot("Line_max",Line.max_schwelle);
         //Debug.Plot_List("Line",Line.lineVW,8);

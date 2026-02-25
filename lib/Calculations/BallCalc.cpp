@@ -15,16 +15,12 @@ void BallCalcC::CalcAngle(){
 
     Ball.Angle = atan2f(x,y)*RAD_TO_DEG;
 
-    if (Ball.Angle<0){Ball.Angle = Ball.Angle+360;}
-    else if (Ball.Angle>359){Ball.Angle = Ball.Angle-360;}
-    if(Ball.Angle<=180){Ball.Angle=Ball.Angle;}
-    else if (Ball.Angle>180){Ball.Angle=Ball.Angle-360;}
-    if (Ball.Angle<-180){Ball.Angle = Ball.Angle+360;}
-    else if (Ball.Angle>359){Ball.Angle = Ball.Angle-360;}
+    if(Ball.Angle<-180){Ball.Angle = Ball.Angle+ 360;}
+    else if (Ball.Angle > 180){Ball.Angle = Ball.Angle - 360;}
 
     Ball.Angle = -Ball.Angle;
 
-    if(Ball.Distance<5){Ball.Angle=0;}
+    //if(Ball.Distance<5){Ball.Angle=0;}
 }
 
 void BallCalcC::CalcDist(){
@@ -71,6 +67,9 @@ void BallCalcC::getAngle(double inAngle, double dist){
     }
     */
 
+    if(U.Ran(Ball.Angle,-10,10)&&(Ball.Distance<20)){ /* Zone A*/ }
+    else if(U.Ran(Ball.Angle,-10,10)&&(Ball.Distance<20)){ /* Zone A*/ }
+
     //Berechnung 2026 Rafael
     if(dist<25 && dist>15){ // Wenn richtiger Abstand zum Ball 
         if(inAngle<-20){ // CW Kreis um Ball Fahren
@@ -94,6 +93,9 @@ void BallCalcC::getAngle(double inAngle, double dist){
             DriveAngle=inAngle; // Versuchter Treffpunkt des roboters auf Kreisförmiger Bahn um Ball mit Radius 13
         }
     }
+
+    if(DriveAngle<-180){DriveAngle = DriveAngle+ 360;}
+    else if (DriveAngle > 180){DriveAngle = DriveAngle - 360;}
 }
 
 void BallCalcC::calcTorAngle(){
