@@ -61,13 +61,8 @@ void loop() {
 
     Motor.Enable = System.Switches[1];
     
-    
     Cycle_P2++;
     Cycle_P3++;
     Cycletime = Cycle_Timer;
-
-    //Debug.Start();
-    //Debug.Plot("T",Mess_Time);
-    //Debug.Send();
 }
 

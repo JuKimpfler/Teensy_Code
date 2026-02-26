@@ -4,41 +4,30 @@
 #include "Debug.h"
 
 BNO055C BNO055;
+
 BNO055_beaver BNO_beaver(0x28,&Wire1);
 
 void BNO055C::init(){
-
-    // Unit Select
-    uint8_t buffer[2] = {0, 0};
+    BNO_beaver.init();
     Wire1.beginTransmission(0x28);
-    buffer[0] = REG_UNIT_SEL;
-    // Einheiten festlegen (BNO055_beaver.pdf S.69)
-    // Bit7: Data output format = 1 -> Android (verändert Ausgabe von Pitch-Werten)
-    // Bit4: Temperature = 0 -> Celsius
-    // Bit2: Euler units = 0 -> Grad (Winkeleinheit)
-    // Bit1: Angular Rate units = 0 -> Dps (Rotationsgeschwindigkeit Grad/s)
-    // Bit0: Acceleration units = 0 -> m/s² (Beschleunigung)
-    buffer[1] = (1 << 7) | (0 << 4) | (0 << 2) | (0 << 1) | (1 << 0);
-    Wire1.write(buffer, 2);
-
-    Wire1.write(REG_OPR_MODE);
-    Wire1.write(0x09);
+    Wire1.write(0x1A);
     Wire1.endTransmission();
 }
 
 void BNO055C::read(){
-    Wire1.beginTransmission(0x28);
-    Wire1.write(0x1A);
-    Wire1.endTransmission();
-    Wire1.requestFrom(0x28, 2);
-    uint8_t ret[2];
-    Wire1.readBytes(ret, 2);
-    int16_t temp = (((int16_t) (ret[1]) << 8) | ret[0]);
-    TiltZ = U.Circel(temp-BNO_Cal);
+    Wire1.setClock(800000);
+    float Comp_Dir = BNO_beaver.eulHeading();
+    Comp_Dir = Comp_Dir-BNO_Cal;
+    if (Comp_Dir<-180){Comp_Dir = Comp_Dir+360;}
+    else if (Comp_Dir>180){Comp_Dir = Comp_Dir-360;}
+    TiltZ = Comp_Dir;
+    Wire1.setClock(1000000);
 }
 
 void BNO055C::Calibrate(){
-    BNO_Cal = U.Circel(BNO_beaver.eulHeading());
+    Wire1.setClock(200000);
+    BNO_Cal = BNO_beaver.eulHeading();
+    Wire1.setClock(1000000);
 }
 
 void BNO055C::showCal(){
