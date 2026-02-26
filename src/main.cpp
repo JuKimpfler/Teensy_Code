@@ -66,8 +66,8 @@ void loop() {
     Cycle_P3++;
     Cycletime = Cycle_Timer;
 
-    //Debug.Start();
-    //Debug.Plot("T",Mess_Time);
-    //Debug.Send();
+    Debug.Start();
+    Debug.Plot("T",Mess_Time);
+    Debug.Send();
 }
 

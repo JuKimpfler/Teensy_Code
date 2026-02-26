@@ -5,7 +5,7 @@
 
 SystemC System;
 
-elapsedMillis Interface_Timer;
+elapsedMillis Reg_Timer;
 elapsedMillis Schuss_Timer;
 elapsedMicros Cycle_Timer;
 elapsedMicros Mess_Timer;
@@ -30,8 +30,8 @@ void SystemC::Button_Update(){
 }
 
 void SystemC::init(){
-    
-    //Wire1.setClock(100000);
+    Wire1.begin();
+    Wire1.setClock(1000000);
 
     pinMode(Start_Port,INPUT);
     pinMode(Kicker_Port, OUTPUT);
@@ -42,48 +42,34 @@ void SystemC::init(){
 
     Motor.init();
     RGB.init();
-
-    Wire1.begin();
-    //Expander.I2C.init(I2C_ITF_Main,Input_Mode,All_Off);
-     
     BNO055.init(); 
-    delay(10);
-    BNO055.Calibrate();
-
-    //US.init();
+    
+    Expander.I2C.init(I2C_ITF_Main,Input_Mode,All_Off);
+    US.init();
 }
 
 void SystemC::UpdateC::Interface(){
-    if (System.Start){
-        //System.Button_Update(); // 588
+    if (!System.Start){
+        System.Button_Update(); // 588
+        RGB.Apply(); // 300
     }
 }
 
 void SystemC::UpdateC::Sensors(){
     System.Start_Update(); // 1 micro
     Line.read_Fast(); // 60 micro
-    //US.read(); // 1 micro
+    US.read(); // 1 micro
     Mouse.read(); // 177 micros
     Cam.read(); // 1 micro
-
     Robot.Kicker.Update(); // 1 micro
-
     LineCalc.Calc(); // 1 micro
     BallCalc.CalcDist(); // 1 micro
     BallCalc.getAngle(); // 1 micro
     PID.Calculate(); // 1 micro
+    BNO055.read(); // 100-500 micro
+    IR.read(); // 300 micro
 
-    if ((Cycle_P2 == 0)){
-        BNO055.read(); // 500-1000 micro
-    }
-    else if ((Cycle_P2 == 1)){
-        //IR.read(); // 1300 micro
-        Cycle_P2=0;
-    }
-
-    if ((Cycle_P3 > 10) && (true)){
-        RGB.Apply(); // 300
-
+    if ((Cycle_P3 > 10) && (false)){
         Debug.Start();
         Debug.Plot("Ball_Angle",BNO055.TiltZ);
         //Debug.Plot("Ball_raw",Ball.Distance_raw);
@@ -92,5 +78,12 @@ void SystemC::UpdateC::Sensors(){
         //Debug.Plot("fa",IR.DistFaktor);
         Debug.Send();
         Cycle_P3 = 0;
+    }
+
+    if(Reg_Timer>1000){
+        Wire1.beginTransmission(0x28);
+        Wire1.write(0x1A);
+        Wire1.endTransmission();
+        Reg_Timer=0;
     }
 }

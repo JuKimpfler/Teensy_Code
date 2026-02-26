@@ -3,33 +3,31 @@
 #include "BNO055_beaver.h"
 #include "Debug.h"
 
-//Adafruit_BNO055 bno(55, 0x28, &Wire1);
-
 BNO055C BNO055;
 
 BNO055_beaver BNO_beaver(0x28,&Wire1);
 
 void BNO055C::init(){
-    //bno.begin();
-    //bno.setExtCrystalUse(true);
-
     BNO_beaver.init();
+    Wire1.beginTransmission(0x28);
+    Wire1.write(0x1A);
+    Wire1.endTransmission();
 }
 
 void BNO055C::read(){
+    Wire1.setClock(800000);
     float Comp_Dir = BNO_beaver.eulHeading();
     Comp_Dir = Comp_Dir-BNO_Cal;
-    if (Comp_Dir<0){Comp_Dir = Comp_Dir+360;}
-    else if (Comp_Dir>359){Comp_Dir = Comp_Dir-360;}
-    if(Comp_Dir<=180){Comp_Dir=Comp_Dir;}
-    else if (Comp_Dir>180){Comp_Dir=Comp_Dir-360;}
     if (Comp_Dir<-180){Comp_Dir = Comp_Dir+360;}
-    else if (Comp_Dir>359){Comp_Dir = Comp_Dir-360;}
+    else if (Comp_Dir>180){Comp_Dir = Comp_Dir-360;}
     TiltZ = Comp_Dir;
+    Wire1.setClock(1000000);
 }
 
 void BNO055C::Calibrate(){
-    BNO_Cal = BNO_beaver.eulHeading();;
+    Wire1.setClock(200000);
+    BNO_Cal = BNO_beaver.eulHeading();
+    Wire1.setClock(1000000);
 }
 
 void BNO055C::showCal(){

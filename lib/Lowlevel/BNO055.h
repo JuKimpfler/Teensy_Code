@@ -1,5 +1,4 @@
 #pragma once
-#include "Adafruit_BNO055.h"
 #include "Elementar.h"
 
 class BNO055C {

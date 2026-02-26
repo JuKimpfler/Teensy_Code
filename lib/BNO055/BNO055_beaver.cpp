@@ -86,9 +86,6 @@ inline void BNO055_beaver::getWords(uint8_t start_address, int16_t* data, uint8_
 
 // Word auslesen
 inline int16_t BNO055_beaver::getWord(uint8_t address) {
-  cls->beginTransmission(this->addr);
-  cls->write(address);
-  cls->endTransmission();
   cls->requestFrom((int) this->addr, 2);
   uint8_t ret[2];
   cls->readBytes(ret, 2);
