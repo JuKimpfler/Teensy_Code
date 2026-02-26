@@ -1,5 +1,4 @@
 #pragma once
-#include "Adafruit_BNO055.h"
 #include "Elementar.h"
 
 class BNO055C {
@@ -7,8 +6,8 @@ class BNO055C {
     private:
     public:
 
-        float BNO_Cal;
-        float TiltZ;
+        int16_t BNO_Cal;
+        int16_t TiltZ;
 
         void init();
         void read();
