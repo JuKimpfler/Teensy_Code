@@ -8,7 +8,6 @@
 #include "Taktics.h"
 #include "Calculations.h"
 #include "Cam.h"
-#include "INA.h"
 #include "LDR.h"
 #include "IR.h"
 #include "Robot.h"
@@ -21,22 +20,15 @@
 class SystemC {
     private:
         void Start_Update();
-        void Button_Update();
-        int last_MF=0;
-    
+            
     public:
 
         bool Start;
         bool Button[4];
         bool Switches[4];
+        void init();
+        void Button_Update();
 
-        class initC{
-            public:
-                void Sensors();
-                void Interface();
-                void Motors();
-        };
-        initC init;
         class UpdateC{
             public:
                 void Sensors();

@@ -60,7 +60,7 @@ void BLC::doRolle(){
     }
     else{Rolle="N";}
 
-    showRolle();
+    //showRolle();
 }
 
 /**

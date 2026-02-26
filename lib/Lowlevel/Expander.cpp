@@ -1,9 +1,8 @@
 #include "Expander.h"
 ExpanderC Expander;
 
-void ExpanderC::I2CC::init(int Add , int Mode , int on_off = All_Off){ // on_off -> write all Outputs to low or high
-
-    Wire1.begin(); 
+void ExpanderC::I2CC::init(int Add , int Mode , int on_off){ // on_off -> write all Outputs to low or high
+    //Wire1.begin();
     Wire1.beginTransmission(Add);
     Wire1.write(Config_Reg);        
     Wire1.write(Mode);         

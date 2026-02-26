@@ -4,7 +4,6 @@
 #include "Motor.h"
 #include "Line.h"
 #include "Cam.h"
-#include "INA.h"
 #include "LDR.h"
 #include "Robot.h"
 //#include "UltraSonic.h"

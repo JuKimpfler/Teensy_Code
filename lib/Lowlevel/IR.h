@@ -1,21 +1,17 @@
 #pragma once
 #include "Elementar.h"
 #include "Expander.h"
-#include "IR_ring.h"
+#include "ir_ring.h"
 
 class IRC {
     private:
     
     public:
-        double Distance_raw;
-        //double NullCall  = 100;
-        double Distance_raw2;
-        double Angle;
-        double Distance;
         double IR_Values[16];
         double TSSP;
-        double DistCal;
-        double DistFaktor;
+        double DistCal = 780;
+        double DistFaktor = 0.12;
+        double visable_th = 0;
 
         void read();
         int GetData(int Port);
@@ -29,7 +25,8 @@ class IRC {
 class BallC{
     public:
         double Angle;
-        double Distance;
+        uint16_t Distance;
+        uint16_t Distance_raw;
         bool inSight;
         int Angle_P2; // Ballwinkel von Player2 
         int Distance_P2; // Balldistance von Player2 

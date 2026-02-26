@@ -4,6 +4,8 @@
 BallCalcC BallCalc;
 
 void BallCalcC::CalcAngle(){
+
+    /*
     double x = 0; 
     double y = 0;
 
@@ -20,31 +22,21 @@ void BallCalcC::CalcAngle(){
 
     Ball.Angle = -Ball.Angle;
 
-    //if(Ball.Distance<5){Ball.Angle=0;}
+    //if(Ball.Distance<5){Ball.Angle=0;}*/
 }
 
 void BallCalcC::CalcDist(){
-    double sum = 0; 
-    for (int i=0; i<16; i++)
-    {
-        sum = sum + IR.IR_Values[i];
-    }
-
-    sum = (sum/16)+1;
-
-    IR.Distance_raw = sum;
-    if(sum<30){
+    if(Ball.Distance_raw<30){
         Ball.Distance = 1000;
         Ball.inSight = false;
     }
     else{
         Ball.inSight = true;
-        if(sum<130){
-            Ball.Distance = 40+(100/sum)*80;
+        if(Ball.Distance_raw<130){
+            Ball.Distance = 40+(100/Ball.Distance_raw)*80;
         }
         else{
-            IR.Distance_raw2 = (sum - 780)*-1;
-            Ball.Distance = IR.Distance_raw2 * 0.12;//pow(IR.DistCal / sum, 1 / IR.DistFaktor);//IR.DistCal * (1/sqrt(sum));
+            Ball.Distance = ((Ball.Distance_raw - IR.DistCal)*-1) * IR.DistFaktor;//pow(IR.DistCal / sum, 1 / IR.DistFaktor);//IR.DistCal * (1/sqrt(sum));
         }
         
         if(Ball.Distance< 0){
@@ -69,18 +61,18 @@ void BallCalcC::getAngle(){
 
     if(U.Ran(Ball.Angle,-10,10)&&(Ball.Distance<20)){DriveAngle=Ball.Angle;  /* Zone A*/ }
     else if(U.Ran(Ball.Angle,-10,10)&&(Ball.Distance>=20)){DriveAngle=Ball.Angle*B_Faktor; /* Zone B*/ }
-    else if(U.Ran(Ball.Angle,10,135)&&(Ball.Distance<20)){DriveAngle=(Ball.Angle-180)*-1; /* Zone C1*/ }
-    else if(U.Ran(Ball.Angle,-10,-135)&&(Ball.Distance<20)){DriveAngle=(Ball.Angle-180)*-1; /* Zone C2*/ }
-    else if(U.Ran(Ball.Angle,135,180)&&(Ball.Distance<40)){DriveAngle=-90; /* Zone D1*/ }
-    else if(U.Ran(Ball.Angle,-10,-180)&&(Ball.Distance<40)){DriveAngle=90; /* Zone D2*/ }
+    else if(U.Ran(Ball.Angle,10,160)&&(Ball.Distance<20)){DriveAngle=(Ball.Angle-180)*-1; /* Zone C1*/ }
+    else if(U.Ran(Ball.Angle,-10,-160)&&(Ball.Distance<20)){DriveAngle=(Ball.Angle-180)*-1; /* Zone C2*/ }
+    else if(U.Ran(Ball.Angle,160,180)&&(Ball.Distance<40)){DriveAngle=-90; /* Zone D1*/ }
+    else if(U.Ran(Ball.Angle,-160,-180)&&(Ball.Distance<40)){DriveAngle=90; /* Zone D2*/ }
     else if(U.Ran(Ball.Angle,10,90)&&(Ball.Distance>=20)){DriveAngle=Ball.Angle*E_Faktor; /* Zone E1*/ }
     else if(U.Ran(Ball.Angle,-10,-90)&&(Ball.Distance>=20)){DriveAngle=Ball.Angle*E_Faktor; /* Zone E2*/ }
-    else if(U.Ran(Ball.Angle,90,135)&&(Ball.Distance>=20)){DriveAngle=160; /* Zone F1*/ }
-    else if(U.Ran(Ball.Angle,-90,-135)&&(Ball.Distance>=20)){DriveAngle=-160; /* Zone F2*/ }
-    else if(U.Ran(Ball.Angle,135,180)&&(Ball.Distance>=40)){DriveAngle=140; /* Zone G1*/ }
-    else if(U.Ran(Ball.Angle,-135,-180)&&(Ball.Distance>=40)){DriveAngle=-140; /* Zone G2*/ }
+    else if(U.Ran(Ball.Angle,90,160)&&(Ball.Distance>=20)){DriveAngle=160; /* Zone F1*/ }
+    else if(U.Ran(Ball.Angle,-90,-160)&&(Ball.Distance>=20)){DriveAngle=-160; /* Zone F2*/ }
+    else if(U.Ran(Ball.Angle,160,180)&&(Ball.Distance>=40)){DriveAngle=140; /* Zone G1*/ }
+    else if(U.Ran(Ball.Angle,-160,-180)&&(Ball.Distance>=40)){DriveAngle=-140; /* Zone G2*/ }
 
-    //Berechnung 2026 Rafael
+    /*/Berechnung 2026 Rafael
     if(Ball.Distance<25 && Ball.Distance>15){ // Wenn richtiger Abstand zum Ball 
         if(Ball.Angle<-20){ // CW Kreis um Ball Fahren
             DriveAngle=Ball.Angle-90;
@@ -103,6 +95,7 @@ void BallCalcC::getAngle(){
             DriveAngle=Ball.Angle; // Versuchter Treffpunkt des roboters auf Kreisförmiger Bahn um Ball mit Radius 13
         }
     }
+    */
 
     if(DriveAngle<-180){DriveAngle = DriveAngle+ 360;}
     else if (DriveAngle > 180){DriveAngle = DriveAngle - 360;}

@@ -2,11 +2,11 @@
 TakticsC Taktics;
 
 void TakticsC::BallSearch(){
-    Robot.Drive(Ball.Angle,0,MainSpeed);
+    Robot.Drive(BallCalc.DriveAngle,0,MainSpeed);
 }
 
 void TakticsC::GoalAttak(){
-    Robot.Drive(Goal.Angle, 0, MainSpeed); 
+    Robot.Drive(0, 0, MainSpeed); 
 }
 
 void TakticsC::step(){

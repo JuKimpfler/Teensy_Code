@@ -22,7 +22,7 @@ inline int Line_Schwelle = 3200;
 
 inline int Motor_Frequency =  400;
 
-#define Interface_Frequency 5 // angegeben in Hz (wie oft pro sekunde wird das Interface upgedated)
+#define Interface_Frequency 20 // angegeben in Hz (wie oft pro sekunde wird das Interface upgedated)
 #define US_Frequency 10 // angegeben in Hz (wie oft pro sekunde wird das US upgedated)
 
 // CalculationsParameter

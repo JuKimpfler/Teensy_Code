@@ -18,8 +18,7 @@ void GameC::Run(){
 
         dead_diff = dead_zone-LineCalc.DriveAngle;
 
-        if(dead_diff<-180){dead_diff = dead_diff+ 360;}
-        else if (dead_diff > 180){dead_diff = dead_diff - 360;}
+        U.Circel(dead_diff); // maping to circel
 
         if((dead_diff < -140)&&(once == false)){ // linien überquerung
             outside = true;
@@ -49,8 +48,7 @@ void GameC::Run(){
     }
     else if ((Line.VW_Summe > 0))  {  // VW only
         dead_zone = LineCalc.DriveAngle;
-        if(dead_zone<-180){dead_zone = dead_zone+ 360;}
-        else if (dead_zone > 180){dead_zone = dead_zone - 360;}
+        U.Circel(dead_zone);
 
         if (Line_Follow == true){
             Robot.Break();
@@ -72,8 +70,8 @@ void GameC::Run(){
         else if(BL.Rolle == "N"){
             Elem_Taktics.Ballsearch();
         }*/
-        Robot.Drive(0,0,MainSpeed);
-        //Taktics.step();
+        //Robot.Drive(0,0,MainSpeed);
+        Taktics.step();
         once = false;
         outside = false;
     }

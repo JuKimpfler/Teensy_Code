@@ -4,7 +4,7 @@ PIDC PID;
 
 void PIDC::Calculate(){
     now = micros();
-    diffTime = float(now - last) / 1000;
+    diffTime = (now - last) / 1000;
     last = now;
 
     float error = Angle - BNO055.TiltZ;

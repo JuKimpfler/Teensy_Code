@@ -33,12 +33,16 @@ void RGBC::write(int Pos,String color){
         G[Pos]=255;
         B[Pos]=30;
     }
+    else if (color == "W"){
+        R[Pos]=255;
+        G[Pos]=255;
+        B[Pos]=255;
+    }
     else{
         R[Pos]=0;
         G[Pos]=0;
         B[Pos]=0;
     }
-    Apply();
 }
 
 void RGBC::Apply(){

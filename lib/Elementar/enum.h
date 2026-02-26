@@ -25,9 +25,11 @@ enum Motor_Port { // Portbelegung Direct an Teensy
     HL_ExpanderB = 3, //+
 };
 
-enum Ultrasonic_Address{
-    US_Left = 0x70,
-    US_Right = 0x73
+enum US_Ports {
+    US_Leftw =  0x71,
+    US_Rightw = 0x72,
+    US_Lefts =  0x73,
+    US_Rights = 0x70
 };
 
 enum Pinout {

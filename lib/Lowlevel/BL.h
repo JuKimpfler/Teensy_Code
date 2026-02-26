@@ -13,8 +13,6 @@ class BLC {
 
         bool SinglePlayer; // True, wenn nur ein Spieler aktiv ist
         
-        // Initialisiert die Rolle
-        void init();
         // Zeigt die aktuelle Rolle an
         void showRolle();
         // Führt die Rollenlogik aus (Kommunikation, Steuerung)

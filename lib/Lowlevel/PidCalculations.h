@@ -5,14 +5,14 @@
 class PIDC {
 
     private:
-        float last;
-        float now;
+        double last;
+        double now;
         float Angle;
 
     public:
         float esum;
         float ealt;  
-        float diffTime;
+        double diffTime;
         float Out;
 
         void Calculate();

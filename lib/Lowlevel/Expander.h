@@ -11,7 +11,7 @@ class ExpanderC {
                 bool Switch[8] ;
                 bool Dip[4];
             public:
-                void init(int Add , int Mode , int on_off = All_Off);
+                void init(int Add , int Mode , int on_off);
                 void read(int Add);
                 bool give(int Add , int Port);
                 void write(int Add , int Port , bool Zustand);
