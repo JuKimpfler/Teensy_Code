@@ -51,7 +51,6 @@ void SystemC::init(){
 void SystemC::UpdateC::Interface(){
     if (!System.Start){
         System.Button_Update(); // 588
-        RGB.Apply(); // 300
     }
 }
 
@@ -69,14 +68,15 @@ void SystemC::UpdateC::Sensors(){
     BNO055.read(); // 100-500 micro
     IR.read(); // 300 micro
 
-    if ((Cycle_P3 > 10) && (false)){
+    if ((Cycle_P3 > 20) && (true)){
         Debug.Start();
-        Debug.Plot("Ball_Angle",BNO055.TiltZ);
-        //Debug.Plot("Ball_raw",Ball.Distance_raw);
-        //Debug.Plot("Ball_dist",Ball.Distance);
+        Debug.Plot("Ball_Angle",Ball.Angle);
+        Debug.Plot("Ball_raw",Ball.Distance_raw);
+        Debug.Plot("Ball_dist",Ball.Distance);
         Debug.Plot("Drive",BallCalc.DriveAngle);
-        //Debug.Plot("fa",IR.DistFaktor);
+        Debug.Plot("BNO",BNO055.TiltZ);
         Debug.Send();
+        RGB.Apply(); // 300
         Cycle_P3 = 0;
     }
 
