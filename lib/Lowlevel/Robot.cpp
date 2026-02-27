@@ -1,5 +1,6 @@
 #include  "Robot.h"
 #include "Mouse.h"
+#include "Cam.h"
 RobotC Robot;
 
 elapsedMillis Kicker_Timer;
@@ -17,11 +18,10 @@ void RobotC::Drive(float Dir , float Angle = 0 ,int Speed1 = HighSpeed){
     // Links -> Minus (Counter-Clock)
     // Rechts -> Plus (Clock)
 
-    /*
-    if (Angle == 200000){
-        Angle = Goal_Calc.Angle;
-    }
-    */
+    
+    //if (Angle == 200000){
+        //Angle = Goal.Angle;
+    //}
     if(Dir<-180){Dir = Dir+ 360;}
     else if (Dir > 180){Dir = Dir - 360;}
     if(Angle<-180){Angle = Angle+ 360;}

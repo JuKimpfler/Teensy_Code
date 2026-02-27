@@ -9,7 +9,7 @@ class IRC {
     public:
         double IR_Values[16];
         double TSSP;
-        double DistCal = 780;
+        double DistCal = 78;
         double DistFaktor = 0.12;
         double visable_th = 0;
 
@@ -27,6 +27,7 @@ class BallC{
         double Angle;
         uint16_t Distance;
         uint16_t Distance_raw;
+        uint16_t Distance_raw2;
         bool inSight;
         int Angle_P2; // Ballwinkel von Player2 
         int Distance_P2; // Balldistance von Player2 

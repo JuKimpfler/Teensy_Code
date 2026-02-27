@@ -2,10 +2,12 @@
 #include "Utils.h"
 UtilsC U;
 bool UtilsC::Ran(float In,float min, float max){
-    if (In < max && In > min){
-        return true;
+    if(min < max){
+        return In >= min && In <= max;
     }
-    else {return false;}
+    else{
+        return In <= min && In >= max;
+    }
 };
 
 double UtilsC::Circel(double Angle){

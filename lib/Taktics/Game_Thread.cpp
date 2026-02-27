@@ -9,23 +9,9 @@ elapsedMillis Line_Timer;
 
 void GameC::Run(){
     if ((Line.Summe > 0) )  {        
-        if((Goal.inSight == true) && (LDR.Aktiv() == true)){
-            Robot.Kicker.On(800);
-        }
-        else{
-            Robot.Kicker.Off();
-        }
-
         dead_diff = dead_zone-LineCalc.DriveAngle;
 
         U.Circel(dead_diff); // maping to circel
-
-        if((dead_diff < -140)&&(once == false)){ // linien überquerung
-            outside = true;
-            once = true;
-            temp3_Angle = LineCalc.DriveAngle;
-            Line_Timer=0;
-        }
 
         if (Line_Follow == true){
             if(outside == true){
@@ -35,8 +21,8 @@ void GameC::Run(){
             else{Robot.Drive(LineCalc.DriveAngle,0,20);}
         }
         else{
-            if((outside == true) && (Line.Summe < 5)){
-                Robot.Drive(((temp3_Angle-180)*-1),0,100);
+            if(U.Ran(abs(dead_diff),135,225)){
+                Robot.Drive(((LineCalc.DriveAngle-180)*-1),0,100);
             }
             else{
                 Robot.Drive(LineCalc.DriveAngle,0,100);
@@ -70,7 +56,6 @@ void GameC::Run(){
         else if(BL.Rolle == "N"){
             Elem_Taktics.Ballsearch();
         }*/
-        //Robot.Drive(0,0,MainSpeed);
         Taktics.step();
         once = false;
         outside = false;

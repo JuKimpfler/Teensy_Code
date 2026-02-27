@@ -15,9 +15,11 @@ void setup() {
     UART_2.begin(115200);
     UART_Pixy.begin(115200);
 
+    Robo_NR = "s"; // w oder s
+    if(Robo_NR == "s"){
+        IR.DistCal = 97;
+    }
     System.init();
-
-    Robo_NR = "s";
 }
 
 void loop() { 
@@ -27,7 +29,12 @@ void loop() {
     System.Update.Interface();
  
     if(System.Start){
-        Game.Run();
+        //Game.Run();
+        Robot.Turn(0);
+       // Motor.On(VL_Motor,100);
+       // Motor.On(VR_Motor,100);
+       // Motor.On(HL_Motor,100);
+       // Motor.On(HR_Motor,100);
     }
     else{
         Robot.Stop();
@@ -51,15 +58,32 @@ void loop() {
     else{
         Robot.Kicker.Off();
     }
-    if (System.Button[2]){
-        Line.Calibrate(1);
-    }
-    if (System.Button[3]){
-        Line.Calibrate(2);
-        Line.Calibrate(3);
-    }
 
-    Motor.Enable = System.Switches[1];
+    if (System.Switches[1]){
+        if (System.Button[2]){
+            Line.Calibrate(1);
+        }
+        if (System.Button[3]){
+            Line.Calibrate(2);
+            Line.Calibrate(3);
+        }
+    }
+    else{
+        if (System.Button[2]){
+            IR.DistCal = Ball.Distance_raw2;
+        }
+        if (System.Button[3]){
+            
+        }
+    }
+    
+    if(Robo_NR=="w"){
+        Motor.Enable = System.Switches[1];
+    }
+    else{
+        Motor.Enable = true;
+    }
+    
     
     Cycle_P2++;
     Cycle_P3++;

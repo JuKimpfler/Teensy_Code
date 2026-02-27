@@ -71,10 +71,10 @@ void SystemC::UpdateC::Sensors(){
     if ((Cycle_P3 > 20) && (true)){
         Debug.Start();
         Debug.Plot("Ball_Angle",Ball.Angle);
-        Debug.Plot("Ball_raw",Ball.Distance_raw);
-        Debug.Plot("Ball_dist",Ball.Distance);
-        Debug.Plot("Drive",BallCalc.DriveAngle);
-        Debug.Plot("BNO",BNO055.TiltZ);
+        Debug.Plot("dist",Ball.Distance);
+        Debug.Plot("Drive_Angle",BallCalc.DriveAngle);
+        Debug.Plot("Zone",Zone);
+        Debug.Plot("G-Angle",Goal.Angle);
         Debug.Send();
         RGB.Apply(); // 300
         Cycle_P3 = 0;

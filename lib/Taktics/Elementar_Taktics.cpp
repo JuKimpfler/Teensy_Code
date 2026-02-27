@@ -6,15 +6,17 @@ void TakticsC::BallSearch(){
 }
 
 void TakticsC::GoalAttak(){
-    Robot.Drive(0, 0, MainSpeed); 
+    Robot.Drive(0, Goal.Angle, MainSpeed); 
 }
 
 void TakticsC::step(){
     if (LDR.Aktiv() == true){
         GoalAttak();
+        Robot.Kicker.On();
     }
     else{
         BallSearch();
+        Robot.Kicker.Off();
     } 
 }
 

@@ -3,7 +3,7 @@
 
 // Parameter
 
-#define HighSpeed 40 // Speed im HS modus
+#define HighSpeed 45 // Speed im HS modus
 inline float LowSpeed = 30; // Speed im LS modus
 
 inline float Kp = 3; // Startwert, dann erhöhen
@@ -13,8 +13,10 @@ inline float PID_Mult = 0.1; // Belassen
 
 inline float PID_Konstante = 0.5; // 0.3
 
-inline double E_Faktor = 1.2;
-inline double B_Faktor = 1.2;
+inline double E_Faktor = 1.3;
+inline double B_Faktor = 1.1;
+inline double F_Faktor = 1.3;
+inline double C_Faktor = 1.4;
 
 inline int LDR_Schwelle =  500;
 

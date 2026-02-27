@@ -18,13 +18,13 @@ void BNO055C::init(){
 
 void BNO055C::read(){
     Wire1.setClock(400000);
-    TiltZ = U.Circle(BNO_beaver.eulHeading()-BNO_Cal);
+    TiltZ = U.Circel(BNO_beaver.eulHeading()-BNO_Cal);
     Wire1.setClock(1000000);
 }
 
 void BNO055C::Calibrate(){
     Wire1.setClock(400000);
-    BNO_Cal = U.Circle(BNO_beaver.eulHeading());
+    BNO_Cal = U.Circel(BNO_beaver.eulHeading());
     Wire1.setClock(1000000);
 }
 

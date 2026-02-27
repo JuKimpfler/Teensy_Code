@@ -11,4 +11,5 @@ inline bool Line_Follow = false; // Switch to follow line
 inline float Front_Speed = 2; // Divisor to follow line
 inline double Mess_Time;
 inline String Robo_NR;
+inline String Zone;
 #endif

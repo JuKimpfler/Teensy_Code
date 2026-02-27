@@ -29,7 +29,7 @@ enum US_Ports {
     US_Leftw =  0x71,
     US_Rightw = 0x72,
     US_Lefts =  0x73,
-    US_Rights = 0x70
+    US_Rights = 0x71
 };
 
 enum Pinout {
