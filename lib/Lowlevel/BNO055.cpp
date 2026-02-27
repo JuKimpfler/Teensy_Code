@@ -15,22 +15,19 @@ void BNO055C::init(){
 }
 
 void BNO055C::read(){
-    Wire1.setClock(800000);
-    float Comp_Dir = BNO_beaver.eulHeading();
-    Comp_Dir = Comp_Dir-BNO_Cal;
-    if (Comp_Dir<-180){Comp_Dir = Comp_Dir+360;}
-    else if (Comp_Dir>180){Comp_Dir = Comp_Dir-360;}
-    TiltZ = Comp_Dir;
+    Wire1.setClock(400000);
+    TiltZ = U.Circle(BNO_beaver.eulHeading()-BNO_Cal);
     Wire1.setClock(1000000);
 }
 
 void BNO055C::Calibrate(){
-    Wire1.setClock(200000);
-    BNO_Cal = BNO_beaver.eulHeading();
+    Wire1.setClock(400000);
+    BNO_Cal = U.Circle(BNO_beaver.eulHeading());
     Wire1.setClock(1000000);
 }
 
 void BNO055C::showCal(){
+    Wire1.setClock(400000);
     int mag = 0;
     mag = BNO_beaver.calibStatus();
 
@@ -38,4 +35,5 @@ void BNO055C::showCal(){
     else if (mag==1){RGB.write(0,"O");}// LED AN
     else if (mag==2){RGB.write(0,"Y");}// LED AN
     else if (mag==3){RGB.write(0,"G");}// LED AN
+    Wire1.setClock(1000000);
 }
