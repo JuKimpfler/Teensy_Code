@@ -8,10 +8,12 @@ BNO055C BNO055;
 BNO055_beaver BNO_beaver(0x28,&Wire1);
 
 void BNO055C::init(){
+    Wire1.setClock(400000);
     BNO_beaver.init();
     Wire1.beginTransmission(0x28);
     Wire1.write(0x1A);
     Wire1.endTransmission();
+    Wire1.setClock(1000000);
 }
 
 void BNO055C::read(){
