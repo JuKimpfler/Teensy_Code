@@ -67,14 +67,14 @@ void SystemC::UpdateC::Sensors(){
     PID.Calculate(); // 1 micro
     BNO055.read(); // 100-500 micro
     IR.read(); // 300 micro
-    //BL.doRolle();
+    BL.doRolle();
 
     if ((Cycle_P3 > 20) && (true)){
         Debug.Start();
-        Debug.Plot("Ball_Angle",Ball.Angle);
+        Debug.Plot("Ball_Angle",Ball.Distance_P2);
         Debug.Plot("Drive_Angle",Ball.Distance);
         Debug.Plot("Rolle",BNO055.TiltZ);
-        Debug.Plot("ldr",analogRead(LDR_Port));
+        Debug.Plot("ldr",Ball.inSight);
         Debug.Send();
         RGB.Apply(); // 300
         Cycle_P3 = 0;

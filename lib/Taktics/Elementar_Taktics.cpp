@@ -19,7 +19,7 @@ void TakticsC::step(){
             BallSearch();
         }
         else{
-            Robot.Drive(180, 0 , 30);
+            Robot.Drive(180, 0 , 35);
         }
         Robot.Kicker.Off();
     } 

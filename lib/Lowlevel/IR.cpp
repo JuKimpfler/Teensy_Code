@@ -16,7 +16,7 @@ void IRC::read(){
     Value=ir_lib.read_ball_distance();
     Ball.Distance_raw = Value;
 
-    Ball.inSight = ir_lib.read_ball_visible();
+    Ball.inSight = !(Ball.Distance_raw < 45);
 }
 
 void IRC::Calib_Dist(){
