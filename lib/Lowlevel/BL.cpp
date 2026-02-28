@@ -10,13 +10,6 @@ BLC BL;
 elapsedMillis BL_Timer_RX;
 elapsedMillis BL_Timer_TX;
 
-/**
- * @brief Reads data from UART_Pixy, decodes the message, updates the robots state and sends data back to the Pixy.
- * 
- * @details Reads data from UART_Pixy, decodes the message and updates the robots state. If the robot is in start mode and the mouse is above the surface, it sends the ball angle and distance to the Pixy. Otherwise it sends 9999 for both values. Additionally, it sends a boolean value for info1 and info2, which are currently just example values, and an integer value for extra, which is also currently just an example value.
- * 
- * @note The function is split into three parts: Reading data from UART_Pixy, sending data to the Pixy and updating the robots state.
- */
 void BLC::doRolle(){
     int avail = UART_Pixy.available();
     if(avail>0){
