@@ -43,7 +43,7 @@ void BLC::doRolle(){
         bool info2 = false; // Beispielwert, anpassen!
         int extra = 123; // Beispielwert, anpassen!
         // Format: 0AAA0DDD0I10I20EEE$
-        char sendMsg[19];
+        char sendMsg[29]; // war z.B. 19 – zu klein für "0%03d0%03d0%1d0%1d0%03d$" (max 28 Zeichen)
         snprintf(sendMsg, sizeof(sendMsg), "0%03d0%03d0%1d0%1d0%03d$", angle, dist, 0, 0, extra);
         UART_Pixy.print(sendMsg);
         Debug.Plot("Message_S",sendMsg);
@@ -95,4 +95,4 @@ void BLC::decode(String message1){
     Ball.Distance_P2 = dist;
     // info1, info2, extra können hier weiterverarbeitet werden
 }
- 
+
