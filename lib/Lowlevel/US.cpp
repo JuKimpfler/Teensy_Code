@@ -9,7 +9,7 @@ void USC::init(){
 }
 
 void USC::read(){
-    Wire1.setClock(200000);
+
     if(Robo_NR=="w"){
         if(US_Timer1 > (1000/US_Frequency)){
         int reading;
@@ -100,8 +100,6 @@ void USC::read(){
     else {
         Distance = Distance_raw[1];
     }
-
-    Wire1.setClock(1000000);
 }
 
 

@@ -31,7 +31,7 @@ void SystemC::Button_Update(){
 
 void SystemC::init(){
     Wire1.begin();
-    Wire1.setClock(1000000);
+    Wire1.setClock(400000);
 
     pinMode(Start_Port,INPUT);
     pinMode(Kicker_Port, OUTPUT);
@@ -61,29 +61,30 @@ void SystemC::UpdateC::Sensors(){
     Mouse.read(); // 177 micros
     Cam.read(); // 1 micro
     Robot.Kicker.Update(); // 1 micro
-    LineCalc.Calc(); // 1 micro
+    LineCalc.Calc(); // 15 micro
     BallCalc.CalcDist(); // 1 micro
     BallCalc.getAngle(); // 1 micro
     PID.Calculate(); // 1 micro
     BNO055.read(); // 100-500 micro
     IR.read(); // 300 micro
+    BL.doRolle();
 
-    if ((Cycle_P3 > 20) && (true)){
+    if ((Cycle_P3 > 20) && (false)){
         Debug.Start();
         Debug.Plot("Ball_Angle",Ball.Angle);
         Debug.Plot("dist",Ball.Distance);
         Debug.Plot("Drive_Angle",BallCalc.DriveAngle);
-        Debug.Plot("Zone",Zone);
+        Debug.Plot("Rolle",BL.Rolle);
         Debug.Plot("G-Angle",Goal.Angle);
         Debug.Send();
         RGB.Apply(); // 300
         Cycle_P3 = 0;
     }
 
-    if(Reg_Timer>1000){
+    /*if(Reg_Timer>1000){
         Wire1.beginTransmission(0x28);
         Wire1.write(0x1A);
         Wire1.endTransmission();
         Reg_Timer=0;
-    }
+    }*/
 }

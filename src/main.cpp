@@ -18,6 +18,10 @@ void setup() {
     Robo_NR = "s"; // w oder s
     if(Robo_NR == "s"){
         IR.DistCal = 97;
+        VR_Motor = VR_Motors; //
+        VL_Motor = VL_Motors; //
+        HR_Motor = HR_Motors; //
+        HL_Motor = HL_Motors; //
     }
     System.init();
 }
@@ -28,13 +32,14 @@ void loop() {
     System.Update.Sensors();
     System.Update.Interface();
  
-    if(System.Start){
+    if(System.Start){ 
         //Game.Run();
-        Robot.Turn(0);
-       // Motor.On(VL_Motor,100);
-       // Motor.On(VR_Motor,100);
-       // Motor.On(HL_Motor,100);
-       // Motor.On(HR_Motor,100);
+        //Robot.Turn(0);
+        //Robot.Drive(0,0,20);
+        //Motor.On(100,VL_Motor);
+        //Motor.On(100,VR_Motor);
+        Motor.On(100,HL_Motor);
+        Motor.On(100,HR_Motor);
     }
     else{
         Robot.Stop();
@@ -78,11 +83,12 @@ void loop() {
     }
     
     if(Robo_NR=="w"){
-        Motor.Enable = System.Switches[1];
+        //Motor.Enable = System.Switches[1];
     }
     else{
-        Motor.Enable = true;
+        //Motor.Enable = true;
     }
+    Motor.Enable = true;
     
     
     Cycle_P2++;

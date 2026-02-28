@@ -14,7 +14,6 @@ void BLC::doRolle(){
     int avail = UART_Pixy.available();
     if(avail>0){
         message = UART_Pixy.readStringUntil('$');
-        Serial.println("read : "+message); 
         if(message.length()==16){
             decode(message);
         }
@@ -39,7 +38,7 @@ void BLC::doRolle(){
         char sendMsg[29]; // war z.B. 19 – zu klein für "0%03d0%03d0%1d0%1d0%03d$" (max 28 Zeichen)
         snprintf(sendMsg, sizeof(sendMsg), "0%03d0%03d0%1d0%1d0%03d$", angle, dist, 0, 0, extra);
         UART_Pixy.print(sendMsg);
-        Debug.Plot("Message_S",sendMsg);
+        //Debug.Plot("Message_S",sendMsg);
         BL_Timer_TX = 0;
     }
 

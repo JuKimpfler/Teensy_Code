@@ -3,7 +3,6 @@ ExpanderC Expander;
 
 void ExpanderC::I2CC::init(int Add , int Mode , int on_off){ // on_off -> write all Outputs to low or high
     //Wire1.begin();
-    Wire1.setClock(400000);
     Wire1.beginTransmission(Add);
     Wire1.write(Config_Reg);        
     Wire1.write(Mode);         
@@ -12,11 +11,9 @@ void ExpanderC::I2CC::init(int Add , int Mode , int on_off){ // on_off -> write 
     Wire1.write(Output_Reg);         
     Wire1.write(on_off);         
     Wire1.endTransmission();
-    Wire1.setClock(1000000);
 }
 
 void ExpanderC::I2CC::read(int Add){
-    Wire1.setClock(400000);
     Wire1.beginTransmission(Add); //address second port expander
     Wire1.write(Input_Reg);  // select input register
     Wire1.endTransmission(false);        // send repeated start instead of stop
@@ -36,7 +33,6 @@ void ExpanderC::I2CC::read(int Add){
         Switch[6] = (last & (1 << 6));
         Switch[7] = (last & (1 << 7));
     }
-    Wire1.setClock(1000000);
 }
 
 bool ExpanderC::I2CC::give(int Add , int Port){
@@ -47,7 +43,6 @@ bool ExpanderC::I2CC::give(int Add , int Port){
 
 
 void ExpanderC::I2CC::write_Single(int Add , int Port , bool Zustand){
-    Wire1.setClock(400000);
     if ( Zustand == true ){
         Wire1.beginTransmission(Add); //address second port expander
         Wire1.write(Output_Reg);             // select output register
@@ -60,12 +55,10 @@ void ExpanderC::I2CC::write_Single(int Add , int Port , bool Zustand){
         Wire1.write(00000000);            // update output ports Port_Seting
         Wire1.endTransmission();
     }
-    Wire1.setClock(1000000);
 }
 
 
 void ExpanderC::I2CC::write(int Add , int Port , bool Zustand){
-    Wire1.setClock(400000);
     Wire1.beginTransmission(Add); //address second port expander
     Wire1.write(Output_Reg);             // select output register
     Wire1.endTransmission(false);  // send restart instead of stop
@@ -97,5 +90,4 @@ void ExpanderC::I2CC::write(int Add , int Port , bool Zustand){
     Wire1.write(Output_Reg);             // select output register
     Wire1.write(out);            // update output ports Port_Seting
     Wire1.endTransmission();
-    Wire1.setClock(1000000);
 }

@@ -4,12 +4,19 @@
 #ifndef enums_h
 #define enums_h
 
-enum Motor_Port { // Portbelegung Direct an Teensy
-    VR_Motor = 4, //
-    VL_Motor = 3, //
-    HR_Motor = 1, //
-    HL_Motor = 2, //
+// schwarz
+inline int VR_Motors = 4; //
+inline int VL_Motors = 3; //
+inline int HR_Motors = 2; //
+inline int HL_Motors = 1; //
 
+// weis
+inline int VR_Motor = 4; //
+inline int VL_Motor = 3; //
+inline int HR_Motor = 1; //
+inline int HL_Motor = 2; //
+
+enum Motor_Port { // Portbelegung Direct an Teensy
     VR_Speed_Port = 9, //+
     VL_Speed_Port = 6, //+
     HR_Speed_Port = 4, //+
