@@ -11,6 +11,7 @@ elapsedMillis BL_Timer_RX;
 elapsedMillis BL_Timer_TX;
 
 void BLC::doRolle(){
+    Debug.Start();
     int avail = UART_Pixy.available();
     if(avail>0){
         message = UART_Pixy.readStringUntil('$');
@@ -53,6 +54,7 @@ void BLC::doRolle(){
     else{Rolle="N";}
 
     //showRolle();
+    Debug.Send();
 }
 
 /**
@@ -77,7 +79,7 @@ void BLC::showRolle(){
 void BLC::decode(String message1){
     // 0123456789012345
     // 0AAA0DDD0I0I0EEE$
-    if(message1.length() < 15) return;
+    if(message1.length() < 16) return;
     int angle = message1.substring(1,4).toInt();
     int dist = message1.substring(5,8).toInt();
     bool info1 = message1.substring(9,9).toInt();
@@ -85,6 +87,8 @@ void BLC::decode(String message1){
     int extra = message1.substring(13).toInt();
     Ball.Angle_P2 = angle;
     Ball.Distance_P2 = dist;
+
+    Debug.Plot("angle",Ball.Angle_P2);
     // info1, info2, extra können hier weiterverarbeitet werden
 }
 

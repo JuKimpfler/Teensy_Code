@@ -33,13 +33,13 @@ void loop() {
     System.Update.Interface();
  
     if(System.Start){ 
-        //Game.Run();
+        Game.Run();
         //Robot.Turn(0);
         //Robot.Drive(0,0,20);
         //Motor.On(100,VL_Motor);
         //Motor.On(100,VR_Motor);
-        Motor.On(100,HL_Motor);
-        Motor.On(100,HR_Motor);
+        //Motor.On(100,HL_Motor);
+        //Motor.On(100,HR_Motor);
     }
     else{
         Robot.Stop();
