@@ -19,6 +19,7 @@ inline double F_Faktor = 1.3;
 inline double C_Faktor = 1.4;
 
 inline int LDR_Schwelle =  500;
+inline int LDR_Schwelle_s = 500; 
 
 inline int Line_Schwelle = 3200;
 

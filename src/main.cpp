@@ -22,6 +22,7 @@ void setup() {
         VL_Motor = VL_Motors; //
         HR_Motor = HR_Motors; //
         HL_Motor = HL_Motors; //
+        LDR_Schwelle = LDR_Schwelle_s ;
     }
     System.init();
 }
@@ -35,7 +36,7 @@ void loop() {
     if(System.Start){ 
         Game.Run();
         //Robot.Turn(0);
-        //Robot.Drive(0,0,20);
+        //Robot.Drive(-90,0,20);
         //Motor.On(100,VL_Motor);
         //Motor.On(100,VR_Motor);
         //Motor.On(100,HL_Motor);

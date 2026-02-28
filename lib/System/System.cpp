@@ -69,17 +69,20 @@ void SystemC::UpdateC::Sensors(){
     IR.read(); // 300 micro
     //BL.doRolle();
 
-    if ((Cycle_P3 > 20) && (false)){
+    if ((Cycle_P3 > 20) && (true)){
         Debug.Start();
-        Debug.Plot("Ball_Angle",Ball.Angle_P2);
-        Debug.Plot("dist",Ball.Angle);
+        Debug.Plot("Ball_Angle",Ball.Angle);
         Debug.Plot("Drive_Angle",Ball.Distance);
-        Debug.Plot("Rolle",Ball.Distance_P2);
-        Debug.Plot("G-Angle",Goal.Angle);
+        Debug.Plot("Rolle",BNO055.TiltZ);
+        Debug.Plot("ldr",analogRead(LDR_Port));
         Debug.Send();
         RGB.Apply(); // 300
         Cycle_P3 = 0;
     }
+    // p1 = 4
+    // p2  = 1
+    // p3 = 3
+    // p4 = 2
 
     /*if(Reg_Timer>1000){
         Wire1.beginTransmission(0x28);
