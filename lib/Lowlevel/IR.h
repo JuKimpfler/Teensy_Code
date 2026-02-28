@@ -1,7 +1,7 @@
 #pragma once
 #include "Elementar.h"
 #include "Expander.h"
-#include "ir_ring.h"
+#include "IR_ring.h"
 
 class IRC {
     private:
