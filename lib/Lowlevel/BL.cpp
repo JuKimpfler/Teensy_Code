@@ -11,7 +11,7 @@ elapsedMillis BL_Timer_RX;
 elapsedMillis BL_Timer_TX;
 
 void BLC::doRolle(){
-    Debug.Start();
+    //Debug.Start();
     int avail = UART_Pixy.available();
     if(avail>0){
         message = UART_Pixy.readStringUntil('$');
@@ -19,19 +19,19 @@ void BLC::doRolle(){
             decode(message);
         }
         else{
-            Debug.Plot("error_mess",message);
-            Debug.Plot("error_len",message.length());
+            //Debug.Plot("error_mess",message);
+            //Debug.Plot("error_len",message.length());
         }
         BL_Timer_RX = 0;
     }
     else{
-        Debug.Plot("Error_nothing",avail);
+        //Debug.Plot("Error_nothing",avail);
     }
 
     // Senden alle 10ms
     if(BL_Timer_TX > 10){
-        int angle = (digitalReadFast(Start_Port)) ? (int)round(Ball.Angle) : 999;
-        int dist = (digitalReadFast(Start_Port)) ? (int)round(Ball.Distance) : 999;
+        int angle = round(Ball.Angle);//(digitalReadFast(Start_Port)) ? (int)round(Ball.Angle);
+        int dist = round(Ball.Distance);//(digitalReadFast(Start_Port)) ? (int)round(Ball.Distance) : 999;
         bool info1 = true; // Beispielwert, anpassen!
         bool info2 = false; // Beispielwert, anpassen!
         int extra = 123; // Beispielwert, anpassen!
@@ -44,8 +44,8 @@ void BLC::doRolle(){
     }
 
     // SinglePlayer, wenn P2-Daten 9999
-    if((Ball.Angle_P2 == 999 && Ball.Distance_P2 == 999)||(BL_Timer_RX>3000)){SinglePlayer = true;}
-    else{SinglePlayer = false;}
+    //if((Ball.Angle_P2 == 999 && Ball.Distance_P2 == 999)||(BL_Timer_RX>3000)){SinglePlayer = true;}
+    //else{SinglePlayer = false;}
 
     if(!SinglePlayer){
         if(Ball.Distance_P2 < Ball.Distance){Rolle="D";}
@@ -54,7 +54,7 @@ void BLC::doRolle(){
     else{Rolle="N";}
 
     //showRolle();
-    Debug.Send();
+    //Debug.Send();
 }
 
 /**
@@ -88,7 +88,7 @@ void BLC::decode(String message1){
     Ball.Angle_P2 = angle;
     Ball.Distance_P2 = dist;
 
-    Debug.Plot("angle",Ball.Angle_P2);
+    //Debug.Plot("angle",Ball.Angle_P2);
     // info1, info2, extra können hier weiterverarbeitet werden
 }
 

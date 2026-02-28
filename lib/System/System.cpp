@@ -57,9 +57,9 @@ void SystemC::UpdateC::Interface(){
 void SystemC::UpdateC::Sensors(){
     System.Start_Update(); // 1 micro
     Line.read_Fast(); // 60 micro
-    US.read(); // 1 micro
-    Mouse.read(); // 177 micros
-    Cam.read(); // 1 micro
+    //US.read(); // 1 micro
+    //Mouse.read(); // 177 micros
+    //Cam.read(); // 1 micro
     Robot.Kicker.Update(); // 1 micro
     LineCalc.Calc(); // 15 micro
     BallCalc.CalcDist(); // 1 micro
@@ -67,14 +67,14 @@ void SystemC::UpdateC::Sensors(){
     PID.Calculate(); // 1 micro
     BNO055.read(); // 100-500 micro
     IR.read(); // 300 micro
-    BL.doRolle();
+    //BL.doRolle();
 
     if ((Cycle_P3 > 20) && (false)){
         Debug.Start();
-        Debug.Plot("Ball_Angle",Ball.Angle);
-        Debug.Plot("dist",Ball.Distance);
-        Debug.Plot("Drive_Angle",BallCalc.DriveAngle);
-        Debug.Plot("Rolle",BL.Rolle);
+        Debug.Plot("Ball_Angle",Ball.Angle_P2);
+        Debug.Plot("dist",Ball.Angle);
+        Debug.Plot("Drive_Angle",Ball.Distance);
+        Debug.Plot("Rolle",Ball.Distance_P2);
         Debug.Plot("G-Angle",Goal.Angle);
         Debug.Send();
         RGB.Apply(); // 300
