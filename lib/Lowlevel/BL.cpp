@@ -83,13 +83,14 @@ void BLC::showRolle(){
  * @param message1 The message to be decoded
  */
 void BLC::decode(String message1){
-    // 0AAA0DDD0I10I20EEE$
+    // 0123456789012345
+    // 0AAA0DDD0I0I0EEE$
     if(message1.length() < 15) return;
-    int angle = message1.substring(1,3).toInt();
-    int dist = message1.substring(4,7).toInt();
-    bool info1 = message1.substring(8,9).toInt();
-    bool info2 = message1.substring(10,11).toInt();
-    int extra = message1.substring(12,15).toInt();
+    int angle = message1.substring(1,4).toInt();
+    int dist = message1.substring(5,8).toInt();
+    bool info1 = message1.substring(9,9).toInt();
+    bool info2 = message1.substring(10,10).toInt();
+    int extra = message1.substring(13).toInt();
     Ball.Angle_P2 = angle;
     Ball.Distance_P2 = dist;
     // info1, info2, extra können hier weiterverarbeitet werden
