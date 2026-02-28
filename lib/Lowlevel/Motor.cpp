@@ -26,7 +26,6 @@ void MotorC::init(){
     analogWriteFrequency(HL_Speed_Port,Motor_Frequency);
 }
 
-//Zuerst Speed dann Motorport.
 void MotorC::On(int Speed , int Motor){
     if (Enable){ 
 

@@ -29,12 +29,12 @@ void loop() {
     System.Update.Interface();
  
     if(System.Start){
-        Game.Run();
-        //Robot.Turn(0);
-        /* Motor.On(VL_Motor,100);
-        Motor.On(VR_Motor,100);
-        Motor.On(HL_Motor,100);
-        Motor.On(HR_Motor,100); */
+        //Game.Run();
+        Robot.Turn(0);
+       // Motor.On(VL_Motor,100);
+       // Motor.On(VR_Motor,100);
+       // Motor.On(HL_Motor,100);
+       // Motor.On(HR_Motor,100);
     }
     else{
         Robot.Stop();
