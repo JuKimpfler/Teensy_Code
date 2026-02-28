@@ -15,7 +15,12 @@ void TakticsC::step(){
         Robot.Kicker.On();
     }
     else{
-        BallSearch();
+        if (Ball.inSight){
+            BallSearch();
+        }
+        else{
+            Robot.Drive(180, 0 , 30);
+        }
         Robot.Kicker.Off();
     } 
 }
