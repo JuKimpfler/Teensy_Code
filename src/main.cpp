@@ -88,5 +88,9 @@ void loop() {
     Cycle_P2++;
     Cycle_P3++;
     Cycletime = Cycle_Timer;
+
+    Debug.Start();
+    Debug.Plot("cycle",Cycletime);
+    Debug.Send();
 }
 
