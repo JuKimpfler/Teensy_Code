@@ -2,7 +2,7 @@
 // Created by Rafael Günther on 23.10.25.
 //
 
-#include "IR_ring.h"
+#include "ir_ring.h"
 
 #include "ir_ring_registers.h"
 
