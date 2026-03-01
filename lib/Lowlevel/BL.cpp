@@ -47,11 +47,6 @@ void BLC::doRolle(){
     //if((Ball.Angle_P2 == 999 && Ball.Distance_P2 == 999)||(BL_Timer_RX>3000)){SinglePlayer = true;}
     //else{SinglePlayer = false;}
 
-    if(!SinglePlayer){
-        if(Ball.Distance_P2 < Ball.Distance){Rolle="D";}
-        else {Rolle="A";}
-    }
-    else{Rolle="N";}
 
     //showRolle();
     //Debug.Send();
@@ -82,11 +77,17 @@ void BLC::decode(String message1){
     if(message1.length() < 16) return;
     int angle = message1.substring(1,4).toInt();
     int dist = message1.substring(5,8).toInt();
-    bool info1 = message1.substring(9,9).toInt();
-    bool info2 = message1.substring(10,10).toInt();
+    bool info1 = message1.substring(9,10).toInt();
+    bool info2 = message1.substring(11,12).toInt();
     int extra = message1.substring(13).toInt();
     Ball.Angle_P2 = angle;
     Ball.Distance_P2 = dist;
+
+    if(!SinglePlayer){
+        if(Ball.Distance_P2 < Ball.Distance){Rolle="D";}
+        else {Rolle="A";}
+    }
+    else{Rolle="N";}
 
     //Debug.Plot("angle",Ball.Angle_P2);
     // info1, info2, extra können hier weiterverarbeitet werden
