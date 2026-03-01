@@ -7,11 +7,13 @@ class IRC {
     private:
     
     public:
-        double IR_Values[16];
+        uint16_t IR_Values[16];
         double TSSP;
         double DistCal = 78;
         double DistFaktor = 0.12;
         double visable_th = 0;
+        const int16_t mini[16] = {16,24,15,17,19,17,16,18,14,17,14,15,54,17,16,0};
+        const uint16_t maxi[16] = {2920,2920,2854,2968,2958,3016,2985,2968,2664,2713,2935,2279,2914,2873,2850,56};
 
         void read();
         int GetData(int Port);

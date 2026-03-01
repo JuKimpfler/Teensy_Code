@@ -17,7 +17,7 @@ void setup() {
 
     Robo_NR = "s"; // w oder s
     if(Robo_NR == "s"){
-        IR.DistCal = 97;
+        IR.DistCal = 90;
         VR_Motor = VR_Motors; //
         VL_Motor = VL_Motors; //
         HR_Motor = HR_Motors; //
@@ -37,7 +37,7 @@ void loop() {
         Game.Run();
         //Robot.Turn(0);
         //Robot.Drive(-90,0,20);
-        //Motor.On(100,VL_Motor);
+        //Motor.On(100,VR_Motor);
         //Motor.On(100,VR_Motor);
         //Motor.On(100,HL_Motor);
         //Motor.On(100,HR_Motor);

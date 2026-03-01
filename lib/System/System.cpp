@@ -46,6 +46,8 @@ void SystemC::init(){
     
     Expander.I2C.init(I2C_ITF_Main,Input_Mode,All_Off);
     US.init();
+
+    IR.init();
 }
 
 void SystemC::UpdateC::Interface(){
@@ -67,13 +69,13 @@ void SystemC::UpdateC::Sensors(){
     PID.Calculate(); // 1 micro
     BNO055.read(); // 100-500 micro
     IR.read(); // 300 micro
-    BL.doRolle();
+    //BL.doRolle();
 
     if ((Cycle_P3 > 20) && (true)){
         Debug.Start();
-        Debug.Plot("Ball_Angle",Ball.Distance_P2);
+        Debug.Plot("Ball_Angle",Ball.Angle);
         Debug.Plot("Drive_Angle",Ball.Distance);
-        Debug.Plot("Rolle",BNO055.TiltZ);
+        Debug.Plot("Rolle",Ball.Distance_raw);
         Debug.Plot("ldr",Ball.inSight);
         Debug.Send();
         RGB.Apply(); // 300
