@@ -11,7 +11,7 @@ IR_ring ir_lib(ir_ring_handle);
 
 void IRC::init(){
     if(Robo_NR=="s"){
-        ir_lib.write_ir_sensor_mask(0b1111111111111110);
+        //ir_lib.write_ir_sensor_mask(0b1111111111111110);
         ir_lib.write_offsets(mini);
         ir_lib.write_gains(maxi);
     }

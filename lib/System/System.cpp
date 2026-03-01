@@ -73,7 +73,7 @@ void SystemC::UpdateC::Sensors(){
 
     if ((Cycle_P3 > 20) && (false)){
         Debug.Start();
-        Debug.Plot("ball angle 2",Ball.Angle_P2);
+        Debug.Plot("zone 2",Zone);
         Debug.Plot("ball angle",Ball.Angle);
         Debug.Plot("ball dist",Ball.Distance);
         Debug.Plot("ball dist 2",Ball.Distance_P2);

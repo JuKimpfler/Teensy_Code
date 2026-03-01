@@ -17,7 +17,7 @@ void setup() {
 
     Robo_NR = "s"; // w oder s
     if(Robo_NR == "s"){
-        IR.DistCal = 90;
+        IR.DistCal = 100;
         VR_Motor = VR_Motors; //
         VL_Motor = VL_Motors; //
         HR_Motor = HR_Motors; //
@@ -28,6 +28,7 @@ void setup() {
 }
 
 void loop() { 
+    Serial.println(Zone);
     Cycle_Timer = 0 ;
 
     System.Update.Sensors();
@@ -59,7 +60,6 @@ void loop() {
     }   
     if (System.Button[1]){
         Robot.Kicker.On();
-        IR.Calib_Dist();
     }
     else{
         Robot.Kicker.Off();
@@ -68,6 +68,7 @@ void loop() {
     if (System.Switches[1]){
         if (System.Button[2]){
             Line.Calibrate(1);
+            IR.DistCal = Ball.Distance_raw2;
         }
         if (System.Button[3]){
             Line.Calibrate(2);
