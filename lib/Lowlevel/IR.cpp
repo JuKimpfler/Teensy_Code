@@ -15,6 +15,10 @@ void IRC::init(){
         ir_lib.write_offsets(mini);
         ir_lib.write_gains(maxi);
     }
+    else{
+        ir_lib.write_offsets(miniw);
+        ir_lib.write_gains(maxiw);
+    }
 }
 
 void IRC::read(){               //01234567890123456
@@ -23,13 +27,12 @@ void IRC::read(){               //01234567890123456
         float ValueF;
         ValueF=U.Circel(((ir_lib.read_ball_angle()*-1) -180)-6);
         Ball.Angle = ValueF;
-
-        //ir_lib.read_calibrated_values(IR_Values);
     }
     else{
         float ValueF;
         ValueF=U.Circel(ir_lib.read_ball_angle()*-1);
         Ball.Angle = ValueF;
+
     }
 
     uint16_t Value;

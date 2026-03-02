@@ -14,10 +14,10 @@ inline float PID_Mult = 0.1; // Belassen
 inline float PID_Konstante = 0.5; // 0.3
 
 inline double E_Faktor = 1.2;
-inline double B_Faktor = 1.06;
+inline double B_Faktor = 1.2;
 inline double F_Faktor = 1.55;
 inline double C_Faktor = 2;
-inline double H_Faktor = 1.6;
+inline double H_Faktor = 1.5;
 
 inline int LDR_Schwelle =  500;
 inline int LDR_Schwelle_s = 500; 

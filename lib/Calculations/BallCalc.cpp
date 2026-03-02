@@ -59,7 +59,7 @@ void BallCalcC::getAngle(){
     }
     */
 
-    int Dist_Schwelle_min = 5;
+    int Dist_Schwelle_min = 10;
     int Dist_Schwelle_max = 60;
     Zone = "unread";
     

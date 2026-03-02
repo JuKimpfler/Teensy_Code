@@ -15,7 +15,7 @@ void setup() {
     UART_2.begin(115200);
     UART_Pixy.begin(115200);
 
-    Robo_NR = "s"; // w oder s
+    Robo_NR = "w"; // w oder s
     if(Robo_NR == "s"){
         IR.DistCal = 100;
         VR_Motor = VR_Motors; //
@@ -28,7 +28,6 @@ void setup() {
 }
 
 void loop() { 
-    Serial.println(Zone);
     Cycle_Timer = 0 ;
 
     System.Update.Sensors();
@@ -67,7 +66,6 @@ void loop() {
 
     if (System.Switches[1]){
         if (System.Button[2]){
-            Line.Calibrate(1);
             IR.DistCal = Ball.Distance_raw2;
         }
         if (System.Button[3]){
