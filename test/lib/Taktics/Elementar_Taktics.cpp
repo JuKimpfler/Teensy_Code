@@ -1,0 +1,22 @@
+#include "Elementar_Taktics.h"
+Elem_TakticsC Elem_Taktics;
+
+void Elem_TakticsC::Ballsearch(){
+    Robot.Drive(-BallCalc.DriveAngle,0,MainSpeed);
+}
+
+void Elem_TakticsC::BallCaught(){
+    Robot.Drive(Goal.Angle, 0, MainSpeed);
+}
+
+void Elem_TakticsC::step(){
+    if (LDR.Aktiv() == true){
+        BallCaught();
+    }
+    else{
+        Ballsearch();
+    } 
+}
+
+
+
