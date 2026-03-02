@@ -8,7 +8,6 @@
 // ------------------------------------------------------------
 //  Pin-Belegung  (Seeed Studio XIAO ESP32-C3)
 // ------------------------------------------------------------
-#define PIN_SETUP_MODE      5   // HIGH  → Setup-Modus aktiv (externes Signal)
 #define PIN_LED_CONNECTED   9   // LED Verbindungsstatus  (ACHTUNG: GPIO9 = BOOT-Taste!)
 #define PIN_LED_SETUP       10  // LED Setup-Modus aktiv
 
@@ -37,7 +36,8 @@
 // ------------------------------------------------------------
 #define UART_RX_BUF_SIZE    512         // Puffergröße für Hardware-UART-Eingang
 #define SEND_INTERVAL_MS    5           // Alle 5 ms gepufferte Daten senden
-#define MAX_IDLE_MS         3000        // 3 s kein RX → „nicht verbunden"
+#define MAX_IDLE_MS         8000        // 8 s kein Activity → nicht verbunden
+                                        // (8x Heartbeat; toleriert kurze 2,4-GHz-Interferenz)
 
 // ------------------------------------------------------------
 //  Setup-Modus  &  Scan

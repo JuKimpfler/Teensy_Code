@@ -7,11 +7,19 @@
 //
 //  Hardware: Seeed Studio XIAO ESP32-C3
 //  Pins:
-//    GPIO 5   – Setup-Modus-Eingang (HIGH = Setup aktiv)
 //    GPIO 9   – LED Verbindungsstatus  (ACHTUNG: = BOOT-Taste!)
 //    GPIO 10  – LED Setup-Modus
 //    GPIO 20  – UART1 RX  (D7)
 //    GPIO 21  – UART1 TX  (D6)
+//
+//  Setup-Modus öffnen:              "ET+OPEN\n"  per USB- oder HW-UART
+//  Setup-Modus schließen (kein Save): "ET+CLOSE\n"
+//  Speichern & schließen:             "ET+SAVE\n"
+//
+//  Normalbetrieb:
+//    - Hardware-UART (Serial1) → ESP-NOW (transparent, binär)
+//    - USB-Serial (Serial)    → ESP-NOW (zeilenweise, Text/Bytes)
+//    - ESP-NOW → Hardware-UART + USB-Serial (Debug)
 // ============================================================
 
 #include <Arduino.h>
@@ -74,7 +82,6 @@ bool     g_ledBlinkState   = false;
 uint16_t g_txSeq = 0;
 
 // --- Setup-Modus ---
-bool     g_setupPinPrev   = false; // Flanken-Erkennung
 uint32_t g_lastScanBcastMs = 0;
 uint8_t  g_scanBcastSent  = 0;
 bool     g_scanActive     = false;
@@ -89,6 +96,13 @@ uint8_t   g_foundPeerCount = 0;
 // --- Kommandopuffer (USB-Serial) ---
 char    g_cmdBuf[CMD_BUF_SIZE];
 uint8_t g_cmdLen = 0;
+
+// --- HW-UART Befehlserkennung (Sniff-Puffer für ET+OPEN / ET+CLOSE) ---
+// Läuft parallel zum Datenpuffer; erkennt Befehle im Datenstrom und
+// entfernt sie nachträglich aus dem Datenpuffer.
+#define HW_CMD_SNIFF_SIZE  12   // >= len("ET+CLOSE") + 1
+char    g_hwCmdSniff[HW_CMD_SNIFF_SIZE];
+uint8_t g_hwCmdSniffLen = 0;
 
 // ============================================================
 //  Hilfsfunktionen
@@ -158,9 +172,13 @@ void removeEspNowPeer(const uint8_t *mac) {
 void onDataSent(const uint8_t *mac, esp_now_send_status_t status) {
     if (status == ESP_NOW_SEND_SUCCESS) {
         g_sendFailCount = 0;
+        // ESP-NOW-ACK auf MAC-Ebene bedeutet: Peer ist erreichbar.
+        // g_lastRxMs aktualisieren damit der Idle-Timeout nicht fälschlich
+        // durch reine Sende-Aktivität (ohne eingehende Pakete) ausgelöst wird.
+        g_lastRxMs = millis();
         if (!g_peerConnected && g_peerStored) {
             g_peerConnected = true;
-            Serial.println(F("[INFO] Peer erfolgreich erreicht → VERBUNDEN"));
+            Serial.println(F("[INFO] Peer erreichbar → VERBUNDEN"));
         }
     } else {
         g_sendFailCount++;
@@ -199,15 +217,19 @@ void onDataRecv(const uint8_t *mac, const uint8_t *inData, int len) {
             Serial.print(pkt->dataLen);
             Serial.print(F(" B  seq="));
             Serial.print(pkt->seq);
-            Serial.print(F("  Daten: "));
-            // Hex-Dump (max 16 Byte für Übersichtlichkeit)
-            uint16_t showLen = min((uint16_t)16, pkt->dataLen);
-            for (uint16_t i = 0; i < showLen; i++) {
-                if (pkt->data[i] < 0x10) Serial.print('0');
-                Serial.print(pkt->data[i], HEX);
-                Serial.print(' ');
+            Serial.print(F("  \""));
+            // String-Ausgabe: nicht-druckbare Zeichen als \xHH darstellen
+            for (uint16_t i = 0; i < pkt->dataLen; i++) {
+                char c = (char)pkt->data[i];
+                if (c >= 0x20 && c < 0x7F) {
+                    Serial.print(c);
+                } else {
+                    Serial.print(F("\\x"));
+                    if (pkt->data[i] < 0x10) Serial.print('0');
+                    Serial.print(pkt->data[i], HEX);
+                }
             }
-            if (pkt->dataLen > 16) Serial.print(F("..."));
+            Serial.print(F("\""));
             Serial.println();
         }
 
@@ -377,7 +399,9 @@ void enterSetupMode() {
     Serial.println(F("  ET+CHANNEL=N     – WiFi-Kanal setzen (1–13, Neustart)"));
     Serial.println(F("  ET+RESET         – Peer-Einstellungen löschen"));
     Serial.println(F("  ET+SAVE          – Speichern & Setup beenden"));
+    Serial.println(F("  ET+CLOSE         – Setup beenden OHNE Speichern"));
     Serial.println(F("========================================="));
+    Serial.println(F("Tipp: ET+OPEN/ET+CLOSE auch per HW-UART sendbar."));
 }
 
 void exitSetupMode() {
@@ -463,12 +487,14 @@ void processCommand(const char *rawCmd) {
         cmd[--len] = '\0';
     if (len == 0) return;
 
-    // Befehle NUR im Setup-Modus oder Status-Abfragen immer erlauben
-    bool isQuery = (strncmp(cmd, "ET+STATUS?", 10) == 0 ||
-                    strncmp(cmd, "ET+MAC?",     7) == 0);
+    // Befehle die immer erlaubt sind (auch außerhalb Setup-Modus)
+    bool isAlways = (strncmp(cmd, "ET+STATUS?", 10) == 0 ||
+                     strncmp(cmd, "ET+MAC?",     7) == 0 ||
+                     strcmp (cmd, "ET+OPEN")        == 0 ||
+                     strcmp (cmd, "ET+CLOSE")       == 0);
 
-    if (!g_setupMode && !isQuery) {
-        Serial.println(F("[CMD] Nicht im Setup-Modus. GPIO5 HIGH → Setup-Modus."));
+    if (!g_setupMode && !isAlways) {
+        Serial.println(F("[CMD] Nicht im Setup-Modus. Tipp: ET+OPEN"));
         return;
     }
 
@@ -480,8 +506,27 @@ void processCommand(const char *rawCmd) {
 
     const char *body = cmd + 3;
 
+    // ---- ET+OPEN ----
+    if (strcmp(body, "OPEN") == 0) {
+        if (g_setupMode) {
+            Serial.println(F("[CMD] Setup-Modus bereits aktiv."));
+        } else {
+            enterSetupMode();
+        }
+    }
+
+    // ---- ET+CLOSE ----
+    else if (strcmp(body, "CLOSE") == 0) {
+        if (!g_setupMode) {
+            Serial.println(F("[CMD] Setup-Modus nicht aktiv."));
+        } else {
+            Serial.println(F("[SETUP] Beende Setup-Modus ohne Speichern."));
+            exitSetupMode();
+        }
+    }
+
     // ---- ET+SCAN ----
-    if (strcmp(body, "SCAN") == 0) {
+    else if (strcmp(body, "SCAN") == 0) {
         startScan();
     }
 
@@ -579,7 +624,7 @@ void processCommand(const char *rawCmd) {
     else {
         Serial.print(F("[CMD] Unbekannter Befehl: "));
         Serial.println(cmd);
-        Serial.println(F("[CMD] ET+STATUS? für Hilfe"));
+        Serial.println(F("[CMD] ET+STATUS? für Hilfe | ET+CLOSE zum Beenden"));
     }
 }
 
@@ -636,12 +681,16 @@ void updateLEDs() {
 
 // ============================================================
 //  Verbindungs-Timeout prüfen
+//  Trennung nur wenn BEIDE Bedingungen zutreffen:
+//    a) Kein Activity (RX oder TX-ACK) seit MAX_IDLE_MS
+//    b) Mindestens ein Sendefehler aufgetreten
+//  Verhindert False-Positives durch kurze 2,4-GHz-Interferenz.
 // ============================================================
 void checkConnectionTimeout() {
     if (!g_peerConnected) return;
-    if (millis() - g_lastRxMs > MAX_IDLE_MS) {
+    if ((millis() - g_lastRxMs > MAX_IDLE_MS) && (g_sendFailCount > 0)) {
         g_peerConnected = false;
-        Serial.println(F("[WARN] Timeout: kein Signal → VERBINDUNG VERLOREN"));
+        Serial.println(F("[WARN] Timeout + Sendefehler → VERBINDUNG VERLOREN"));
     }
 }
 
@@ -673,7 +722,6 @@ void setup() {
     Serial.println(F("========================================="));
 
     // Pins konfigurieren
-    pinMode(PIN_SETUP_MODE,    INPUT);
     pinMode(PIN_LED_CONNECTED, OUTPUT);
     pinMode(PIN_LED_SETUP,     OUTPUT);
     digitalWrite(PIN_LED_CONNECTED, LOW);
@@ -696,20 +744,15 @@ void setup() {
         addEspNowPeer(g_peerMac);
     } else {
         Serial.println(F("[WARN] Kein Peer konfiguriert."));
-        Serial.println(F("[WARN] GPIO5 auf HIGH legen und ET+SCAN ausführen."));
+        Serial.println(F("[WARN] Setup-Modus per ET+OPEN starten."));
     }
 
     // Startzeit für RX-Timeout setzen
     g_lastRxMs = millis();
+    g_hwCmdSniffLen = 0;
 
-    // Startup-Zustand prüfen (GPIO5)
-    g_setupPinPrev = (digitalRead(PIN_SETUP_MODE) == HIGH);
-    if (g_setupPinPrev) {
-        enterSetupMode();
-    } else {
-        printStatus();
-        Serial.println(F("[INFO] Normaler Betrieb. GPIO5 HIGH → Setup-Modus."));
-    }
+    printStatus();
+    Serial.println(F("[INFO] Normaler Betrieb. ET+OPEN → Setup-Modus."));
 }
 
 // ============================================================
@@ -717,28 +760,48 @@ void setup() {
 // ============================================================
 void loop() {
     // -------------------------------------------------------
-    //  GPIO5 Flanken-Erkennung → Setup-Modus ein/aus
-    // -------------------------------------------------------
-    bool setupPinNow = (digitalRead(PIN_SETUP_MODE) == HIGH);
-    if (setupPinNow && !g_setupPinPrev) {
-        enterSetupMode();
-    }
-    // Hinweis: Verlassen nur per ET+SAVE (damit kein versehentliches Beenden)
-    g_setupPinPrev = setupPinNow;
-
-    // -------------------------------------------------------
-    //  USB-Serial: Befehle lesen
+    //  USB-Serial lesen
+    //  Setup-Modus  : Zeilenpuffer → Befehl bei CRLF
+    //  Normalbetrieb: Bytes sofort in g_uartBuf (kein CRLF nötig);
+    //                 ET+-Erkennung per Sniff (CRLF als Terminator),
+    //                 ET+-Bytes dann retroaktiv aus g_uartBuf entfernen.
     // -------------------------------------------------------
     while (Serial.available()) {
         char c = (char)Serial.read();
-        if (c == '\n' || c == '\r') {
-            if (g_cmdLen > 0) {
-                g_cmdBuf[g_cmdLen] = '\0';
-                processCommand(g_cmdBuf);
-                g_cmdLen = 0;
+
+        if (g_setupMode) {
+            // ---- Setup: klassischer Zeilenpuffer ----
+            if (c == '\n' || c == '\r') {
+                if (g_cmdLen > 0) {
+                    g_cmdBuf[g_cmdLen] = '\0';
+                    processCommand(g_cmdBuf);
+                    g_cmdLen = 0;
+                }
+            } else if (g_cmdLen < CMD_BUF_SIZE - 1) {
+                g_cmdBuf[g_cmdLen++] = c;
             }
-        } else if (g_cmdLen < CMD_BUF_SIZE - 1) {
-            g_cmdBuf[g_cmdLen++] = c;
+        } else {
+            // ---- Normalbetrieb: Sniff-Ansatz (wie HW-UART) ----
+            if (c == '\n' || c == '\r') {
+                if (g_cmdLen > 0) {
+                    g_cmdBuf[g_cmdLen] = '\0';
+                    if (strncmp(g_cmdBuf, "ET+", 3) == 0) {
+                        // ET+-Befehl: Bytes retroaktiv aus g_uartBuf entfernen
+                        if (g_uartBufLen >= (uint16_t)g_cmdLen)
+                            g_uartBufLen -= (uint16_t)g_cmdLen;
+                        processCommand(g_cmdBuf);
+                    }
+                    // Kein ET+: Bytes bereits in g_uartBuf → Daten, nichts tun
+                    g_cmdLen = 0;
+                }
+                // \r/\n selbst NICHT in g_uartBuf schreiben
+            } else {
+                // Datenbyte: sofort in Sendepuffer UND in Sniff-Puffer
+                if (g_uartBufLen < UART_RX_BUF_SIZE)
+                    g_uartBuf[g_uartBufLen++] = (uint8_t)c;
+                if (g_cmdLen < CMD_BUF_SIZE - 1)
+                    g_cmdBuf[g_cmdLen++] = c;
+            }
         }
     }
 
@@ -749,11 +812,45 @@ void loop() {
 
     // -------------------------------------------------------
     //  NORMALER BETRIEB: UART → ESP-NOW
+    //  HW-UART: binär-transparent + Befehlserkennung (ET+OPEN/CLOSE)
     // -------------------------------------------------------
     if (!g_setupMode) {
-        // Hardware-UART-Eingang puffern
+        // Hardware-UART-Eingang puffern + Befehlserkennung
+        // CRLF-Bytes (\r, \n) werden NICHT in den Datenpuffer geschrieben –
+        // sie dienen nur als Befehlstrenner im Sniff-Puffer.
         while (Serial1.available() && g_uartBufLen < UART_RX_BUF_SIZE) {
-            g_uartBuf[g_uartBufLen++] = (uint8_t)Serial1.read();
+            uint8_t b = (uint8_t)Serial1.read();
+            char    ch = (char)b;
+
+            if (ch == '\n' || ch == '\r') {
+                // ---- Befehlserkennung ----
+                if (g_hwCmdSniffLen > 0) {
+                    g_hwCmdSniff[g_hwCmdSniffLen] = '\0';
+                    if (strcmp(g_hwCmdSniff, "ET+OPEN") == 0) {
+                        // Sniff-Bytes retroaktiv aus Datenpuffer entfernen
+                        // (\r/\n selbst wurden nie hinzugefügt → kein +1)
+                        if (g_uartBufLen >= g_hwCmdSniffLen)
+                            g_uartBufLen -= g_hwCmdSniffLen;
+                        enterSetupMode();
+                    } else if (strcmp(g_hwCmdSniff, "ET+CLOSE") == 0) {
+                        if (g_uartBufLen >= g_hwCmdSniffLen)
+                            g_uartBufLen -= g_hwCmdSniffLen;
+                        Serial.println(F("[SETUP] ET+CLOSE via HW-UART: Setup beendet ohne Speichern."));
+                        exitSetupMode();
+                    }
+                    g_hwCmdSniffLen = 0;
+                }
+                // \r/\n werden nicht in g_uartBuf geschrieben → weiter
+            } else {
+                // Datenbyte: in Puffer UND Sniff-Puffer
+                g_uartBuf[g_uartBufLen++] = b;
+                if (g_hwCmdSniffLen < HW_CMD_SNIFF_SIZE - 1) {
+                    g_hwCmdSniff[g_hwCmdSniffLen++] = ch;
+                } else {
+                    // Zeile zu lang → kein Befehl, Sniff-Puffer zurücksetzen
+                    g_hwCmdSniffLen = 0;
+                }
+            }
         }
 
         // Puffer mit Sendeintervall absenden

@@ -42,6 +42,8 @@ Gerät A ◄─(UART 115200)── ESP32-C3 [A] ◄─(ESP-NOW 2.4 GHz)── ES
 | Ziel-Last           | 20 Byte alle 10 ms ≈ 2 kB/s            |
 | Auto-Reconnect      | Ja (nach Neustart sofort)               |
 | Einstellungsspeicher| NVS (internes Flash, kein ext. EEPROM)  |
+| Setup-Aktivierung   | `ET+OPEN` per USB- oder HW-UART         |
+| Setup-Beenden       | `ET+SAVE` (speichert) / `ET+CLOSE` (verwirft) |
 
 ---
 
@@ -50,7 +52,6 @@ Gerät A ◄─(UART 115200)── ESP32-C3 [A] ◄─(ESP-NOW 2.4 GHz)── ES
 - 2× **Seeed Studio XIAO ESP32-C3**
 - 2× LED (z. B. 3 mm grün) + 2× LED (z. B. 3 mm gelb/rot)
 - 4× Vorwiderstand 220–330 Ω
-- Optionaler Pull-Down-Widerstand 10 kΩ an GPIO 5 (wenn kein externer Signalgeber)
 - USB-C-Kabel (Flashen / Debuggen)
 
 ---
@@ -59,23 +60,18 @@ Gerät A ◄─(UART 115200)── ESP32-C3 [A] ◄─(ESP-NOW 2.4 GHz)── ES
 
 > Die Pinbelegung ist für **beide** Module identisch.
 
-| GPIO  | Bezeichnung  | Funktion                                      |
-|-------|--------------|-----------------------------------------------|
-| **5** | D3           | Setup-Modus-Eingang (HIGH-aktiv, 3,3 V)       |
-| **9** | D9 / BOOT    | LED Verbindungsstatus ⚠️ siehe Hinweis         |
-| **10**| D10          | LED Setup-Modus                               |
-| **20**| D7 / UART-RX | Hardware-UART Empfang (von externem Gerät)    |
-| **21**| D6 / UART-TX | Hardware-UART Senden (an externes Gerät)      |
+| GPIO  | Bezeichnung  | Funktion                                          |
+|-------|--------------|---------------------------------------------------|
+| **9** | D9 / BOOT    | LED Verbindungsstatus ⚠️ siehe Hinweis             |
+| **10**| D10          | LED Setup-Modus                                   |
+| **20**| D7 / UART-RX | Hardware-UART Empfang (von externem Gerät)        |
+| **21**| D6 / UART-TX | Hardware-UART Senden (an externes Gerät)          |
 
 ### Schaltung
 
 ```
 3,3 V ──[220Ω]──► LED (Anode) ──► GPIO 10  (Kathode → GND)
 3,3 V ──[220Ω]──► LED (Anode) ──► GPIO  9  (Kathode → GND)
-
-Externer Signalgeber: GPIO 5 ── Signal  (0 V / 3,3 V)
-                                            │
-                              10 kΩ Pull-Down nach GND empfohlen
 
 Gerät ──────────────  TX  ──► GPIO 20 (UART RX)
 Gerät ◄──────────── GPIO 21 (UART TX) ──  RX  ──
@@ -146,7 +142,7 @@ Da beide Module die **identische Firmware** haben, unterscheiden sie sich nur du
 #### Pairing (auf **einem** der beiden Module)
 
 ```
-1. GPIO5 auf HIGH legen (externer Eingang oder Brücken-Jumper)
+1. ET+OPEN senden (USB-Serial oder HW-UART)
    → LED GPIO10 leuchtet auf
    → Setup-Modus aktiv
 
@@ -156,7 +152,7 @@ Da beide Module die **identische Firmware** haben, unterscheiden sie sich nur du
 
 3. ET+SELECT=1
    → Auswahl des ersten gefundenen Peers
-   
+
 4. ET+SAVE
    → MAC wird im Flash gespeichert
    → Setup-Modus wird beendet
@@ -169,7 +165,7 @@ Da beide Module die **identische Firmware** haben, unterscheiden sie sich nur du
 > Um die Verbindung dauerhaft zu machen, auch auf dem zweiten Modul:
 
 ```
-GPIO5 HIGH → ET+PEER=AA:BB:CC:DD:EE:FF → ET+SAVE
+ET+OPEN → ET+PEER=AA:BB:CC:DD:EE:FF → ET+SAVE
 ```
 (MAC vom ersten Modul via `ET+MAC?` abfragen)
 
@@ -180,22 +176,34 @@ GPIO5 HIGH → ET+PEER=AA:BB:CC:DD:EE:FF → ET+SAVE
 Alle Befehle werden per **USB-Serial** (Terminal) im Format `ET+BEFEHL` gesendet.  
 Zeilenendzeichen: `\n` oder `\r\n`
 
-| Befehl                       | Beschreibung                                          |
-|------------------------------|-------------------------------------------------------|
-| `ET+SCAN`                    | 5-Sekunden-Scan nach ESP-NOW-Peers                    |
-| `ET+LIST`                    | Ergebnisse des letzten Scans anzeigen                 |
-| `ET+SELECT=N`                | Peer Nr. N aus Scan-Liste auswählen                   |
-| `ET+PEER=AA:BB:CC:DD:EE:FF`  | Peer-MAC manuell eingeben                             |
-| `ET+PEER?`                   | Gespeicherte Peer-MAC auslesen                        |
-| `ET+MAC?`                    | Eigene MAC-Adresse anzeigen (auch außerhalb Setup)    |
-| `ET+STATUS?`                 | Vollständigen Status anzeigen (auch außerhalb Setup)  |
-| `ET+CHANNEL=N`               | WiFi-Kanal setzen (1–13, wirkt nach Neustart)         |
-| `ET+RESET`                   | Peer-MAC und Einstellungen löschen                    |
-| `ET+SAVE`                    | Einstellungen im Flash speichern & Setup beenden      |
+| Befehl                       | Modus          | Beschreibung                                       |
+|------------------------------|----------------|----------------------------------------------------|  
+| `ET+OPEN`                    | immer          | Setup-Modus aktivieren (USB- **oder** HW-UART)     |
+| `ET+CLOSE`                   | immer          | Setup-Modus beenden **ohne** Speichern             |
+| `ET+SCAN`                    | Setup          | 5-Sekunden-Scan nach ESP-NOW-Peers                 |
+| `ET+LIST`                    | Setup          | Ergebnisse des letzten Scans anzeigen              |
+| `ET+SELECT=N`                | Setup          | Peer Nr. N aus Scan-Liste auswählen                |
+| `ET+PEER=AA:BB:CC:DD:EE:FF`  | Setup          | Peer-MAC manuell eingeben                          |
+| `ET+PEER?`                   | Setup          | Gespeicherte Peer-MAC auslesen                     |
+| `ET+MAC?`                    | **immer**      | Eigene MAC-Adresse anzeigen                        |
+| `ET+STATUS?`                 | **immer**      | Vollständigen Status anzeigen                      |
+| `ET+CHANNEL=N`               | Setup          | WiFi-Kanal setzen (1–13, wirkt nach Neustart)      |
+| `ET+RESET`                   | Setup          | Peer-MAC und Einstellungen löschen                 |
+| `ET+SAVE`                    | Setup          | Einstellungen speichern & Setup beenden            |
+
+### Besonderheiten
+
+- `ET+OPEN` und `ET+CLOSE` funktionieren **jederzeit** – unabhängig vom aktuellen Modus
+- `ET+OPEN` / `ET+CLOSE` können über **USB-Serial** (Terminal) **oder** den **Hardware-UART** gesendet werden
+- Im **Normalbetrieb** wird jede Zeile, die **nicht** mit `ET+` beginnt, direkt als Nutzdaten per ESP-NOW weitergeleitet
+- Im **Setup-Modus** wird USB-Serial ausschließlich als Befehlsschnittstelle genutzt
 
 ### Beispiel-Session
 
 ```
+ET+OPEN
+  *** SETUP-MODUS AKTIV ***
+
 ET+MAC?
 [INFO] Eigene MAC: 34:94:54:AB:CD:EF
 
@@ -205,26 +213,29 @@ ET+SCAN
 [SCAN] Gefunden #1: 34:94:54:11:22:33
 [SCAN] Abgeschlossen. 1 Peer(s) gefunden:
   [1] 34:94:54:11:22:33
-[SETUP] Tipp: ET+SELECT=1  oder  ET+PEER=<MAC>
 
 ET+SELECT=1
 [SETUP] Peer gesetzt: 34:94:54:11:22:33
 
-ET+STATUS?
-=== ESP-NOW UART Bridge – Status ===
-  Firmware:      v1.0
-  Eigene MAC:    34:94:54:AB:CD:EF
-  Peer MAC:      34:94:54:11:22:33
-  Verbunden:     NEIN
-  Modus:         SETUP
-  WiFi-Kanal:    1
-  UART Baud:     115200
-====================================
-
 ET+SAVE
 [NVS] Einstellungen gespeichert.
 [SETUP] Setup beendet → Normaler Betrieb
-[INFO] Verbunden → LED GPIO9 leuchtet
+```
+
+#### Setup beenden ohne Speichern
+
+```
+ET+CLOSE
+[SETUP] Beende Setup-Modus ohne Speichern.
+[SETUP] Setup beendet → Normaler Betrieb
+```
+
+#### Setup über Hardware-UART auslösen
+
+Der an Hardware-UART angeschlossene Microcontroller kann einfach schreiben:
+```
+ET+OPEN\n    ← ESP wechselt in Setup-Modus
+ET+CLOSE\n   ← ESP verlässt Setup-Modus ohne Speichern
 ```
 
 ---
@@ -236,9 +247,25 @@ Nach erfolgreichem Pairing und gespeicherter Peer-MAC läuft die Bridge vollauto
 1. **Einschalten**: beide Module mit Spannung versorgen
 2. **Auto-Connect**: jedes Modul lädt die Peer-MAC aus dem Flash und fügt sie als ESP-NOW-Peer hinzu
 3. **Heartbeat**: alle 1 Sekunde wird ein kleines Keep-Alive-Paket gesendet/empfangen
-4. **UART → ESP-NOW**: Hardware-UART-Eingang wird alle **5 ms** gepuffert und versendet
-5. **ESP-NOW → UART**: empfangene Pakete werden sofort auf Hardware-UART ausgegeben
-6. **Debug**: alle Aktionen werden zusätzlich auf USB-Serial (115200) ausgegeben
+4. **HW-UART → ESP-NOW**: Hardware-UART-Eingang (GPIO20/21) wird alle **5 ms** gepuffert und versendet – transparent, binär
+5. **USB-UART → ESP-NOW**: Zeilen auf USB-Serial, die **nicht** mit `ET+` beginnen, werden ebenfalls per ESP-NOW weitergeleitet
+6. **ESP-NOW → HW-UART + USB**: empfangene Pakete gehen gleichzeitig auf Hardware-UART **und** USB-Serial (Debug)
+7. **Debug**: alle Aktionen (TX/RX, Hex-Dump) werden auf USB-Serial (115200) ausgegeben
+
+### Setup-Modus aufrufen
+
+Per USB-Serial oder HW-UART senden:
+```
+ET+OPEN
+```
+Verlassen ohne Speichern:
+```
+ET+CLOSE
+```
+Verlassen mit Speichern:
+```
+ET+SAVE
+```
 
 ### Timing-Analyse
 
