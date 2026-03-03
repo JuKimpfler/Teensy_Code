@@ -30,8 +30,8 @@ void BLC::doRolle(){
 
     // Senden alle 10ms
     if(BL_Timer_TX > 10){
-        int angle = round(Ball.Angle);//(digitalReadFast(Start_Port)) ? (int)round(Ball.Angle);
-        int dist = round(Ball.Distance);//(digitalReadFast(Start_Port)) ? (int)round(Ball.Distance) : 999;
+        int angle = round(Ball.Angle)+180;//(digitalReadFast(Start_Port)) ? (int)round(Ball.Angle);
+        int dist = abs(round(Ball.Distance));//(digitalReadFast(Start_Port)) ? (int)round(Ball.Distance) : 999;
         bool info1 = true; // Beispielwert, anpassen!
         bool info2 = false; // Beispielwert, anpassen!
         int extra = 123; // Beispielwert, anpassen!
@@ -80,7 +80,7 @@ void BLC::decode(String message1){
     bool info1 = message1.substring(9,10).toInt();
     bool info2 = message1.substring(11,12).toInt();
     int extra = message1.substring(13).toInt();
-    Ball.Angle_P2 = angle;
+    Ball.Angle_P2 = angle-180;
     Ball.Distance_P2 = dist;
 
     if(!SinglePlayer){
