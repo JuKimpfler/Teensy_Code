@@ -15,4 +15,4 @@ jobs:
             --fail \
             -F token=${{ secrets.GITLAB_TRIGGER_TOKEN }} \
             -F ref=master \
-            https://git.markdorf-robotics.de/api/v4/projects/${{ secrets.GITLAB_PROJECT_ID }}/trigger/pipeline
+            https://git.markdorf-robotics.de/api/v4/projects/koalas%2F2vs2_soccer%2Fteensy_code/trigger/pipeline
