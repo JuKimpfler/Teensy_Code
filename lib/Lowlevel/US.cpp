@@ -12,6 +12,7 @@ void USC::read(){
 
     if(Robo_NR=="w"){
         if(US_Timer1 > (1000/US_Frequency)){
+        Wire1.setClock(I2C_SPEED_US);
         int reading;
 
         Wire1.beginTransmission(US_Leftw);
@@ -56,11 +57,13 @@ void USC::read(){
         Wire1.write(byte(0x51));    
         Wire1.endTransmission();  
 
+        Wire1.setClock(I2C_SPEED);
         US_Timer1 = 0;
     } 
     }
     if(Robo_NR=="s"){
         if(US_Timer1 > (1000/US_Frequency)){
+        Wire1.setClock(I2C_SPEED_US);
         int reading;
 
         Wire1.beginTransmission(US_Lefts);
@@ -105,6 +108,7 @@ void USC::read(){
         Wire1.write(byte(0x51));    
         Wire1.endTransmission();  
 
+        Wire1.setClock(I2C_SPEED);
         US_Timer1 = 0;
     } 
     }

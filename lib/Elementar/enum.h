@@ -90,8 +90,9 @@ enum ADC_Port {
 };
 
 
-#define I2C_BUS Wire1     // IRL-Ring on Wire1
-#define I2C_SPEED 1000000 // 1 MHz
+#define I2C_BUS Wire1        // IRL-Ring on Wire1
+#define I2C_SPEED 1000000    // 1 MHz
+#define I2C_SPEED_US 100000  // 100 kHz for US sensor queries
 
 
 //Seriel Port

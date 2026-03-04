@@ -31,7 +31,7 @@ void SystemC::Button_Update(){
 
 void SystemC::init(){
     Wire1.begin();
-    Wire1.setClock(400000);
+    Wire1.setClock(I2C_SPEED);
 
     pinMode(Start_Port,INPUT);
     pinMode(Kicker_Port, OUTPUT);
