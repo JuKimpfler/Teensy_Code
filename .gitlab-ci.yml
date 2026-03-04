@@ -12,4 +12,4 @@ sync-from-github:
     - git fetch github
     - git checkout -B master origin/master
     - git merge github/master --allow-unrelated-histories -m "Auto-sync from GitHub" || true
-    - git push https://oauth2:$GITLAB_TOKEN@.git HEAD:master
+    - git push https://oauth2:$GITLAB_TOKEN@git.markdorf-robotics.de/koalas/2vs2_soccer/teensy_code.git HEAD:master
