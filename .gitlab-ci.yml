@@ -10,6 +10,6 @@ sync-from-github:
     - git config --global user.name "GitLab CI"
     - git remote add github https://oauth2:$GITHUB_TOKEN@github.com/JuKimpfler/Teensy_Code.git
     - git fetch github
-    - git checkout master   # oder main – je nach Branch-Name
+    - git checkout -B master origin/master
     - git merge github/master --allow-unrelated-histories -m "Auto-sync from GitHub" || true
     - git push https://oauth2:$GITLAB_TOKEN@.git HEAD:master
