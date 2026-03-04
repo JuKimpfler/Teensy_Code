@@ -15,7 +15,7 @@ void setup() {
     UART_2.begin(115200);
     UART_Pixy.begin(115200);
 
-    Robo_NR = "w"; // w oder s
+    Robo_NR = "s"; // w oder s
     if(Robo_NR == "s"){
         IR.DistCal = 100;
         VR_Motor = VR_Motors; //
