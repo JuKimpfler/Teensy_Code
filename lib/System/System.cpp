@@ -76,9 +76,12 @@ void SystemC::UpdateC::Sensors(){
         Debug.Plot("ball angle",Ball.Angle);
         Debug.Plot("ball dist",Ball.Distance);
         Debug.Plot("ball dist 2",Ball.Distance_P2);
-        Debug.Plot("ball angle 2",Ball.Angle_P2);
-        Debug.Plot("Rolle",BL.Rolle);
+        Debug.Plot("G-Angle",Goal.Angle);
+
+        Debug.Plot("USL", US.Distance_raw[0]);
+        
         Debug.Send();
+
         RGB.Apply(); // 300
         Cycle_P3 = 0;
     }

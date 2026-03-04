@@ -94,12 +94,7 @@ void USC::read(){
     }
     
 
-    if (Distance_raw[0]<Distance_raw[1]){
-        Distance = -Distance_raw[0];
-    }
-    else {
-        Distance = Distance_raw[1];
-    }
+
 }
 
 
