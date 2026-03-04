@@ -3,6 +3,7 @@
 #include "Mouse.h"
 #include "Taktics.h"
 #include "Debug.h"
+#include "BL.h"
 GameC Game;
 
 elapsedMillis Line_Timer;
@@ -10,9 +11,7 @@ elapsedMillis Line_Timer;
 void GameC::Run(){
     if ((Line.Summe > 0) )  {        
         dead_diff = dead_zone-LineCalc.DriveAngle;
-
-        U.Circel(dead_diff); // maping to circel
-
+        U.Circel(dead_diff);
         if (Line_Follow == true){
             if(outside == true){
                 Robot.Drive(round((LineCalc.DriveAngle-180)/Front_Speed),0,50);
@@ -28,11 +27,8 @@ void GameC::Run(){
                 Robot.Drive(LineCalc.DriveAngle,0,100);
             }
         }
-
-        //Robot.Drive(LineCalc.DriveAngle,0,50);       
-        
     }
-    else if ((Line.VW_Summe > 0))  {  // VW only
+    else if ((Line.VW_Summe > 0))  {
         dead_zone = LineCalc.DriveAngle;
         U.Circel(dead_zone);
 
@@ -41,22 +37,20 @@ void GameC::Run(){
         }
         else{
             Robot.Drive(LineCalc.DriveAngle,0,100);
-            
         }
     }
     else { 
         Line_Timer = 0;
         Robot.Kicker.Off();
-        /*if(BL.Rolle == "A"){
+        if(BL.Rolle == "A"){
             AttackerTactics.step();
         }
         else if(BL.Rolle == "D"){
             DefenderTactics.step();
         }
         else if(BL.Rolle == "N"){
-            Elem_Taktics.Ballsearch();
-        }*/
-        Taktics.step();
+            Taktics.BallSearch();
+        }
         once = false;
         outside = false;
     }

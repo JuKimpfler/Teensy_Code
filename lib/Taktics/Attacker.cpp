@@ -3,7 +3,7 @@
 AttackerTacticsC AttackerTactics;
 
 void AttackerTacticsC::step(){
-	if(/*LDR.Aktiv()*/false){
+	if(LDR.Aktiv()){
 		BallCaught();
 	}
 	else{
