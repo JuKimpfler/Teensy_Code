@@ -30,11 +30,11 @@ void BLC::doRolle(){
 
     // Senden alle 10ms
     if(BL_Timer_TX > 10){
-        int angle = round(Ball.Angle)+180;//(digitalReadFast(Start_Port)) ? (int)round(Ball.Angle);
-        int dist = abs(round(Ball.Distance));//(digitalReadFast(Start_Port)) ? (int)round(Ball.Distance) : 999;
+        int angle = (digitalReadFast(Start_Port)) ? (int)(round(abs(Ball.Angle)+180)) : 999;//(digitalReadFast(Start_Port)) ? (int)round(Ball.Angle);
+        int dist = (digitalReadFast(Start_Port)) ? (int)round(abs(Ball.Distance)) : 999;//(digitalReadFast(Start_Port)) ? (int)round(Ball.Distance) : 999;
         bool info1 = true; // Beispielwert, anpassen!
-        bool info2 = false; // Beispielwert, anpassen!
-        int extra = 123; // Beispielwert, anpassen!
+        bool info2 = true; // Beispielwert, anpassen!
+        int extra = 000; // Beispielwert, anpassen!
         // Format: 0AAA0DDD0I10I20EEE$
         char sendMsg[29]; // war z.B. 19 – zu klein für "0%03d0%03d0%1d0%1d0%03d$" (max 28 Zeichen)
         snprintf(sendMsg, sizeof(sendMsg), "0%03d0%03d0%1d0%1d0%03d$", angle, dist, 0, 0, extra);
@@ -44,8 +44,6 @@ void BLC::doRolle(){
     }
 
     // SinglePlayer, wenn P2-Daten 9999
-    //if((Ball.Angle_P2 == 999 && Ball.Distance_P2 == 999)||(BL_Timer_RX>3000)){SinglePlayer = true;}
-    //else{SinglePlayer = false;}
 
 
     //showRolle();
@@ -80,8 +78,13 @@ void BLC::decode(String message1){
     bool info1 = message1.substring(9,10).toInt();
     bool info2 = message1.substring(11,12).toInt();
     int extra = message1.substring(13).toInt();
-    Ball.Angle_P2 = angle-180;
-    Ball.Distance_P2 = dist;
+
+    if((angle == 999 && dist == 999)||(BL_Timer_RX>3000)){SinglePlayer = true;}
+    else{
+        SinglePlayer = false;
+        Ball.Angle_P2 = angle-180;
+        Ball.Distance_P2 = dist;
+    }
 
     if(!SinglePlayer){
         if(Ball.Distance_P2 < Ball.Distance){Rolle="D";}

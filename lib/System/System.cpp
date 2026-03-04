@@ -69,15 +69,15 @@ void SystemC::UpdateC::Sensors(){
     PID.Calculate(); // 1 micro
     BNO055.read(); // 100-500 micro
     IR.read(); // 300 micro
-    //BL.doRolle();
+    BL.doRolle();
 
-    if ((Cycle_P3 > 20) && (false)){
+    if ((Cycle_P3 > 20) && (true)){
         Debug.Start();
-        Debug.Plot("zone 2",Zone);
         Debug.Plot("ball angle",Ball.Angle);
         Debug.Plot("ball dist",Ball.Distance);
         Debug.Plot("ball dist 2",Ball.Distance_P2);
-        Debug.Plot("G-Angle",Goal.Angle);
+        Debug.Plot("ball angle 2",Ball.Angle_P2);
+        Debug.Plot("Rolle",BL.Rolle);
         Debug.Send();
         RGB.Apply(); // 300
         Cycle_P3 = 0;
