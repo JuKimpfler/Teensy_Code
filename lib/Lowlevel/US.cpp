@@ -22,11 +22,22 @@ void USC::read(){
         reading = Wire1.read(); 
         reading = reading << 8;    
         reading |= Wire1.read(); 
-        Distance_raw[0]=reading;
-        }
-
-        // US Sensoren Anfragen
+        Distance_raw[0]=reading;}
         Wire1.beginTransmission(US_Leftw); 
+        Wire1.write(byte(0x00));      
+        Wire1.write(byte(0x51));  
+        Wire1.endTransmission();   
+
+        Wire1.beginTransmission(US_Backw);
+        Wire1.write(byte(0x02));  
+        Wire1.endTransmission();   
+        Wire1.requestFrom(US_Backw, 2);   
+        if (2 <= Wire1.available()) { 
+        reading = Wire1.read(); 
+        reading = reading << 8;    
+        reading |= Wire1.read(); 
+        Distance_raw[1]=reading;}
+        Wire1.beginTransmission(US_Backw); 
         Wire1.write(byte(0x00));      
         Wire1.write(byte(0x51));  
         Wire1.endTransmission();   
@@ -39,10 +50,7 @@ void USC::read(){
         reading = Wire1.read(); 
         reading = reading << 8;    
         reading |= Wire1.read(); 
-        Distance_raw[1]=reading;
-        }
-
-        // US Sensoren Anfragen 
+        Distance_raw[2]=reading;}
         Wire1.beginTransmission(US_Rightw); 
         Wire1.write(byte(0x00));  
         Wire1.write(byte(0x51));    
@@ -63,11 +71,22 @@ void USC::read(){
         reading = Wire1.read(); 
         reading = reading << 8;    
         reading |= Wire1.read(); 
-        Distance_raw[0]=reading;
-        }
-
-        // US Sensoren Anfragen
+        Distance_raw[0]=reading;}
         Wire1.beginTransmission(US_Lefts); 
+        Wire1.write(byte(0x00));      
+        Wire1.write(byte(0x51));  
+        Wire1.endTransmission();   
+
+        Wire1.beginTransmission(US_Backs);
+        Wire1.write(byte(0x02));  
+        Wire1.endTransmission();   
+        Wire1.requestFrom(US_Backs, 2);   
+        if (2 <= Wire1.available()) { 
+        reading = Wire1.read(); 
+        reading = reading << 8;    
+        reading |= Wire1.read(); 
+        Distance_raw[1]=reading;}
+        Wire1.beginTransmission(US_Backs); 
         Wire1.write(byte(0x00));      
         Wire1.write(byte(0x51));  
         Wire1.endTransmission();   
@@ -80,10 +99,7 @@ void USC::read(){
         reading = Wire1.read(); 
         reading = reading << 8;    
         reading |= Wire1.read(); 
-        Distance_raw[1]=reading;
-        }
-
-        // US Sensoren Anfragen 
+        Distance_raw[2]=reading;}
         Wire1.beginTransmission(US_Rights); 
         Wire1.write(byte(0x00));  
         Wire1.write(byte(0x51));    

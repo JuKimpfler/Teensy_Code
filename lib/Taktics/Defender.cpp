@@ -1,16 +1,25 @@
 #include "Defender.h"
+#include "Taktics.h"
 
 DefenderTacticsC DefenderTactics;
 
-void DefenderTacticsC:: step(){
-    bool ballcaught = true;
-    if (ballcaught == true){
-        Goaldirection();
+void DefenderTacticsC::step(){
+    if (LDR.Aktiv()){
+        Robot.Kicker.On();
+        GoalTurn();
     }
     else{
-        Ballsearch();
-
+        Robot.Kicker.Off();
+        Homing();
     }
+}
+
+void DefenderTacticsC::Homing(){
+
+}
+
+void DefenderTacticsC::GoalTurn(){
+    Robot.Turn(Goal.Angle,30);
 }
 
 

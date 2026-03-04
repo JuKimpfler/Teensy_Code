@@ -8,8 +8,9 @@ class AttackerTacticsC{
     private:
     public:
         void step();
-        void BallCaught();
+        void GoalAttak();
         void BallSearch();
+        void EckEscape();
 };
 
 extern AttackerTacticsC AttackerTactics;

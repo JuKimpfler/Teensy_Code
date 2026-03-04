@@ -25,8 +25,6 @@ void GameC::Run(){
         Robot.Drive(LineCalc.DriveAngle,0,100);
     }
     else { 
-        Line_Timer = 0;
-        Robot.Kicker.Off();
         if(BL.Rolle == "A"){
             AttackerTactics.step();
         }
@@ -34,10 +32,8 @@ void GameC::Run(){
             DefenderTactics.step();
         }
         else if(BL.Rolle == "N"){
-            Taktics.BallSearch();
+            Taktics.step();
         }
-        once = false;
-        outside = false;
     }
 }
 

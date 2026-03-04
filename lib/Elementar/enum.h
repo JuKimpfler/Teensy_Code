@@ -35,6 +35,9 @@ enum Motor_Port { // Portbelegung Direct an Teensy
 enum US_Ports {
     US_Leftw =  0x71,
     US_Rightw = 0x72,
+    US_Backw = 0x73,
+    
+    US_Backs = 0x74,
     US_Lefts =  0x73,
     US_Rights = 0x71
 };

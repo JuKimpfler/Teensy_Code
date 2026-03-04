@@ -7,7 +7,7 @@ class USC{
     public:
         void init();
         void read();
-        double Distance_raw[2];
+        double Distance_raw[3];
         double Distance;
 };
 

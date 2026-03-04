@@ -7,8 +7,9 @@ class DefenderTacticsC{
     private:
     public:
         void step();
-        void BallCaught();
-        void Ballsearch();
-        void Goaldirection();
+        void GoalAttak();
+        void BallSearch();
+        void GoalTurn();
+        void Homing();
 };
 extern DefenderTacticsC DefenderTactics;
