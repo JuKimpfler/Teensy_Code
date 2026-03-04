@@ -1,9 +1,15 @@
-yamlsync-from-github:
-  image: alpine/git
+sync-from-github:
+  image: alpine:latest        # ← Statt alpine/git
+  before_script:
+    - apk add --no-cache git  # ← Git nachinstallieren
   rules:
-    - when: manual        # manuell auslösbar im GitLab UI
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'  # + automatisch per Zeitplan
+    - when: manual
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
   script:
-    - git remote add github https://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@github.com/JuKimpfler/Teensy_Code.git
+    - git config --global user.email "ci@gitlab.local"
+    - git config --global user.name "GitLab CI"
+    - git remote add github https://oauth2:$GITHUB_TOKEN@github.com/JuKimpfler/Teensy_Code.git
     - git fetch github
-    - git merge github/main --allow-unrelated-his
+    - git checkout master   # oder main – je nach Branch-Name
+    - git merge github/master --allow-unrelated-histories -m "Auto-sync from GitHub" || true
+    - git push https://oauth2:$GITLAB_TOKEN@.git HEAD:master
