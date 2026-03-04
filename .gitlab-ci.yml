@@ -1,0 +1,9 @@
+yamlsync-from-github:
+  image: alpine/git
+  rules:
+    - when: manual        # manuell auslösbar im GitLab UI
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'  # + automatisch per Zeitplan
+  script:
+    - git remote add github https://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@github.com/JuKimpfler/Teensy_Code.git
+    - git fetch github
+    - git merge github/main --allow-unrelated-his
