@@ -12,32 +12,17 @@ void GameC::Run(){
     if ((Line.Summe > 0) )  {        
         dead_diff = dead_zone-LineCalc.DriveAngle;
         U.Circel(dead_diff);
-        if (Line_Follow == true){
-            if(outside == true){
-                Robot.Drive(round((LineCalc.DriveAngle-180)/Front_Speed),0,50);
-                Serial.println("test");
-            }
-            else{Robot.Drive(LineCalc.DriveAngle,0,20);}
+        if(U.Ran(abs(dead_diff),135,225)){
+            Robot.Drive(((LineCalc.DriveAngle-180)*-1),0,100);
         }
         else{
-            if(U.Ran(abs(dead_diff),135,225)){
-                Robot.Drive(((LineCalc.DriveAngle-180)*-1),0,100);
-            }
-            else{
-                Robot.Drive(LineCalc.DriveAngle,0,100);
-            }
+            Robot.Drive(LineCalc.DriveAngle,0,100);
         }
     }
     else if ((Line.VW_Summe > 0))  {
         dead_zone = LineCalc.DriveAngle;
         U.Circel(dead_zone);
-
-        if (Line_Follow == true){
-            Robot.Break();
-        }
-        else{
-            Robot.Drive(LineCalc.DriveAngle,0,100);
-        }
+        Robot.Drive(LineCalc.DriveAngle,0,100);
     }
     else { 
         Line_Timer = 0;
