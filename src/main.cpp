@@ -10,7 +10,6 @@
 
 void setup() {
     SPI.begin();
-    //Wire1.setClock(400000);
     Serial.begin(115200);
     UART_2.begin(115200);
     UART_Pixy.begin(115200);

@@ -59,9 +59,9 @@ void SystemC::UpdateC::Interface(){
 void SystemC::UpdateC::Sensors(){
     System.Start_Update(); // 1 micro
     Line.read_Fast(); // 60 micro
-    //US.read(); // 1 micro
+    US.read(); // 1 micro
     //Mouse.read(); // 177 micros
-    //Cam.read(); // 1 micro
+    Cam.read(); // 1 micro
     Robot.Kicker.Update(); // 1 micro
     LineCalc.Calc(); // 15 micro
     BallCalc.CalcDist(); // 1 micro
