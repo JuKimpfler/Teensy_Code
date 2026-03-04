@@ -13,6 +13,6 @@ jobs:
         run: |
           curl -X POST \
             --fail \
-            -F token= glptt-r1oyQkQgJWoU_HTBV7uR \
+            -F token=${{ secrets.GITLAB_TRIGGER_TOKEN }} \
             -F ref=master \
             https://git.markdorf-robotics.de/api/v4/projects/${{ secrets.GITLAB_PROJECT_ID }}/trigger/pipeline
