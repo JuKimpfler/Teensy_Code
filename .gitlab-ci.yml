@@ -3,8 +3,9 @@ sync-from-github:
   before_script:
     - apk add --no-cache git  # ← Git nachinstallieren
   rules:
-    - when: manual
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  - when: manual
+  - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  - if: '$CI_PIPELINE_SOURCE == "trigger"'    # ← Diese Zeile fehlt!
   script:
     - git config --global user.email "ci@gitlab.local"
     - git config --global user.name "GitLab CI"
