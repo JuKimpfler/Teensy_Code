@@ -1,16 +1,25 @@
 sync-from-github:
-  image: alpine:latest        # ← Statt alpine/git
+  image: alpine:latest
   before_script:
-    - apk add --no-cache git  # ← Git nachinstallieren
+    - apk add --no-cache git
   rules:
-  - when: manual
-  - if: '$CI_PIPELINE_SOURCE == "schedule"'
-  - if: '$CI_PIPELINE_SOURCE == "trigger"'    # ← Diese Zeile fehlt!
+    - when: manual
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
   script:
     - git config --global user.email "ci@gitlab.local"
     - git config --global user.name "GitLab CI"
     - git remote add github https://oauth2:$GITHUB_TOKEN@github.com/JuKimpfler/Teensy_Code.git
     - git fetch github
+
+    # ← Schleifenschutz: Abbruch wenn letzter Commit von CI stammt
+    - |
+      LAST_AUTHOR=$(git log github/master -1 --format='%ae')
+      if [ "$LAST_AUTHOR" = "ci@gitlab.local" ]; then
+        echo "Letzter Commit stammt von GitLab CI – kein Sync nötig, Abbruch."
+        exit 0
+      fi
+
     - git checkout -B master origin/master
-    - git merge github/master --allow-unrelated-histories -m "Auto-sync from GitHub" || true
+    - git merge github/master --allow-unrelated-histories -m "Auto-sync from GitHub"
     - git push https://oauth2:$GITLAB_TOKEN@git.markdorf-robotics.de/koalas/2vs2_soccer/teensy_code.git HEAD:master
