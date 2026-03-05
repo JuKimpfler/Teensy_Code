@@ -11,9 +11,7 @@ void MouseC::init(){
     //pmwId = pmw.getProductID();
 }
 
-void MouseC::read(){
-    if (Robo_NR=="w"){
-        
+void MouseC::read(){      
     PMW3389_DATA mouseData = pmw.readBurst();
 
     deltaX = mouseData.dx * 1.25 / 100;
@@ -31,7 +29,5 @@ void MouseC::read(){
 
     lift = mouseData.isOnSurface;
     movement = mouseData.isMotion;
-
-    }
 }
 

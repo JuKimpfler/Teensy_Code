@@ -10,38 +10,19 @@ IR_ring ir_lib(ir_ring_handle);
 // init
 
 void IRC::init(){
-    if(Robo_NR=="s"){
-        //ir_lib.write_ir_sensor_mask(0b1111111111111110);
-        ir_lib.write_offsets(mini);
-        ir_lib.write_gains(maxi);
-    }
-    else{
-        ir_lib.write_offsets(miniw);
-        ir_lib.write_gains(maxiw);
-    }
+    ir_lib.write_offsets(IR_mini);
+    ir_lib.write_gains(IR_maxi);
 }
 
 void IRC::read(){               //01234567890123456
     
-    if(Robo_NR=="s"){
-        float ValueF;
-        ValueF=U.Circel(((ir_lib.read_ball_angle()*-1) -180)-6);
-        Ball.Angle = ValueF;
-    }
-    else{
-        float ValueF;
-        ValueF=U.Circel(ir_lib.read_ball_angle()*-1);
-        Ball.Angle = ValueF;
-
-    }
+    float ValueF;
+    ValueF=U.Circel(ir_lib.read_ball_angle()*-1);
+    Ball.Angle = ValueF;
 
     uint16_t Value;
     Value=ir_lib.read_ball_distance();
     Ball.Distance_raw = Value;
 
-    Ball.inSight = !(Ball.Distance_raw < 35);
-}
-
-void IRC::Calib_Dist(){
-    ir_lib.write_ball_visibility_threshold(ir_lib.read_ball_distance());
+    Ball.inSight = !(Ball.Distance_raw < IR_Sight);
 }

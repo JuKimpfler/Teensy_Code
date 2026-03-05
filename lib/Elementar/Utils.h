@@ -1,16 +1,19 @@
-#pragma once
-#include "Arduino.h"
+#ifndef UTILS_H
+#define UTILS_H
+
+#include <Arduino.h>
 
 class UtilsC {
-
-    private:
-
-    public:
-        bool Ran(float In,float min, float max);
-        double Circel(double Angle);
-        //int16_t Circel(int16_t Angle);
-        //float distanceFromVectors(Vec2 vector, Vec2 otherVector);
+public:
+    bool Ran(float In, float min, float max);
+    double Circel(double Angle);
+    
+    // Kopierfunktionen
+    uint16_t* List_copy(const uint16_t source[], uint16_t dest[], int len);
+    int16_t* List_copy(const int16_t source[], int16_t dest[], int len);
 };
 
 extern UtilsC U;
+
+#endif
 

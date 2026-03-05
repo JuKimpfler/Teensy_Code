@@ -7,9 +7,10 @@ inline int Cycletime = 0;
 inline int MainSpeed = 30;
 inline int Cycle_P2 = 0;
 inline int Cycle_P3 = 0;
-inline bool Line_Follow = false; // Switch to follow line
-inline float Front_Speed = 2; // Divisor to follow line
 inline double Mess_Time;
-inline String Robo_NR;
 inline String Zone;
+inline int LDR_Schwelle;
+inline int IR_Dist_Offset;
+inline uint16_t IR_maxi[16];
+inline int16_t IR_mini[16];
 #endif

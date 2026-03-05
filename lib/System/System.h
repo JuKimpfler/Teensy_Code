@@ -29,6 +29,8 @@ class SystemC {
         void init();
         void Button_Update();
 
+        void Calibrate(String NR);
+
         class UpdateC{
             public:
                 void Sensors();

@@ -29,6 +29,21 @@ void SystemC::Button_Update(){
     
 }
 
+void SystemC::Calibrate(String NR){
+    if(NR == "w"){
+        LDR_Schwelle = LDR_Schwelle_w;
+        IR_Dist_Offset = IR_Dist_Offset_w;
+        U.List_copy(IR_maxi_w,IR_maxi,16);
+        U.List_copy(IR_mini_w,IR_mini,16);
+    }
+    if(NR == "s"){
+        LDR_Schwelle = LDR_Schwelle_s;
+        IR_Dist_Offset = IR_Dist_Offset_s;
+        U.List_copy(IR_maxi_s,IR_maxi,16);
+        U.List_copy(IR_mini_s,IR_mini,16);
+    }
+}
+
 void SystemC::init(){
     Wire1.begin();
     Wire1.setClock(I2C_SPEED);
@@ -38,14 +53,12 @@ void SystemC::init(){
     LDR.init(); 
 
     Line.init();
-    //Mouse.init();
 
     Motor.init();
     RGB.init();
     BNO055.init(); 
     
     Expander.I2C.init(I2C_ITF_Main,Input_Mode,All_Off);
-    US.init();
 
     IR.init();
 }
@@ -60,7 +73,6 @@ void SystemC::UpdateC::Sensors(){
     System.Start_Update(); // 1 micro
     Line.read_Fast(); // 60 micro
     US.read(); // 1 micro
-    //Mouse.read(); // 177 micros
     Cam.read(); // 1 micro
     Robot.Kicker.Update(); // 1 micro
     LineCalc.Calc(); // 15 micro

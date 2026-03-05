@@ -14,15 +14,20 @@ void setup() {
     UART_2.begin(115200);
     UART_Pixy.begin(115200);
 
-    Robo_NR = "s"; // w oder s
-    if(Robo_NR == "s"){
-        IR.DistCal = 100;
-        VR_Motor = VR_Motors; //
-        VL_Motor = VL_Motors; //
-        HR_Motor = HR_Motors; //
-        HL_Motor = HL_Motors; //
+    #ifdef Robo_s 
+        System.Calibrate("s");
+        VR_Motor = VR_Motors; 
+        VL_Motor = VL_Motors; 
+        HR_Motor = HR_Motors; 
+        HL_Motor = HL_Motors;
         LDR_Schwelle = LDR_Schwelle_s ;
-    }
+        Motor.Enable = true;
+    #endif
+    #ifdef Robo_w
+        System.Calibrate("w");
+        Motor.Enable = true;
+    #endif
+
     System.init();
 }
 
@@ -46,56 +51,31 @@ void loop() {
     }
 
 
-    if (System.Switches[0]){
-        MainSpeed = HighSpeed;
-    }
-    else {
-        MainSpeed = LowSpeed;
-    }
+    // Interface
 
-    if(System.Button[0]){
-        BNO055.Calibrate();
-    }   
-    if (System.Button[1]){
-        Robot.Kicker.On();
-    }
-    else{
-        Robot.Kicker.Off();
-    }
+    // Switches
+    if (System.Switches[0]){MainSpeed = HighSpeed;}
+    else {MainSpeed = LowSpeed;}
 
-    if (System.Switches[1]){
-        if (System.Button[2]){
-            IR.DistCal = Ball.Distance_raw2;
-        }
-        if (System.Button[3]){
-            Line.Calibrate(2);
-            Line.Calibrate(3);
-        }
-    }
-    else{
-        if (System.Button[2]){
-            IR.DistCal = Ball.Distance_raw2;
-        }
-        if (System.Button[3]){
-            
-        }
-    }
+    if (System.Switches[1]){}
+    else{}
+
+    // Buttons
+    if(System.Button[0]){BNO055.Calibrate();} // BNO055 set to 0
+
+    if (System.Button[1]){Robot.Kicker.On();} // Kicker test
+    else{Robot.Kicker.Off();}
+
+    if (System.Button[2]){} 
+    else{}
+
+    if (System.Switches[2]){if (System.Button[3]){Line.Calibrate(2);Line.Calibrate(3);}} // Wenn SW3 == true: Line_Calibration mit Linie
+    else{Line.Calibrate(1);Line.Calibrate(3);} // Wenn SW3 == false: Line_Calibration ohne Linie
     
-    if(Robo_NR=="w"){
-        //Motor.Enable = System.Switches[1];
-    }
-    else{
-        //Motor.Enable = true;
-    }
-    Motor.Enable = true;
-    
-    
+
+    // Timer / Cycler
     Cycle_P2++;
     Cycle_P3++;
     Cycletime = Cycle_Timer;
-
-    //Debug.Start();
-    //Debug.Plot("cycle",Cycletime);
-    //Debug.Send();
 }
 

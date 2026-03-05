@@ -1,5 +1,2 @@
-#include "GoalCalculations.h"
-#include "IrBallCalculations.h"
 #include "LineCalculations.h"
 #include "BallCalc.h"
-#include "ReflectionCalculations.h"
