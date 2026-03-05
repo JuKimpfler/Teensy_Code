@@ -1,7 +1,12 @@
 #pragma once
 #include "Arduino.h"
 
+// Modus wahl
 #define Robo_w  // Robo_w oder Robo_s für Roboter Auswahl
+
+#define Debug_EN // Debug Ausgabe
+//#define Ir_Calib // calibration Mode IR Values
+#define Calib // calibration Mode Normal
 
 #define HighSpeed 45 // Speed im HS modus
 inline float LowSpeed = 30; // Speed im LS modus

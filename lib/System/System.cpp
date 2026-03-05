@@ -83,19 +83,44 @@ void SystemC::UpdateC::Sensors(){
     IR.read(); // 300 micro
     BL.doRolle();
 
-    if ((Cycle_P3 > 20) && (true)){
+    if ((Cycle_P3 > 20)){
+        #ifdef Debug_EN
+        #ifdef Ir_Calib // IR_Calibration 
+        Debug.Start();
+        Debug.Plot_List("IR",IR.IR_Values,16);
+        Debug.Send();
+        #endif
+        #ifdef Calib // Normal_Calibration
+        Debug.Start();
+        Debug.Plot("IR_Offset",Ball.Distance_raw2);
+        Debug.Plot("Dist",Ball.Distance);
+        Debug.Plot("Zone",Zone);
+        Debug.Plot("LDR_Analog",analogRead(LDR_Port));
+        Debug.Plot("Line_G",Line_Grass);
+        Debug.Plot("Line_G_VW",Line_Grass_VW);
+        Debug.Plot("Line_N",Line_Norm);
+        Debug.Plot("Line_N_VW",Line_Norm_VW);
+        Debug.Plot("Line_S",Line_Schwelle);
+        Debug.Plot("Line_S_VW",Line_Schwelle_VW);
+        Debug.Send();
+        #endif
+        #ifndef Ir_Calib // Game_Debug
+        #ifndef Calib 
         Debug.Start();
         Debug.Plot("ball angle",Ball.Angle);
         Debug.Plot("ball dist",Ball.Distance);
         Debug.Plot("ball dist 2",Ball.Distance_P2);
-        Debug.Plot("G-Angle",Goal.Angle);
-
+        Debug.Plot("Rolle",BL.Rolle);
         Debug.Plot("USL", US.Distance_raw[0]);
-        
+        Debug.Plot("USH", US.Distance_raw[1]);
+        Debug.Plot("USR", US.Distance_raw[2]);
         Debug.Send();
+        #endif
+        #endif
 
         RGB.Apply(); // 300
         Cycle_P3 = 0;
+        #endif 
     }
 
     /*if(Reg_Timer>1000){

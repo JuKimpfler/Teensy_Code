@@ -14,7 +14,11 @@ void IRC::init(){
     ir_lib.write_gains(IR_maxi);
 }
 
-void IRC::read(){               //01234567890123456
+void IRC::read(){    
+
+    #ifdef Ir_Calib
+    ir_lib.read_calibrated_values(IR_Values);
+    #endif
     
     float ValueF;
     ValueF=U.Circel(ir_lib.read_ball_angle()*-1);
