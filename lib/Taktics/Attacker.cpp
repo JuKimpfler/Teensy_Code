@@ -23,7 +23,12 @@ void AttackerTacticsC::GoalAttak(){
 }
 
 void AttackerTacticsC::BallSearch(){
-	Robot.Drive(BallCalc.DriveAngle,0,MainSpeed);
+	if(Ball.inSight){
+		Robot.Drive(BallCalc.DriveAngle,0,MainSpeed);
+	}
+	else{
+		Robot.Drive(0, 0, MainSpeed);
+	}
 }
 
 void AttackerTacticsC::EckEscape(){

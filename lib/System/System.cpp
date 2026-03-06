@@ -83,7 +83,7 @@ void SystemC::UpdateC::Sensors(){
     IR.read(); // 300 micro
     BL.doRolle();
 
-    if ((Cycle_P3 > 20)){
+    if ((Cycle_P3 > 60)){
         #ifdef Debug_EN
         #ifdef Ir_Calib // IR_Calibration 
         Debug.Start();
@@ -104,8 +104,14 @@ void SystemC::UpdateC::Sensors(){
         Debug.Plot("Line_S_VW",Line_Schwelle_VW);
         Debug.Send();
         #endif
+        #ifdef Line_Calib
+        Debug.Start();
+        Debug.Plot_List("Line", Line.lineVW, 8);
+        Debug.Send();
+        #endif
         #ifndef Ir_Calib // Game_Debug
         #ifndef Calib 
+        #ifndef Line_Calib
         Debug.Start();
         Debug.Plot("USL", US.Distance_raw[0]);
         Debug.Plot("USH", US.Distance_raw[1]);
@@ -116,6 +122,7 @@ void SystemC::UpdateC::Sensors(){
         Debug.Plot("Rolle",BL.Rolle);
 
         Debug.Send();
+        #endif
         #endif
         #endif
 

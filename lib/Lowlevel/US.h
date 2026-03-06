@@ -7,6 +7,8 @@ class USC{
     public:
         void init();
         void read();
+
+        //0 = links, 1 = hinten, 2 = rechts
         double Distance_raw[3];
         double Distance;
 };

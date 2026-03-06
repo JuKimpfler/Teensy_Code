@@ -15,7 +15,9 @@ void DefenderTacticsC::step(){
 }
 
 void DefenderTacticsC::Homing(){
-
+    if (US.Distance_raw[0] < US.Distance_raw[2] + 10){
+        Robot.Drive(155, 0, MainSpeed);
+    }
 }
 
 void DefenderTacticsC::GoalTurn(){

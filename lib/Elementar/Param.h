@@ -7,6 +7,7 @@
 #define Debug_EN // Debug Ausgabe
 //#define Ir_Calib // calibration Mode IR Values
 //#define Calib // calibration Mode Normal
+#define Line_Calib
 
 #define HighSpeed 45 // Speed im HS modus
 inline float LowSpeed = 30; // Speed im LS modus
@@ -40,10 +41,10 @@ const uint16_t IR_maxi_w[16] = {2127,2056,2021,1849,2157,2187,2100,2100,1864,183
 
 inline int Line_Grass = 2000;
 inline int Line_Norm = 4000;
-inline int Line_Grass_VW = 2000;
-inline int Line_Norm_VW = 4000;
+inline int Line_Grass_VW = 2100;
+inline int Line_Norm_VW = 3800;
 
-inline int Line_Schwelle_VW = 3200;
+inline int Line_Schwelle_VW = 3100;
 inline int Line_Schwelle = 3200;
 
 inline int IR_Sight = 30; // ab wann wird der Ball als da erkannt
