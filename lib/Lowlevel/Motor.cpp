@@ -69,7 +69,7 @@ void MotorC::On(int Speed , int Motor){
                 digitalWriteFast(HL_ExpanderA,1);
                 digitalWriteFast(HL_ExpanderB,0);
             #endif
-            #ifdef Robo_s
+            #ifdef Robo_w
                 analogWrite(HL_Speed_Port,Speed);
                 digitalWriteFast(HL_ExpanderA,0);
                 digitalWriteFast(HL_ExpanderB,1);
@@ -93,7 +93,7 @@ void MotorC::On(int Speed , int Motor){
                 digitalWriteFast(HR_ExpanderA,0);
                 digitalWriteFast(HR_ExpanderB,1);
             #endif
-            #ifdef Robo_s
+            #ifdef Robo_w
                 analogWrite(HR_Speed_Port,Speed);
                 digitalWriteFast(HR_ExpanderA,1);
                 digitalWriteFast(HR_ExpanderB,0);
@@ -105,7 +105,7 @@ void MotorC::On(int Speed , int Motor){
                 digitalWriteFast(HL_ExpanderA,0);
                 digitalWriteFast(HL_ExpanderB,1);
             #endif
-            #ifdef Robo_s
+            #ifdef Robo_w
                 analogWrite(HL_Speed_Port,Speed);
                 digitalWriteFast(HL_ExpanderA,1);
                 digitalWriteFast(HL_ExpanderB,0);

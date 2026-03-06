@@ -7,7 +7,7 @@
 #define Debug_EN // Debug Ausgabe
 //#define Ir_Calib // calibration Mode IR Values
 //#define Calib // calibration Mode Normal
-#define Line_Calib
+//#define Line_Calib
 
 #define HighSpeed 45 // Speed im HS modus
 inline float LowSpeed = 30; // Speed im LS modus

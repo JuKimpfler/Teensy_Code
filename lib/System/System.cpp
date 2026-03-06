@@ -116,11 +116,10 @@ void SystemC::UpdateC::Sensors(){
         Debug.Plot("USL", US.Distance_raw[0]);
         Debug.Plot("USH", US.Distance_raw[1]);
         Debug.Plot("USR", US.Distance_raw[2]);
-        Debug.Plot("ball angle",Ball.Angle);
-        Debug.Plot("ball dist",Ball.Distance);
-        Debug.Plot("ball dist 2",Ball.Distance_P2);
+        Debug.Plot("goal angle",Goal.Angle);
+        Debug.Plot("goal dist",Goal.Area);
+        Debug.Plot("ball angle 2",Ball.Angle_P2);
         Debug.Plot("Rolle",BL.Rolle);
-
         Debug.Send();
         #endif
         #endif

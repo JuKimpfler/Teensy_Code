@@ -38,7 +38,8 @@ void loop() {
     System.Update.Interface();
  
     if(System.Start){ 
-        Game.Run();
+        //Game.Run();
+        Robot.Turn(Goal.Angle, MainSpeed); 
         //Robot.Turn(0);
         //Robot.Drive(-90,0,20);
         //Motor.On(100,VR_Motor);
