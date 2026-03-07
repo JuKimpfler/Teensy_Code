@@ -29,6 +29,8 @@ void TakticsC::step(){
             else{
                 Robot.Drive(180,0,MainSpeed);
             }
+
+            //Defender Programm Felix?
         }
         Robot.Kicker.Off();
     } 
