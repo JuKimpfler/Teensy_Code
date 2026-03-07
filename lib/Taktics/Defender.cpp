@@ -25,24 +25,25 @@ void DefenderTacticsC::Homing(){
     else{
         Robot.Drive(180,0,MainSpeed);
     }
+}
 
-  
+void DefenderTacticsC::Goal_Defens(){
     if (US.Distance_raw[1] < 45) { //wenn Abstand hinten kleiner 45
 
         //Defender Programm Felix
 
         if (Ball.Angle > 0) { //ist Ball links?
 
-            if (US.Distance_Raw[0] > (-0.84*Ball.Angle+91.1)) { //ist Abstand nach links größer als er sein sollte?
+            if (US.Distance_raw[0] > (-0.84*Ball.Angle+91.1)) { //ist Abstand nach links größer als er sein sollte?
      
-               Robot.Drive(90, 0, 30)  //fahr nach links
+               Robot.Drive(90, 0, 30);  //fahr nach links
 
-            } else { 
+            }
 
           
-             if (US.Distance_Raw[0] < (-0.84*Ball.Angle+91.1)) { //ist Abstand nach links kleiner als er sein sollte?
+            if (US.Distance_raw[0] < (-0.84*Ball.Angle+91.1)) { //ist Abstand nach links kleiner als er sein sollte?
        
-               Robot.Drive(-90, 0, 30)  //fahr nach rechts
+               Robot.Drive(-90, 0, 30);  //fahr nach rechts
       
             }
     
@@ -51,21 +52,20 @@ void DefenderTacticsC::Homing(){
 
         if (Ball.Angle < 0) { //ist Ball rechts?
 
-           if (US.Distance_Raw[2] > (0.84*Ball.Angle+91.1)) { //ist Abstand nach rechts größer als er sein sollte?
+           if (US.Distance_raw[2] > (0.84*Ball.Angle+91.1)) { //ist Abstand nach rechts größer als er sein sollte?
       
-              Robot.Drive(-90, 0, 30)  //fahr nach rechts
+              Robot.Drive(-90, 0, 30);  //fahr nach rechts
 
-            } else { 
+            } 
 
           
-           if (US.Distance_Raw[2] < (0.84*Ball.Angle+91.1)) { //ist Abstand nach rechts kleiner als er sein sollte?
+           if (US.Distance_raw[2] < (0.84*Ball.Angle+91.1)) { //ist Abstand nach rechts kleiner als er sein sollte?
        
-             Robot.Drive(90, 0, 30) //fahr nach links
+             Robot.Drive(90, 0, 30); //fahr nach links
 
            }
       
         }  
-
 
     }
 }

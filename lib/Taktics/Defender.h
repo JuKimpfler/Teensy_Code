@@ -11,5 +11,6 @@ class DefenderTacticsC{
         void BallSearch();
         void GoalTurn();
         void Homing();
+        void Goal_Defens();
 };
 extern DefenderTacticsC DefenderTactics;
