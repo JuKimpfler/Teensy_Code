@@ -18,7 +18,7 @@ void AttackerTacticsC::GoalAttak(){
 	}
 	else{
 		Robot.Kicker.Off();
-		Robot.Drive(Goal.Angle, Goal.Angle, MainSpeed); 
+		Robot.Drive(Goal.Angle, 999, MainSpeed); 
 	}
 }
 

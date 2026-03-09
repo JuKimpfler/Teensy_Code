@@ -32,15 +32,13 @@ void SystemC::Button_Update(){
 void SystemC::Calibrate(String NR){
     if(NR == "w"){
         LDR_Schwelle = LDR_Schwelle_w;
-        IR_Dist_Offset = IR_Dist_Offset_w;
-        U.List_copy(IR_maxi_w,IR_maxi,16);
-        U.List_copy(IR_mini_w,IR_mini,16);
+        IR.Dist_Offset = IR_Dist_Offset_w;
+        IR.Angle_Offset = 0;
     }
     if(NR == "s"){
         LDR_Schwelle = LDR_Schwelle_s;
-        IR_Dist_Offset = IR_Dist_Offset_s;
-        U.List_copy(IR_maxi_s,IR_maxi,16);
-        U.List_copy(IR_mini_s,IR_mini,16);
+        IR.Dist_Offset = IR_Dist_Offset_s;
+        IR.Angle_Offset = 0;
     }
 }
 
@@ -77,6 +75,7 @@ void SystemC::UpdateC::Sensors(){
     Robot.Kicker.Update(); // 1 micro
     LineCalc.Calc(); // 15 micro
     BallCalc.CalcDist(); // 1 micro
+    BallCalc.CalcAngle();
     BallCalc.getAngle(); // 1 micro
     PID.Calculate(); // 1 micro
     BNO055.read(); // 100-500 micro
@@ -87,7 +86,7 @@ void SystemC::UpdateC::Sensors(){
         #ifdef Debug_EN
         #ifdef Ir_Calib // IR_Calibration 
         Debug.Start();
-        Debug.Plot_List("IR",IR.IR_Values,16);
+        Debug.Plot_List("IR",IR.IR_Values_raw,16);
         Debug.Send();
         #endif
         #ifdef Calib // Normal_Calibration
@@ -113,14 +112,16 @@ void SystemC::UpdateC::Sensors(){
         #ifndef Calib 
         #ifndef Line_Calib
         Debug.Start();
-        Debug.Plot("USL", US.Distance_raw[0]);
-        Debug.Plot("USH", US.Distance_raw[1]);
-        Debug.Plot("USR", US.Distance_raw[2]);
-        Debug.Plot("Ball angle",Ball.Angle);
-        Debug.Plot("goal angle",Goal.Angle);
-        Debug.Plot("goal dist",Goal.X);
-        Debug.Plot("bno",BNO055.TiltZ);
-        Debug.Plot("ball angle 2",Ball.Angle_P2);
+        //Debug.Plot("USL", US.Distance_raw[0]);
+        //Debug.Plot("USH", US.Distance_raw[1]);
+        //Debug.Plot("USR", US.Distance_raw[2]);
+        Debug.Plot("Ball_angle",Ball.Angle);
+        Debug.Plot("Ball_Dist",Ball.Distance);
+        Debug.Plot("sight",Ball.inSight);
+        Debug.Plot("goal_angle",Goal.Angle);
+        Debug.Plot("overload",abs(Goal.Angle-BNO055.TiltZ));
+        Debug.Plot("regeln",LineCalc.DriveAngle);
+        Debug.Plot("ball_dist2",Ball.Distance_raw);
         Debug.Plot("Rolle",BL.Rolle);
         Debug.Send();
         #endif

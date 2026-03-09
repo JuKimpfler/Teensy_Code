@@ -2,10 +2,10 @@
 #include "Arduino.h"
 
 // Modus wahl
-#define Robo_w // Robo_w oder Robo_s für Roboter Auswahl
+#define Robo_s // Robo_w oder Robo_s für Roboter Auswahl
 
 #define Debug_EN // Debug Ausgabe
-#define Ir_Calib // calibration Mode IR Values
+//#define Ir_Calib // calibration Mode IR Values
 //#define Calib // calibration Mode Normal
 //#define Line_Calib
 
@@ -31,13 +31,13 @@ inline int Dist_Schwelle_max = 60; // Zonen Schwelle Dist
 inline int LDR_Schwelle_w = 500;
 inline int LDR_Schwelle_s = 500; 
 
-inline int IR_Dist_Offset_w = 79;
-inline int IR_Dist_Offset_s = 100;
+inline int IR_Dist_Offset_w = 90;
+inline int IR_Dist_Offset_s = 124;
 
-const int16_t IR_mini_s[16] = {16,24,15,17,19,17,16,18,14,17,14,15,54,17,16,0};
-const uint16_t IR_maxi_s[16] = {2920,2920,2854,2968,2958,3016,2985,2968,2664,2713,2935,2279,2914,2873,2850,56};
-const int16_t IR_mini_w[16] = {29,34,29,31,28,30,30,27,26,25,12,19,145,28,29,0};
-const uint16_t IR_maxi_w[16] = {2127,2056,2021,1849,2157,2187,2100,2100,1864,1832,379,1643,2222,2071,2065,40};
+const int16_t IR_mini_s[16] = {23,24,26,25,19,23,25,19,25,22,1,19,147,22,24,14};
+const uint16_t IR_maxi_s[16] = {2950,2950,2950,2950,2950,2950,2950,2950,2950,2950,535,2939,3018,2968,2955,2938};
+const int16_t IR_mini_w[16] = {23,24,26,25,19,23,25,19,25,22,1,19,147,22,24,14};
+const uint16_t IR_maxi_w[16] = {2950,2950,2950,2950,2950,2950,2950,2950,2950,2950,535,2939,3018,2968,2955,2938};
 
 inline int Line_Grass = 2000;
 inline int Line_Norm = 4000;
@@ -47,7 +47,7 @@ inline int Line_Norm_VW = 3800;
 inline int Line_Schwelle_VW = 3100;
 inline int Line_Schwelle = 3200;
 
-inline int IR_Sight = 30; // ab wann wird der Ball als da erkannt
+inline int IR_Sight = 45; // ab wann wird der Ball als da erkannt
 
 inline int Motor_Frequency =  400;
 

@@ -6,6 +6,21 @@ RobotC Robot;
 elapsedMillis Kicker_Timer;
 
 void RobotC::Turn(float Angle ,int Speed1 = HighSpeed){
+    if (Angle == 999 ){
+        if ( Goal.inSight == true ){
+            Goal.Regeln = true;
+            Angle = 0;
+
+        }
+        else{
+            Goal.Regeln = false;
+            Angle = 0;
+        }
+    }
+    else{
+        Goal.Regeln = false;
+
+    }
     PID.setAngle(Angle);
     Motor.On(PID.Out,VR_Motor);
     Motor.On(PID.Out,VL_Motor);
@@ -22,13 +37,35 @@ void RobotC::Drive(float Dir , float Angle = 0 ,int Speed1 = HighSpeed){
     //if (Angle == 200000){
         //Angle = Goal.Angle;
     //}
-    if(Dir<-180){Dir = Dir+ 360;}
-    else if (Dir > 180){Dir = Dir - 360;}
-    if(Angle<-180){Angle = Angle+ 360;}
-    else if (Angle > 180){Angle = Angle - 360;}
+    if (Angle == 999 ){
+        if ( Goal.inSight == true ){
+            Goal.Regeln = true;
+            Angle = 0;
+            Dir= U.Circel(Dir)*-1;
 
-    PID.setAngle(Angle);
-    Dir_A = Dir - Angle;
+        PID.setAngle(Angle);
+        Dir_A = Angle - Dir;
+
+        }
+        else{
+            Goal.Regeln = false;
+            Angle = 0;
+            Dir= U.Circel(Dir)*-1;
+            Angle= U.Circel(Angle);
+
+            PID.setAngle(Angle);
+            Dir_A = Angle - Dir;
+        }
+    }
+    else{
+        Goal.Regeln = false;
+        Dir= U.Circel(Dir)*-1;
+        Angle= U.Circel(Angle);
+
+        PID.setAngle(Angle);
+        Dir_A = Angle - Dir;
+
+    }
 
     Vel[VR_Motor] = sinf((Dir_A+45)*DEG_TO_RAD)*15 + (-PID.Out);
     Vel[VL_Motor] = sinf((Dir_A+315)*DEG_TO_RAD)*15 + (-PID.Out);
@@ -84,9 +121,9 @@ void RobotC::Drive(float Dir , float Angle = 0 ,int Speed1 = HighSpeed){
     Motor.On(Vel_D[HR_Motor],HR_Motor);
     Motor.On(Vel_D[HL_Motor],HL_Motor);
 
-    if (abs(Angle-Mouse.delta_angle)< 50){
-        Mouse.delta_sure = Mouse.delta_dist;
-    }
+    //if (abs(Angle-Mouse.delta_angle)< 50){
+    //    Mouse.delta_sure = Mouse.delta_dist;
+    //}
 }
 
 void RobotC::Stop(){

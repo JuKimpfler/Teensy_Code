@@ -1,5 +1,5 @@
 #include "PidCalculations.h"
-
+#include "Cam.h"
 PIDC PID;
 
 void PIDC::Calculate(){
@@ -7,7 +7,14 @@ void PIDC::Calculate(){
     diffTime = (now - last) / 1000;
     last = now;
 
-    float error = Angle - BNO055.TiltZ;
+    float error=0;
+
+    if(Goal.Regeln == true){
+        error = Angle - Goal.Angle;
+    }
+    else{
+        error = Angle - BNO055.TiltZ;
+    }
     if (error > 180) error -= 360;
     if (error < -180) error += 360;
     esum = esum + float(error);

@@ -20,7 +20,7 @@ void LineCalcC::Calc(){
     }
     else if (Line.VW_Summe > 0){ // Line Basic
         for (int i = 0 ; i<8 ; i++){
-            if(Line.lineVW[i]==1){ // Positionen durchgehen
+            if(Line.lineVW[i]!=0){ // Positionen durchgehen
                 DriveAngle = ((i*45) - 135)-180; // Position * 45°(abstand zwischen Sensoren) -135(offset zum ersten Sensor) - 180(Wegfahren von Linie)
             }
         }

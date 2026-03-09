@@ -63,7 +63,10 @@ void CamC::Decode(String message){
     if(Goal.inSight==true){
         if(Goal.Angle<0){Goal.lastdir = true;}
         if(Goal.Angle >= 0){Goal.lastdir = false;}
-        Goal.Angle = BNO055.TiltZ+((x-140)/3.5);
+        Goal.Angle = ((x-140)/3.5)*-1;
+        //if(abs(Goal.Angle-BNO055.TiltZ) > 90){
+        //    Goal.Angle = 0;
+        //}
     }
     else{
         Goal.Angle = 0;

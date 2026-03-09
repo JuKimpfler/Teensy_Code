@@ -20,7 +20,6 @@ void setup() {
         VL_Motor = VL_Motors; 
         HR_Motor = HR_Motors; 
         HL_Motor = HL_Motors;
-        LDR_Schwelle = LDR_Schwelle_s ;
         Motor.Enable = true;
     #endif
     #ifdef Robo_w
@@ -38,10 +37,11 @@ void loop() {
     System.Update.Interface();
  
     if(System.Start){ 
-        //Game.Run();
-        Robot.Turn(Goal.Angle, MainSpeed); 
+        Game.Run();
+        //Robot.Turn(999, MainSpeed); 
         //Robot.Turn(0);
-        //Robot.Drive(-90,0,20);
+        //Taktics.BallSearch();
+        //Robot.Drive(0,Goal.Angle,20);
         //Motor.On(100,VR_Motor);
         //Motor.On(100,VR_Motor);
         //Motor.On(100,HL_Motor);
@@ -67,12 +67,11 @@ void loop() {
     if (System.Button[1]){Robot.Kicker.On();} // Kicker test
     else{Robot.Kicker.Off();}
 
-    if (System.Button[2]){} 
+    if (System.Button[2]){IR.Calib_Dist();} 
     else{}
 
     if (System.Switches[2]){if (System.Button[3]){Line.Calibrate(2);Line.Calibrate(3);}} // Wenn SW3 == true: Line_Calibration mit Linie
     else{Line.Calibrate(1);Line.Calibrate(3);} // Wenn SW3 == false: Line_Calibration ohne Linie
-    
 
     // Timer / Cycler
     Cycle_P2++;

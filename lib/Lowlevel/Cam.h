@@ -24,6 +24,7 @@ class GoalC{
         double Y;
         double Area;
         bool inSight;
+        bool Regeln;
         bool lastdir; // true = - / false = +
     private:
 };

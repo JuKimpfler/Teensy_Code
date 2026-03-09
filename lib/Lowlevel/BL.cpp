@@ -59,8 +59,8 @@ void BLC::decode(String message1){
     }
 
     if(!SinglePlayer){
-        if(Ball.Distance_P2 < Ball.Distance){Rolle="A";}
-        else {Rolle="D";}
+        if(Ball.Distance_P2 < Ball.Distance){Rolle="D";}
+        else {Rolle="A";}
     }
     else{Rolle="N";}
 }
