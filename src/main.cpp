@@ -30,7 +30,7 @@ void setup() {
     System.init();
 
     delay(1000);
-    BL.setDebugEnabled(true);
+    //BL.setDebugEnabled(true);
 }
 
 void loop() { 
@@ -38,12 +38,13 @@ void loop() {
 
     System.Update.Sensors();
     System.Update.Interface();
- 
+    
+    #ifndef PID_Calib
     if(System.Start){ 
         //Game.Run();
         
         //Robot.Turn(999, MainSpeed); 
-        //Robot.Turn(0);
+        
         //Taktics.BallSearch();
         //Robot.Drive(0,Goal.Angle,20);
         //Motor.On(100,VR_Motor);
@@ -54,7 +55,7 @@ void loop() {
     else{
         Robot.Stop();
     }
-
+    #endif
 
     // Interface
 

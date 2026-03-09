@@ -67,6 +67,14 @@ void SystemC::UpdateC::Interface(){
     }
 }
 
+void SystemC::UpdateC::printPID() {
+    Serial.print("Kp: "); Serial.print(Kp);
+    Serial.print(" | Ki: "); Serial.print(Ki);
+    Serial.print(" | Kd: "); Serial.print(Kd);
+    Serial.print(" | PID_Mult: "); Serial.println(PID_Mult);
+}
+
+
 void SystemC::UpdateC::Sensors(){
     System.Start_Update(); // 1 micro
     Line.read_Fast(); // 60 micro
@@ -111,9 +119,22 @@ void SystemC::UpdateC::Sensors(){
         Debug.Plot("invert",Line_Schwelle_VW);
         Debug.Send();
         #endif
+        #ifdef PID_Calib
+        if (Serial.available()) {
+            String input = Serial.readStringUntil('\n');
+            input.trim();
+            if (input.startsWith("kp ")) {Kp = input.substring(3).toFloat();Serial.print("Neues Kp: "); Serial.println(Kp);} 
+            else if (input.startsWith("ki ")) {Ki = input.substring(3).toFloat();Serial.print("Neuer Ki: "); Serial.println(Ki);} 
+            else if (input.startsWith("kd ")) {Kd = input.substring(3).toFloat();Serial.print("Neuer Kd: "); Serial.println(Kd);} 
+            else if (input.startsWith("an ")) {inputAngle = input.substring(3).toFloat();Serial.print("Neuer Angle: "); Serial.println(inputAngle);} 
+            else if (input.startsWith("mult ")) {PID_Mult = input.substring(5).toFloat();Serial.print("Neuer PID_Mult: "); Serial.println(PID_Mult);} else if (input == "show") {printPID();} 
+            else {Serial.println("Unbekannter Befehl. Nutze: kp <wert>, ki <wert>, kd <wert>, mult <wert>, show");}
+        }
+        #endif
         #ifndef Ir_Calib // Game_Debug
         #ifndef Calib 
         #ifndef Line_Calib
+        #ifndef PID_Calib
         Debug.Start();
         Debug.Plot("USH", US.Distance_raw[0]);
         Debug.Plot("USR", US.Distance_raw[1]);
@@ -127,22 +148,16 @@ void SystemC::UpdateC::Sensors(){
         Debug.Plot("ball_dist2",Ball.Distance_raw);
         Debug.Plot("Rolle",BL.Rolle);
         Debug.Send();
-        #endif
-        #endif
         BL.sendDebug("BNO: " + String(BNO055.TiltZ));
         #endif
-
-        RGB.Apply(); // 300
-
-        
-        Cycle_P3 = 0;
+        #endif
+        #endif
         #endif 
+        #endif
+        Cycle_P3 = 0;
     }
 
-    /*if(Reg_Timer>1000){
-        Wire1.beginTransmission(0x28);
-        Wire1.write(0x1A);
-        Wire1.endTransmission();
-        Reg_Timer=0;
-    }*/
+    #ifdef PID_Calib
+    Robot.Turn(inputAngle);
+    #endif
 }

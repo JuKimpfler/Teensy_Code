@@ -12,7 +12,7 @@ class BLC {
         String message;   // Letzte empfangene Nachricht
 
         bool SinglePlayer; // True, wenn nur ein Spieler aktiv ist
-        bool debugEnabled = true; // Debug-Ausgabe aktiviert (abschaltbar)
+        bool debugEnabled = false; // Debug-Ausgabe aktiviert (abschaltbar)
         
         // Zeigt die aktuelle Rolle an
         void showRolle();

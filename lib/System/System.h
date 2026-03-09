@@ -20,7 +20,7 @@
 class SystemC {
     private:
         void Start_Update();
-            
+                    
     public:
 
         bool Start;
@@ -32,6 +32,9 @@ class SystemC {
         void Calibrate(String NR);
 
         class UpdateC{
+            private:
+                void printPID();
+                int inputAngle=0;
             public:
                 void Sensors();
                 void Interface();
