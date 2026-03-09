@@ -105,16 +105,19 @@ void SystemC::UpdateC::Sensors(){
         #endif
         #ifdef Line_Calib
         Debug.Start();
+        //Debug.Plot_List("Line", Line.Values_raw, 8);
         Debug.Plot_List("Line", Line.lineVW, 8);
+        Debug.Plot("angle",LineCalc.DriveAngle);
+        Debug.Plot("invert",Line_Schwelle_VW);
         Debug.Send();
         #endif
         #ifndef Ir_Calib // Game_Debug
         #ifndef Calib 
         #ifndef Line_Calib
         Debug.Start();
-        //Debug.Plot("USL", US.Distance_raw[0]);
-        //Debug.Plot("USH", US.Distance_raw[1]);
-        //Debug.Plot("USR", US.Distance_raw[2]);
+        Debug.Plot("USH", US.Distance_raw[0]);
+        Debug.Plot("USR", US.Distance_raw[1]);
+        Debug.Plot("USL", US.Distance_raw[2]);
         Debug.Plot("Ball_angle",Ball.Angle);
         Debug.Plot("Ball_Dist",Ball.Distance);
         Debug.Plot("sight",Ball.inSight);

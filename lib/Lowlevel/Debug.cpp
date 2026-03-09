@@ -72,7 +72,7 @@ void DebugC::Plot(const String &Name, String Value) {
  * Debug.Plot_List(names, values, count);
  * Debug.Send();
  */
-void DebugC::Plot_List(String name, const double Values[], size_t count) {
+void DebugC::Plot_List(String name, double Values[], size_t count) {
     for (size_t i = 0; i < count; ++i) {
         mainList += (name + String(i));
         mainList += ":";

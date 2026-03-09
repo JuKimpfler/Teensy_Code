@@ -41,11 +41,11 @@ const uint16_t IR_maxi_w[16] = {2950,2950,2950,2950,2950,2950,2950,2950,2950,295
 
 inline int Line_Grass = 2000;
 inline int Line_Norm = 4000;
-inline int Line_Grass_VW = 2100;
-inline int Line_Norm_VW = 3800;
+inline int Line_Grass_VW = 1900;
+inline int Line_Norm_VW = 3200;
 
-inline int Line_Schwelle_VW = 3100;
-inline int Line_Schwelle = 3200;
+inline int Line_Schwelle_VW = 2700;
+inline int Line_Schwelle = 2700;
 
 inline int IR_Sight = 45; // ab wann wird der Ball als da erkannt
 

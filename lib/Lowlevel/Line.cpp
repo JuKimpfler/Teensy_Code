@@ -99,7 +99,7 @@ void LineC::Calibrate(int Modes){
     }
 
     Line_Schwelle = Line_Grass + (uint16_t)(0.6f * (Line_Norm - Line_Grass));
-    Line_Schwelle_VW = Line_Grass + (uint16_t)(0.6f * (Line_Norm_VW - Line_Grass_VW));
+    Line_Schwelle_VW = Line_Grass_VW + (uint16_t)(0.6f * (Line_Norm_VW - Line_Grass_VW));
 }
 
 void LineC::read_Fast(){
@@ -123,7 +123,7 @@ void LineC::read_Fast(){
     digitalWriteFast(CS_LineD, HIGH);  // prepare default state of ADC chip select 
 
     digitalWriteFast(CS_LineVW, LOW);  /* prepare default state of ADC chip select */
-    for (int i = 0 ; i<8 ; i++){if(SPI.transfer16(ADC_Befehle[i])<Line_Schwelle_VW){lineVW[i]=0;}else{lineVW[i]=1;VW_Summe++;}}
+    for (int i = 0 ; i<8 ; i++){if(SPI.transfer16(ADC_Befehle[i])<Line_Schwelle_VW){lineVW[i]=0;}else{lineVW[i]=1;VW_Summe++;}Values_raw[i]= SPI.transfer16(ADC_Befehle[i]);}
     digitalWriteFast(CS_LineVW, HIGH);  // prepare default state of ADC chip select 
     SPI.endTransaction();
 }

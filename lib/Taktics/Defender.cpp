@@ -15,15 +15,17 @@ void DefenderTacticsC::step(){
 }
 
 void DefenderTacticsC::Homing(){
-    if (US.Distance_raw[0] < US.Distance_raw[2] + 10){
+    if (US.Distance_raw[1] < US.Distance_raw[2] + 10){
         Robot.Drive(-155, 0, MainSpeed);
     }
-
-    else if(US.Distance_raw[2] < US.Distance_raw[0] + 10){
+    else if(US.Distance_raw[2] < US.Distance_raw[1] + 10){
         Robot.Drive(155, 0, MainSpeed);
     }
-    else if(US.Distance_raw[1] > 50){
+    else if(US.Distance_raw[0] > 60){
         Robot.Drive(180,0,MainSpeed);
+    }
+    else if(US.Distance_raw[0] < 40){
+        Robot.Drive(0,0,MainSpeed);
     }
     else{
         Robot.Turn(Ball.Angle);
