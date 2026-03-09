@@ -129,9 +129,12 @@ void SystemC::UpdateC::Sensors(){
         Debug.Send();
         #endif
         #endif
+        BL.sendDebug("BNO: " + String(BNO055.TiltZ));
         #endif
 
         RGB.Apply(); // 300
+
+        
         Cycle_P3 = 0;
         #endif 
     }

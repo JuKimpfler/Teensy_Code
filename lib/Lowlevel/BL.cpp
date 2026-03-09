@@ -65,3 +65,21 @@ void BLC::decode(String message1){
     else{Rolle="N";}
 }
 
+void BLC::sendDebug(String msg){
+    if(!debugEnabled) return;
+    // Prefix "DBG:" wird von der ESP-Bridge erkannt und als Debug-Paket
+    // an den Debug-Monitor weitergeleitet (nicht an den Peer-Roboter).
+    // '\n' dient als Zeilenende-Erkennung fuer die ESP-Bridge.
+    UART_Pixy.print("DBG:");
+    UART_Pixy.print(msg);
+    UART_Pixy.print("\r\n");
+}
+
+void BLC::setDebugEnabled(bool enabled){
+    UART_Pixy.print("ET+OPEN\r\n");
+    UART_Pixy.print("ET+DBGMON\r\n");
+    UART_Pixy.print("ET+SAVE\r\n");
+    delay(5000);
+    debugEnabled = enabled;
+}
+

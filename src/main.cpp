@@ -28,6 +28,9 @@ void setup() {
     #endif
 
     System.init();
+
+    delay(1000);
+    BL.setDebugEnabled(true);
 }
 
 void loop() { 
@@ -37,7 +40,8 @@ void loop() {
     System.Update.Interface();
  
     if(System.Start){ 
-        Game.Run();
+        //Game.Run();
+        
         //Robot.Turn(999, MainSpeed); 
         //Robot.Turn(0);
         //Taktics.BallSearch();
