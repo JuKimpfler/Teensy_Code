@@ -12,7 +12,11 @@ void BNO055C::init(){
 }
 
 void BNO055C::read(){
+    last = TiltZ;
     TiltZ = U.Circel(BNO_beaver.eulHeading()-BNO_Cal);
+    if (last == 0){
+        last = 0.0001;
+    }
 }
 
 void BNO055C::Calibrate(){

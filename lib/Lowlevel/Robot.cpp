@@ -28,7 +28,6 @@ void RobotC::Turn(float Angle ,int Speed1 = HighSpeed){
     Motor.On(PID.Out,HL_Motor);
 }
 
-
 void RobotC::Drive(float Dir , float Angle = 0 ,int Speed1 = HighSpeed){
     // Links -> Minus (Counter-Clock)
     // Rechts -> Plus (Clock)
@@ -37,6 +36,7 @@ void RobotC::Drive(float Dir , float Angle = 0 ,int Speed1 = HighSpeed){
     //if (Angle == 200000){
         //Angle = Goal.Angle;
     //}
+    Dir = Dir-BNO055.TiltZ;
     if (Angle == 999 ){
         if ( Goal.inSight == true ){
             Goal.Regeln = true;
@@ -44,8 +44,6 @@ void RobotC::Drive(float Dir , float Angle = 0 ,int Speed1 = HighSpeed){
             Dir= U.Circel(Dir)*-1;
 
         PID.setAngle(Angle);
-        Dir_A = Angle - Dir;
-
         }
         else{
             Goal.Regeln = false;
@@ -63,9 +61,9 @@ void RobotC::Drive(float Dir , float Angle = 0 ,int Speed1 = HighSpeed){
         Angle= U.Circel(Angle);
 
         PID.setAngle(Angle);
-        Dir_A = Angle - Dir;
 
     }
+    Dir_A = Dir;
 
     Vel[VR_Motor] = sinf((Dir_A+45)*DEG_TO_RAD)*15 + (-PID.Out);
     Vel[VL_Motor] = sinf((Dir_A+315)*DEG_TO_RAD)*15 + (-PID.Out);
@@ -140,7 +138,6 @@ void RobotC::Break(){
     Motor.Break(HL_Motor);
 }
 void RobotC::KickerC::Off(){
-    digitalWrite(Kicker_Port, LOW);
     active = false;
     onceActive = false;
 }

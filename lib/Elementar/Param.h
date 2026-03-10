@@ -8,13 +8,13 @@
 //#define Ir_Calib // calibration Mode IR Values
 //#define Calib // calibration Mode Normal
 //#define Line_Calib
-#define PID_Calib
+//#define PID_Calib
 
-#define HighSpeed 45 // Speed im HS modus
-inline float LowSpeed = 30; // Speed im LS modus
+#define HighSpeed 25 // Speed im HS modus
+inline float LowSpeed = 25; // Speed im LS modus
 
-inline float Kp = 3; // Startwert, dann erhöhen
-inline float Kd = 17.0; // Startwert, dann erhöhen
+inline float Kp = 1.6; // Startwert, dann erhöhen  1
+inline float Kd = 35.0; // Startwert, dann erhöhen 
 inline float Ki = 0; // Startwert, dann erhöhen
 inline float PID_Mult = 0.1; // Belassen
 
@@ -30,7 +30,7 @@ inline int Dist_Schwelle_min = 10; // Zonen Schwelle Dist
 inline int Dist_Schwelle_max = 60; // Zonen Schwelle Dist 
 
 inline int LDR_Schwelle_w = 500;
-inline int LDR_Schwelle_s = 500; 
+inline int LDR_Schwelle_s = 600; 
 
 inline int IR_Dist_Offset_w = 90;
 inline int IR_Dist_Offset_s = 124;

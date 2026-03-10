@@ -8,6 +8,8 @@ class BNO055C {
 
         int16_t BNO_Cal;
         int16_t TiltZ;
+        int16_t Diff;
+        double last;
 
         void init();
         void read();

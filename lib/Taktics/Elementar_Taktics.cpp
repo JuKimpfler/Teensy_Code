@@ -2,7 +2,12 @@
 TakticsC Taktics;
 
 void TakticsC::BallSearch(){
-    Robot.Drive(BallCalc.DriveAngle,0,MainSpeed);
+    if(Goal_Turn){
+        Robot.Drive(BallCalc.DriveAngle,0,MainSpeed);
+    }
+    else{
+        Robot.Drive(BallCalc.DriveAngle,999,MainSpeed);
+    } 
 }
 
 void TakticsC::GoalAttak(){
@@ -32,7 +37,6 @@ void TakticsC::step(){
 
             //Defender Programm Felix?
         }
-        Robot.Kicker.Off();
     } 
 }
 

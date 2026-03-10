@@ -54,6 +54,7 @@ void BallCalcC::getAngle(){
         DriveAngle = Ball.Angle;
         Zone = "Error";
     }
+    DriveAngle = DriveAngle*-1;
 
     if(DriveAngle<-180){DriveAngle = DriveAngle+ 360;}
     else if (DriveAngle > 180){DriveAngle = DriveAngle - 360;}

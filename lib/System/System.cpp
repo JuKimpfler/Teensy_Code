@@ -80,7 +80,6 @@ void SystemC::UpdateC::Sensors(){
     Line.read_Fast(); // 60 micro
     US.read(); // 1 micro
     Cam.read(); // 1 micro
-    Robot.Kicker.Update(); // 1 micro
     LineCalc.Calc(); // 15 micro
     BallCalc.CalcDist(); // 1 micro
     BallCalc.CalcAngle();
@@ -136,9 +135,9 @@ void SystemC::UpdateC::Sensors(){
         #ifndef Line_Calib
         #ifndef PID_Calib
         Debug.Start();
-        Debug.Plot("USH", US.Distance_raw[0]);
-        Debug.Plot("USR", US.Distance_raw[1]);
-        Debug.Plot("USL", US.Distance_raw[2]);
+        Debug.Plot("USL", US.Distance_raw[0]);
+        Debug.Plot("USH", US.Distance_raw[1]);
+        Debug.Plot("USR", US.Distance_raw[2]);
         Debug.Plot("Ball_angle",Ball.Angle);
         Debug.Plot("Ball_Dist",Ball.Distance);
         Debug.Plot("sight",Ball.inSight);
@@ -146,7 +145,7 @@ void SystemC::UpdateC::Sensors(){
         Debug.Plot("overload",abs(Goal.Angle-BNO055.TiltZ));
         Debug.Plot("regeln",LineCalc.DriveAngle);
         Debug.Plot("ball_dist2",Ball.Distance_raw);
-        Debug.Plot("Rolle",BL.Rolle);
+        Debug.Plot("Rolle",MainSpeed);
         Debug.Send();
         BL.sendDebug("BNO: " + String(BNO055.TiltZ));
         #endif
@@ -158,6 +157,6 @@ void SystemC::UpdateC::Sensors(){
     }
 
     #ifdef PID_Calib
-    Robot.Turn(inputAngle);
+    Robot.Turn(999);
     #endif
 }

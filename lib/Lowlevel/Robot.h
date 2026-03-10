@@ -10,6 +10,7 @@ public:
     void Drive(float Dir , float Angel = 0 ,int Speed = HighSpeed);
     void Stop();
     void Break();   
+    void Turn_Drachen();
     
     class KickerC{
         public:

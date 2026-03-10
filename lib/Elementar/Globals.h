@@ -13,4 +13,5 @@ inline int LDR_Schwelle;
 inline int IR_Dist_Offset;
 inline uint16_t IR_maxi[16];
 inline int16_t IR_mini[16];
+inline bool Goal_Turn;
 #endif

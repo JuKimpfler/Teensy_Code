@@ -34,6 +34,7 @@ void setup() {
 }
 
 void loop() { 
+    Robot.Kicker.Off();
     Cycle_Timer = 0 ;
 
     System.Update.Sensors();
@@ -41,12 +42,12 @@ void loop() {
     
     #ifndef PID_Calib
     if(System.Start){ 
-        //Game.Run();
-        
+        Game.Run();
+        //DefenderTactics.Homing();
         //Robot.Turn(999, MainSpeed); 
         
         //Taktics.BallSearch();
-        //Robot.Drive(0,Goal.Angle,20);
+        //Robot.Drive(0,90,20);
         //Motor.On(100,VR_Motor);
         //Motor.On(100,VR_Motor);
         //Motor.On(100,HL_Motor);
@@ -63,14 +64,12 @@ void loop() {
     if (System.Switches[0]){MainSpeed = HighSpeed;}
     else {MainSpeed = LowSpeed;}
 
-    if (System.Switches[1]){}
-    else{}
+    Goal_Turn = System.Switches[1];
 
     // Buttons
     if(System.Button[0]){BNO055.Calibrate();} // BNO055 set to 0
 
     if (System.Button[1]){Robot.Kicker.On();} // Kicker test
-    else{Robot.Kicker.Off();}
 
     if (System.Button[2]){IR.Calib_Dist();} 
     else{}
@@ -82,5 +81,6 @@ void loop() {
     Cycle_P2++;
     Cycle_P3++;
     Cycletime = Cycle_Timer;
+    Robot.Kicker.Update(); // 1 micro
 }
 

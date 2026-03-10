@@ -5,6 +5,7 @@ AttackerTacticsC AttackerTactics;
 void AttackerTacticsC::step(){
 	if(LDR.Aktiv()){
 		GoalAttak();
+		Robot.Kicker.On();
 	}
 	else{
 		BallSearch();
@@ -12,14 +13,12 @@ void AttackerTacticsC::step(){
 }
 
 void AttackerTacticsC::GoalAttak(){
-	if (abs(Goal.Angle) < 10){
-		Robot.Kicker.On();
-		Robot.Drive(0, 0, MainSpeed);
-	}
-	else{
-		Robot.Kicker.Off();
-		Robot.Drive(Goal.Angle, 999, MainSpeed); 
-	}
+	if(Goal_Turn){
+        Robot.Drive(BallCalc.DriveAngle,0,MainSpeed);
+    }
+    else{
+        Robot.Drive(BallCalc.DriveAngle,999,MainSpeed);
+    } 
 }
 
 void AttackerTacticsC::BallSearch(){

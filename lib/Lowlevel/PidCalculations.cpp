@@ -29,9 +29,18 @@ void PIDC::Calculate(){
         esum = 0;
     }
     float derivative = (error - ealt) / diffTime;
+    float SchwelleD = 1;
+    if(error >= SchwelleD){
+        derivative = (error - ealt) / (sqrtf(error) * diffTime);
+        if((error - ealt) == 0.0){
+            derivative = (error - ealt);
+        }
+    }
+    else{
+        derivative = (error - ealt) / (sqrtf(SchwelleD) * diffTime);
+    }
     ealt = error;
 
-    // Korrekte PID-Berechnung ohne abs() und ohne Vorzeichenwechsel!
     Out = (error * Kp * PID_Mult) + (esum * Ki * diffTime * PID_Mult) + (derivative * Kd);
 
     last = micros(); 
