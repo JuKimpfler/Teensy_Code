@@ -12,5 +12,6 @@ class DefenderTacticsC{
         void GoalTurn();
         void Homing();
         void Goal_Defens();
+        void Homing_Test();
 };
 extern DefenderTacticsC DefenderTactics;

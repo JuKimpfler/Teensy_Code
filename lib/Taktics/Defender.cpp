@@ -50,6 +50,63 @@ void DefenderTacticsC::Homing(){
     #endif
 }
 
+void DefenderTacticsC::Homing_Test(){
+    #ifdef Robot_s
+    if(US.Distance_raw[1] < 60 && US.Distance_raw[1] > 40){
+        if(abs(Ball.Angle) > 10){
+            Robot.Drive(Ball.Distance * cosf(Ball.Angle), 0, MainSpeed);
+        }
+        else{
+            Robot.Turn(Ball.Angle);
+        }
+    }
+    else{
+        if (US.Distance_raw[0] < US.Distance_raw[2] + 10){
+            Robot.Drive(110, 0, MainSpeed/3);
+        }
+        else if(US.Distance_raw[2] < US.Distance_raw[0] + 10){
+            Robot.Drive(-110, 0, MainSpeed/3);
+        }
+        else if(US.Distance_raw[1] > 60){
+            Robot.Drive(180,0,MainSpeed);
+        }
+        else if(US.Distance_raw[1] < 40){
+            Robot.Drive(0,0,MainSpeed);
+        }
+        else{
+            Robot.Turn(Ball.Angle);
+        }
+    }
+    #endif
+    #ifdef Robo_w
+    if(US.Distance_raw[1] < 60 && US.Distance_raw[1] > 40){
+        if(abs(Ball.Angle) > 10){
+            Robot.Drive(Ball.Distance * cosf(Ball.Angle), 0, MainSpeed);
+        }
+        else{
+            Robot.Turn(Ball.Angle);
+        }
+    }
+    else{
+        if (US.Distance_raw[0] < US.Distance_raw[2] + 10){
+            Robot.Drive(110, 0, MainSpeed/3);
+        }
+        else if(US.Distance_raw[2] < US.Distance_raw[0] + 10){
+            Robot.Drive(-110, 0, MainSpeed/3);
+        }
+        else if(US.Distance_raw[1] > 60){
+            Robot.Drive(180,0,MainSpeed);
+        }
+        else if(US.Distance_raw[1] < 40){
+            Robot.Drive(0,0,MainSpeed);
+        }
+        else{
+            Robot.Turn(Ball.Angle);
+        }
+    }
+    #endif
+}
+
 void DefenderTacticsC::Goal_Defens(){
     if (US.Distance_raw[1] < 45) { //wenn Abstand hinten kleiner 45
 
