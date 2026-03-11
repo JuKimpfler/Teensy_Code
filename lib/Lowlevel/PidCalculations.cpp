@@ -28,12 +28,14 @@ void PIDC::Calculate(){
     if(U.Ran(error, -1, 1)) {
         esum = 0;
     }
-    float derivative = (error - ealt) / diffTime;
+    float derivative ;//= (error - ealt) / diffTime;
     float SchwelleD = 1;
     if(error >= SchwelleD){
-        derivative = (error - ealt) / (sqrtf(error) * diffTime);
         if((error - ealt) == 0.0){
             derivative = (error - ealt);
+        }
+        else{
+            derivative = (error - ealt) / (sqrtf(error) * diffTime);
         }
     }
     else{

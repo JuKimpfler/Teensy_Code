@@ -89,7 +89,7 @@ void SystemC::UpdateC::Sensors(){
     IR.read(); // 300 micro
     BL.doRolle();
 
-    if ((Cycle_P3 > 60)){
+    if ((Cycle_P3 > 5)){
         #ifdef Debug_EN
         #ifdef Ir_Calib // IR_Calibration 
         Debug.Start();
@@ -147,7 +147,7 @@ void SystemC::UpdateC::Sensors(){
         Debug.Plot("ball_dist2",Ball.Distance_raw);
         Debug.Plot("Rolle",MainSpeed);
         Debug.Send();
-        BL.sendDebug("BNO: " + String(BNO055.TiltZ));
+        //BL.sendDebug("BNO: " + String(BNO055.TiltZ));
         #endif
         #endif
         #endif

@@ -8,6 +8,8 @@ class DebugC {
         // internal buffer that accumulates the formatted text for plotting
         String mainList;
     public:
+        bool debugEnabled = false;
+
         void Start(); // leert die mainliste und beginnt sie mit "> " als Kennzeichnung
             // Step 1: Initializes the debug output.
         void Plot(const String &Name, double Value); // hängt das Paar Name:Value an (format kompatibel mit VSC Serial Plotter)

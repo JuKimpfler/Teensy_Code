@@ -1,5 +1,5 @@
 #include "Attacker.h"
-
+#include "Defender.h"
 AttackerTacticsC AttackerTactics;
 
 void AttackerTacticsC::step(){
@@ -14,10 +14,10 @@ void AttackerTacticsC::step(){
 
 void AttackerTacticsC::GoalAttak(){
 	if(Goal_Turn){
-        Robot.Drive(BallCalc.DriveAngle,0,MainSpeed);
+        Robot.Drive(Goal.Angle,0,MainSpeed);
     }
     else{
-        Robot.Drive(BallCalc.DriveAngle,999,MainSpeed);
+        Robot.Drive(Goal.Angle,999,MainSpeed);
     } 
 }
 
@@ -26,7 +26,7 @@ void AttackerTacticsC::BallSearch(){
 		Robot.Drive(BallCalc.DriveAngle,0,MainSpeed);
 	}
 	else{
-		Robot.Drive(0, 0, MainSpeed);
+		DefenderTactics.Homing();
 	}
 }
 

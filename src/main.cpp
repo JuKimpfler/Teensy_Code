@@ -30,7 +30,10 @@ void setup() {
     System.init();
 
     delay(1000);
-    //BL.setDebugEnabled(true);
+    
+    #ifdef Com_Debug
+        BL.setDebugEnabled(true);
+    #endif
 }
 
 void loop() { 

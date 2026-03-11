@@ -138,8 +138,12 @@ void DebugC::Send(bool BLE) {
     if (BLE) {
         Serial.println(mainList);
     } else {
-        UART_Pixy.println(mainList);
+        if(!debugEnabled) return;
+        // Prefix "DBG:" wird von der ESP-Bridge erkannt und als Debug-Paket
+        // an den Debug-Monitor weitergeleitet (nicht an den Peer-Roboter).
+        UART_Pixy.print("DBG:");
+        UART_Pixy.print(mainList);
+        UART_Pixy.print("\r\n");
     }
-        // Step 4: Send the debug output via Serial or UART_Pixy based on the BLE flag.
 }
 
