@@ -24,7 +24,7 @@ void GameC::Run(){
         U.Circel(dead_zone);
         Robot.Drive(LineCalc.DriveAngle,0,100);
     }
-    else { 
+    else {
         if(BL.Rolle == "A"){
             AttackerTactics.step();
         }

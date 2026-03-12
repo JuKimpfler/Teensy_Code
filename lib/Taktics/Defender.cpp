@@ -17,68 +17,51 @@ void DefenderTacticsC::step(){
 void DefenderTacticsC::Homing(){
     #ifdef Robo_s
     float diff = US.Distance_raw[1] - US.Distance_raw[2];
-    if (US.Distance_raw[0] < 20){
+
+    if ((US.Distance_raw[0] < 20)){
+        Robot.Drive(0,0);
+    }  
+    else{
         if ((diff < -20)){
-            Robot.Drive(-50, 0, MainSpeed/2);
-        }
-        else if((diff > 20)){
-            Robot.Drive(50, 0, MainSpeed/2);
-        }
-       //Robot.Drive(0, 0, MainSpeed/2);
-    }
-    else if (US.Distance_raw[0] > 40){
-        if ((diff < -20)){
-            Robot.Drive(-150, 0, MainSpeed/2);
-        }
-        else if((diff > 20)){
-            Robot.Drive(150, 0, MainSpeed/2);
-        }
-       //Robot.Drive(180, 0, MainSpeed/2);
-    }
-    else if ((US.Distance_raw[0] > 20)&&(US.Distance_raw[0] < 40)){
-        if ((diff < -10)){
             Robot.Drive(-90, 0, MainSpeed/2);
         }
-        else if((diff > 10)){
+        else if((diff > 20)){
             Robot.Drive(90, 0, MainSpeed/2);
         }
         else{
-            Robot.Turn(0);
+            if ((US.Distance_raw[0] < 20)){
+                Robot.Drive(0,0);
+            }
+
+            if ((US.Distance_raw[0] > 40)){
+                Robot.Drive(-180,0);
+            }
         }
-    }
-    else{
-        Robot.Turn(0);
-    }
+    }  
     #endif
     #ifdef Robo_w
-    float diff = US.Distance_raw[0] - US.Distance_raw[2];
-    if ((US.Distance_raw[1] < 40)&&(US.Distance_raw[1] > 60)){
-        if ((diff < -10)){
-            Robot.Drive(90, 0, MainSpeed/2);
-        }
-        else if((diff > 10)){
+    float diff = US.Distance_raw[2] - US.Distance_raw[0];
+
+    if ((US.Distance_raw[1] < 20)){
+        Robot.Drive(0,0);
+    }  
+    else{
+        if ((diff < -20)){
             Robot.Drive(-90, 0, MainSpeed/2);
         }
-    }
-    else if (US.Distance_raw[1] < 40){
-        if ((diff < -10)){
-            Robot.Drive(50, 0, MainSpeed/2);
+        else if((diff > 20)){
+            Robot.Drive(90, 0, MainSpeed/2);
         }
-        else if((diff > 10)){
-            Robot.Drive(-50, 0, MainSpeed/2);
+        else{
+            if ((US.Distance_raw[1] < 20)){
+                Robot.Drive(0,0);
+            }
+
+            if ((US.Distance_raw[1] > 40)){
+                Robot.Drive(-180,0);
+            }
         }
-    }
-    else if (US.Distance_raw[1] > 60){
-        if ((diff < -10)){
-            Robot.Drive(150, 0, MainSpeed/2);
-        }
-        else if((diff > 10)){
-            Robot.Drive(-150, 0, MainSpeed/2);
-        }
-    }
-    else{
-        Robot.Turn(Ball.Angle);
-    }
+    }  
     #endif
 }
 

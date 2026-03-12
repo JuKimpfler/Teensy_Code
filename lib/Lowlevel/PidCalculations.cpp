@@ -1,5 +1,6 @@
 #include "PidCalculations.h"
 #include "Cam.h"
+#include "IR.h"
 PIDC PID;
 
 void PIDC::Calculate(){
@@ -9,7 +10,7 @@ void PIDC::Calculate(){
 
     float error=0;
 
-    if(Goal.Regeln == true){
+    if(Goal.Regeln == true ){
         error = Angle - Goal.Angle;
     }
     else{

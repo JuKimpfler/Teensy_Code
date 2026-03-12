@@ -13,17 +13,22 @@ void AttackerTacticsC::step(){
 }
 
 void AttackerTacticsC::GoalAttak(){
-	if(Goal_Turn){
-        Robot.Drive(Goal.Angle,0,MainSpeed);
+	if((Goal_Turn == true) && (U.Ran(Ball.Angle,-25,25)&&(Ball.Distance<30))){
+        Robot.Drive(Goal.Angle,999,MainSpeed);
     }
     else{
-        Robot.Drive(Goal.Angle,999,MainSpeed);
+        Robot.Drive(Goal.Angle,0,MainSpeed);
     } 
 }
 
 void AttackerTacticsC::BallSearch(){
 	if(Ball.inSight){
-		Robot.Drive(BallCalc.DriveAngle,0,MainSpeed);
+		if((Goal_Turn == true) && (U.Ran(Ball.Angle,-25,25)&&(Ball.Distance<30))){
+			Robot.Drive(BallCalc.DriveAngle,999,MainSpeed);
+		}
+		else{
+			Robot.Drive(BallCalc.DriveAngle,0,MainSpeed);
+		} 
 	}
 	else{
 		DefenderTactics.Homing();

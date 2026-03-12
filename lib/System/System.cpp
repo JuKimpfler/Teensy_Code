@@ -89,7 +89,7 @@ void SystemC::UpdateC::Sensors(){
     IR.read(); // 300 micro
     BL.doRolle();
 
-    if ((Cycle_P3 > 5)){
+    if ((Cycle_P3 > 50)){
         #ifdef Debug_EN
         #ifdef Ir_Calib // IR_Calibration 
         Debug.Start();
@@ -112,10 +112,12 @@ void SystemC::UpdateC::Sensors(){
         #endif
         #ifdef Line_Calib
         Debug.Start();
-        //Debug.Plot_List("Line", Line.Values_raw, 8);
-        Debug.Plot_List("Line", Line.lineVW, 8);
-        Debug.Plot("angle",LineCalc.DriveAngle);
-        Debug.Plot("invert",Line_Schwelle_VW);
+        Debug.Plot_List("Line", Line.Values_raw, 8);
+        Debug.Plot_List("LV", Line.Values_raw_VW, 8);
+        //Debug.Plot_List("L", Line.line, 32);
+        //Debug.Plot("angle",LineCalc.DriveAngle);
+        //Debug.Plot("LVW",Line_Schwelle_VW);
+        //Debug.Plot("L",Line_Schwelle);
         Debug.Send();
         #endif
         #ifdef PID_Calib

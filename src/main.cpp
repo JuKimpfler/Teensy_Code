@@ -77,8 +77,8 @@ void loop() {
     if (System.Button[2]){IR.Calib_Dist();} 
     else{}
 
-    if (System.Switches[2]){if (System.Button[3]){Line.Calibrate(2);}} // Wenn SW3 == true: Line_Calibration mit Linie
-    else{if (System.Button[3]){Line.Calibrate(1);}} // Wenn SW3 == false: Line_Calibration ohne Linie
+    //if (System.Switches[2]){if (System.Button[3]){Line.Calibrate(2);}} // Wenn SW3 == true: Line_Calibration mit Linie
+    //else{if (System.Button[3]){Line.Calibrate(1);}} // Wenn SW3 == false: Line_Calibration ohne Linie
 
     // Timer / Cycler
     Cycle_P2++;
