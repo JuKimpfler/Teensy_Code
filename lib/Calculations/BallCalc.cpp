@@ -35,17 +35,19 @@ void BallCalcC::CalcDist(){
 void BallCalcC::getAngle(){
 
     Zone = "unread";
-    
+
+
+    int B_Schwelle = 10;
     if(U.Ran(Ball.Angle,-5,5)&&U.Ran(Ball.Distance,-30,Dist_Schwelle_min)){DriveAngle=Ball.Angle;Zone = "A";  /* Zone A*/ }
-    else if(U.Ran(Ball.Angle,-5,5)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=Ball.Angle*B_Faktor; Zone = "B"; /* Zone B*/ }
+    else if(U.Ran(Ball.Angle,-B_Schwelle,B_Schwelle)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=Ball.Angle*B_Faktor; Zone = "B"; /* Zone B*/ }
     else if(U.Ran(Ball.Angle,5,90)&&U.Ran(Ball.Distance,-30,Dist_Schwelle_min)){DriveAngle=Ball.Angle*C_Faktor;Zone = "C1"; /* Zone C1*/ }
     else if(U.Ran(Ball.Angle,-5,-90)&&U.Ran(Ball.Distance,-30,Dist_Schwelle_min)){DriveAngle=Ball.Angle*C_Faktor; Zone = "C2";/* Zone C2*/ }
     else if(U.Ran(Ball.Angle,90,130)&&U.Ran(Ball.Distance,-30,Dist_Schwelle_min)){DriveAngle=Ball.Angle*H_Faktor;Zone = "H1"; /* Zone C1*/ }
     else if(U.Ran(Ball.Angle,-90,-130)&&U.Ran(Ball.Distance,-30,Dist_Schwelle_min)){DriveAngle=Ball.Angle*H_Faktor; Zone = "H2";/* Zone C2*/ }
     else if(U.Ran(Ball.Angle,130,180)&&U.Ran(Ball.Distance,-30,Dist_Schwelle_min)){DriveAngle=-90;Zone = "D1"; /* Zone D1*/ }
     else if(U.Ran(Ball.Angle,-130,-180)&&U.Ran(Ball.Distance,-30,Dist_Schwelle_min)){DriveAngle=90;Zone = "D2"; /* Zone D2*/ }
-    else if(U.Ran(Ball.Angle,5,90)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=Ball.Angle*E_Faktor;Zone = "E1"; /* Zone E1*/ }
-    else if(U.Ran(Ball.Angle,-5,-90)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=Ball.Angle*E_Faktor;Zone = "E2"; /* Zone E2*/ }
+    else if(U.Ran(Ball.Angle,B_Schwelle,90)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=Ball.Angle*E_Faktor;Zone = "E1"; /* Zone E1*/ }
+    else if(U.Ran(Ball.Angle,-B_Schwelle,-90)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=Ball.Angle*E_Faktor;Zone = "E2"; /* Zone E2*/ }
     else if(U.Ran(Ball.Angle,90,160)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=Ball.Angle*F_Faktor;Zone = "F1"; /* Zone F1*/ }
     else if(U.Ran(Ball.Angle,-90,-160)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=Ball.Angle*F_Faktor;Zone = "F2"; /* Zone F2*/ }
     else if(U.Ran(Ball.Angle,160,180)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=140;Zone = "G2"; /* Zone G1*/ }

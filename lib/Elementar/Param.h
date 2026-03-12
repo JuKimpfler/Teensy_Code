@@ -2,7 +2,7 @@
 #include "Arduino.h"
 
 // Modus wahl
-#define Robo_w // Robo_w oder Robo_s für Roboter Auswahl
+#define Robo_s // Robo_w oder Robo_s für Roboter Auswahl
 
 #define Debug_EN // Debug Ausgabe
 //#define Ir_Calib // calibration Mode IR Values
@@ -21,20 +21,20 @@ inline float PID_Mult = 0.1; // Belassen
 
 inline float PID_Konstante = 0.5; // 0.3
 
-inline double E_Faktor = 1.6;
-inline double B_Faktor = 1.2;
-inline double F_Faktor = 1.55;
-inline double C_Faktor = 2;
-inline double H_Faktor = 1.5;
+inline double E_Faktor = 1.35;
+inline double B_Faktor = -3;
+inline double F_Faktor = 1.5;
+inline double C_Faktor = 1.5;
+inline double H_Faktor = 1.9;
 
 
-inline double E_Faktor_Cam = 1.6;
+inline double E_Faktor_Cam = 1.3;
 inline double B_Faktor_Cam = 1.2;
 inline double F_Faktor_Cam = 1.55;
 inline double C_Faktor_Cam = 2;
 inline double H_Faktor_Cam = 1.5;
 
-inline int Dist_Schwelle_min = 10; // Zonen Schwelle Dist 
+inline int Dist_Schwelle_min = 18; // Zonen Schwelle Dist 
 inline int Dist_Schwelle_max = 60; // Zonen Schwelle Dist 
 
 inline int LDR_Schwelle_w = 500;
