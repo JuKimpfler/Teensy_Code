@@ -36,7 +36,6 @@ void BallCalcC::getAngle(){
 
     Zone = "unread";
 
-
     int B_Schwelle = 10;
     if(U.Ran(Ball.Angle,-5,5)&&U.Ran(Ball.Distance,-30,Dist_Schwelle_min)){DriveAngle=Ball.Angle;Zone = "A";  /* Zone A*/ }
     else if(U.Ran(Ball.Angle,-B_Schwelle,B_Schwelle)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=Ball.Angle*B_Faktor; Zone = "B"; /* Zone B*/ }

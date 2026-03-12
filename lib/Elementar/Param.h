@@ -4,7 +4,7 @@
 // Modus wahl
 #define Robo_s // Robo_w oder Robo_s für Roboter Auswahl
 
-// #define Debug_EN // Debug Ausgabe
+#define Debug_EN // Debug Ausgabe
 //#define Ir_Calib // calibration Mode IR Values
 //#define Calib // calibration Mode Normal
 //#define Line_Calib
@@ -24,7 +24,7 @@ inline float PID_Konstante = 0.5; // 0.3
 inline double E_Faktor = 1.35;
 inline double B_Faktor = -4;
 inline double F_Faktor = 1.5;
-inline double C_Faktor = 1.5;
+inline double C_Faktor = 0.85;
 inline double H_Faktor = 1.9;
 
 
