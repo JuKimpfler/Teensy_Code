@@ -148,6 +148,8 @@ void SystemC::UpdateC::Sensors(){
         Debug.Plot("regeln",LineCalc.DriveAngle);
         Debug.Plot("ball_dist2",Ball.Distance_raw);
         Debug.Plot("Rolle",Zone);
+        Debug.Plot("Ausrichtung y/n", AttackerTactics.doTurn);
+        Debug.Plot("Echt Ausrichtung", Goal.Regeln);
         Debug.Send();
         //BL.sendDebug("BNO: " + String(BNO055.TiltZ));
         #endif
