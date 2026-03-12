@@ -2,17 +2,17 @@
 #include "Arduino.h"
 
 // Modus wahl
-#define Robo_s // Robo_w oder Robo_s für Roboter Auswahl
+#define Robo_w // Robo_w oder Robo_s für Roboter Auswahl
 
-#define Debug_EN // Debug Ausgabe
+// #define Debug_EN // Debug Ausgabe
 //#define Ir_Calib // calibration Mode IR Values
 //#define Calib // calibration Mode Normal
 //#define Line_Calib
 //#define PID_Calib
 //#define Com_Debug 
 
-#define HighSpeed 25 // Speed im HS modus
-inline float LowSpeed = 18; // Speed im LS modus
+#define HighSpeed 20 // Speed im HS modus
+inline float LowSpeed = 14; // Speed im LS modus
 
 inline float Kp = 1.6; // Startwert, dann erhöhen  1
 inline float Kd = 35.0; // Startwert, dann erhöhen 
@@ -22,7 +22,7 @@ inline float PID_Mult = 0.1; // Belassen
 inline float PID_Konstante = 0.5; // 0.3
 
 inline double E_Faktor = 1.35;
-inline double B_Faktor = -3;
+inline double B_Faktor = -4;
 inline double F_Faktor = 1.5;
 inline double C_Faktor = 1.5;
 inline double H_Faktor = 1.9;
@@ -53,8 +53,8 @@ inline int Line_Norm = 4000;
 inline int Line_Grass_VW = 1900;
 inline int Line_Norm_VW = 3200;
 
-inline int Line_Schwelle_VW = 2300;
-inline int Line_Schwelle = 2300;
+inline int Line_Schwelle_VW = 2100;
+inline int Line_Schwelle = 2100;
 
 inline int IR_Sight = 45; // ab wann wird der Ball als da erkannt
 

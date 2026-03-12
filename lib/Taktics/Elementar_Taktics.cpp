@@ -4,7 +4,7 @@ TakticsC Taktics;
 
 void TakticsC::BallSearch(){
     if(Ball.inSight){
-		if((Goal_Turn == true) && (U.Ran(Ball.Angle,-25,25)&&(Ball.Distance<30))){
+		if((Goal_Turn == true) && (U.Ran(Ball.Angle,-30,30))){
 			Robot.Drive(BallCalc.DriveAngle,999,MainSpeed);
 		}
 		else{
@@ -17,7 +17,7 @@ void TakticsC::BallSearch(){
 }
 
 void TakticsC::GoalAttak(){
-    if((Goal_Turn == true) && (U.Ran(Ball.Angle,-25,25)&&(Ball.Distance<30))){
+    if((Goal_Turn == true) && (U.Ran(Ball.Angle,-30,30))){
         Robot.Drive(Goal.Angle, 999, MainSpeed); 
     }
     else{
