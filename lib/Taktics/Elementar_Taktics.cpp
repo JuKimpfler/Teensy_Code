@@ -1,4 +1,5 @@
 #include "Elementar_Taktics.h"
+#include "Defender.h"
 TakticsC Taktics;
 
 void TakticsC::BallSearch(){
@@ -11,7 +12,12 @@ void TakticsC::BallSearch(){
 }
 
 void TakticsC::GoalAttak(){
-    Robot.Drive(Goal.Angle, 999, MainSpeed); 
+    if(Goal_Turn){
+        Robot.Drive(Goal.Angle, 999, MainSpeed); 
+    }
+    else{
+        Robot.Drive(0, 0, MainSpeed); 
+    }
 }
 
 void TakticsC::step(){
@@ -24,18 +30,7 @@ void TakticsC::step(){
             BallSearch();
         }
         else{
-            if (US.Distance_raw[0] < US.Distance_raw[2] + 10){
-                Robot.Drive(-155, 0, MainSpeed);
-            }
-
-            else if(US.Distance_raw[2] < US.Distance_raw[0] + 10){
-                Robot.Drive(155, 0, MainSpeed);
-            }
-            else{
-                Robot.Drive(180,0,MainSpeed);
-            }
-
-            //Defender Programm Felix?
+            DefenderTactics.Homing();
         }
     } 
 }
