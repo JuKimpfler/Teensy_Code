@@ -4,7 +4,7 @@
 // Modus wahl
 #define Robo_w // Robo_w oder Robo_s für Roboter Auswahl
 
-//#define Debug_EN // Debug Ausgabe
+#define Debug_EN // Debug Ausgabe
 //#define Ir_Calib // calibration Mode IR Values
 //#define Calib // calibration Mode Normal
 //#define Line_Calib
@@ -27,6 +27,13 @@ inline double F_Faktor = 1.55;
 inline double C_Faktor = 2;
 inline double H_Faktor = 1.5;
 
+
+inline double E_Faktor_Cam = 1.6;
+inline double B_Faktor_Cam = 1.2;
+inline double F_Faktor_Cam = 1.55;
+inline double C_Faktor_Cam = 2;
+inline double H_Faktor_Cam = 1.5;
+
 inline int Dist_Schwelle_min = 10; // Zonen Schwelle Dist 
 inline int Dist_Schwelle_max = 60; // Zonen Schwelle Dist 
 
@@ -47,7 +54,7 @@ inline int Line_Grass_VW = 1900;
 inline int Line_Norm_VW = 3200;
 
 inline int Line_Schwelle_VW = 2300;
-inline int Line_Schwelle = 2700;
+inline int Line_Schwelle = 2300;
 
 inline int IR_Sight = 45; // ab wann wird der Ball als da erkannt
 

@@ -137,9 +137,9 @@ void SystemC::UpdateC::Sensors(){
         #ifndef Line_Calib
         #ifndef PID_Calib
         Debug.Start();
-        Debug.Plot("USL", US.Distance_raw[0]);
-        Debug.Plot("USH", US.Distance_raw[1]);
-        Debug.Plot("USR", US.Distance_raw[2]);
+       // Debug.Plot("USL", US.Distance_raw[0]);
+        //Debug.Plot("USH", US.Distance_raw[1]);
+       // Debug.Plot("USR", US.Distance_raw[2]);
         Debug.Plot("Ball_angle",Ball.Angle);
         Debug.Plot("Ball_Dist",Ball.Distance);
         Debug.Plot("sight",Ball.inSight);
@@ -147,7 +147,7 @@ void SystemC::UpdateC::Sensors(){
         Debug.Plot("overload",abs(Goal.Angle-BNO055.TiltZ));
         Debug.Plot("regeln",LineCalc.DriveAngle);
         Debug.Plot("ball_dist2",Ball.Distance_raw);
-        Debug.Plot("Rolle",MainSpeed);
+        Debug.Plot("Rolle",Zone);
         Debug.Send();
         //BL.sendDebug("BNO: " + String(BNO055.TiltZ));
         #endif
