@@ -70,12 +70,25 @@ void loop() {
     Goal_Turn = System.Switches[1];
 
     // Buttons
+    #ifndef Ir_Calib
     if(System.Button[0]){BNO055.Calibrate();} // BNO055 set to 0
 
     if (System.Button[1]){Robot.Kicker.On();} // Kicker test
 
     if (System.Button[2]){IR.Calib_Dist();} 
     else{}
+
+    if(System.Button[3]){Line.Calibrate(1);}
+    #endif
+    #ifdef Ir_Calib
+    if(System.Button[0]){IR.Calib_Dist();} // BNO055 set to 0
+
+    if (System.Button[1]){IR.Calib_Offset();} // Kicker test
+
+    if (System.Button[2]){} 
+
+    if(System.Button[3]){IR.Save();}
+    #endif
 
     //if (System.Switches[2]){if (System.Button[3]){Line.Calibrate(2);}} // Wenn SW3 == true: Line_Calibration mit Linie
     //else{if (System.Button[3]){Line.Calibrate(1);}} // Wenn SW3 == false: Line_Calibration ohne Linie

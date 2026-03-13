@@ -82,6 +82,7 @@ void DebugC::Plot_List(String name, double Values[], size_t count) {
         }
     }
         // Step 3: Add a list of name-value pairs to the debug output.
+    mainList += ", ";
 }
 
 
@@ -95,6 +96,7 @@ void DebugC::Plot_List(String name, bool Values[], size_t count) {
         }
     }
         // Step 3: Add a list of name-value pairs to the debug output.
+        mainList += ", ";
 }
 
 void DebugC::Plot_List(String name, uint16_t Values[], size_t count) {
@@ -107,6 +109,7 @@ void DebugC::Plot_List(String name, uint16_t Values[], size_t count) {
         }
     }
         // Step 3: Add a list of name-value pairs to the debug output.
+        mainList += ", ";
 }
 
 
@@ -120,6 +123,7 @@ void DebugC::Plot_List(String name, String Values[], size_t count) {
         }
     }
         // Step 3: Add a list of name-value pairs to the debug output.
+        mainList += ", ";
 }
 
 /**

@@ -30,6 +30,10 @@ void BallCalcC::CalcDist(){
     
     Ball.Distance_raw2 = ((1/sqrt(Ball.Distance_raw)) * 2000);
     Ball.Distance = (Ball.Distance_raw2 -IR.Dist_Offset)*2;
+
+    if(Ball.Distance>200){
+        Ball.Distance = 200;
+    }
 }
 
 void BallCalcC::getAngle(){

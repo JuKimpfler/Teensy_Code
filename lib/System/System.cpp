@@ -12,7 +12,15 @@ elapsedMicros Mess_Timer;
 
 
 void SystemC::Start_Update(){
-    System.Start = digitalRead(Start_Port);
+    if ((ready1=true)&&(ready2=true)){
+        System.Start = digitalRead(Start_Port);
+        //if(System.Start == false ){
+        //    System.Start = digitalRead(RCJ_Port);
+        //}
+    }
+    else{
+        System.Start=false;
+    }    
 }
 
 void SystemC::Button_Update(){
@@ -93,7 +101,9 @@ void SystemC::UpdateC::Sensors(){
         #ifdef Debug_EN
         #ifdef Ir_Calib // IR_Calibration 
         Debug.Start();
-        Debug.Plot_List("IR",IR.IR_Values_raw,16);
+        Debug.Plot("Ball_angle",Ball.Angle);
+        Debug.Plot("Ball_Dist",Ball.Distance);
+        Debug.Plot_List("Gain",IR.gains,16);
         Debug.Send();
         #endif
         #ifdef Calib // Normal_Calibration
@@ -112,10 +122,12 @@ void SystemC::UpdateC::Sensors(){
         #endif
         #ifdef Line_Calib
         Debug.Start();
-        Debug.Plot_List("Line", Line.Values_raw, 8);
-        Debug.Plot_List("LV", Line.Values_raw_VW, 8);
+        //Debug.Plot_List("L", Line.Values_raw, 8);
+        //Debug.Plot_List("LV", Line.Values_raw_VW, 8);
         //Debug.Plot_List("L", Line.line, 32);
         //Debug.Plot("angle",LineCalc.DriveAngle);
+        Debug.Plot("Summe",Line.Summe);
+        Debug.Plot("Summe_VW",Line.VW_Summe);
         //Debug.Plot("LVW",Line_Schwelle_VW);
         //Debug.Plot("L",Line_Schwelle);
         Debug.Send();

@@ -18,95 +18,32 @@ LineC Line;
  * zu max_schwelle. Dieser Wert wird in Line_Schwelle gespeichert.
  */
 void LineC::Calibrate(int Modes){
-    uint16_t raw[40];
-    int idx = 0;
 
-    if (Modes == 1) {
+    ready1 = true;
 
-        SPI.beginTransaction(SPISettings(14000000, MSBFIRST, SPI_MODE3));
+    SPI.beginTransaction(SPISettings(14000000, MSBFIRST, SPI_MODE3));
 
-        digitalWriteFast(CS_LineA, LOW);
-        for (int i = 0; i < 8; i++) { raw[idx++] = SPI.transfer16(ADC_Befehle[i]); }
-        digitalWriteFast(CS_LineA, HIGH);
+    digitalWriteFast(CS_LineA, LOW);
+    for (int i = 0; i < 8; i++) { calib_line[i] = SPI.transfer16(ADC_Befehle[i]); }
+    digitalWriteFast(CS_LineA, HIGH);
 
-        digitalWriteFast(CS_LineB, LOW);
-        for (int i = 0; i < 8; i++) { raw[idx++] = SPI.transfer16(ADC_Befehle[i]); }
-        digitalWriteFast(CS_LineB, HIGH);
+    digitalWriteFast(CS_LineB, LOW);
+    for (int i = 0; i < 8; i++) { calib_line[i+8] = SPI.transfer16(ADC_Befehle[i]); }
+    digitalWriteFast(CS_LineB, HIGH);
 
-        digitalWriteFast(CS_LineC, LOW);
-        for (int i = 0; i < 8; i++) { raw[idx++] = SPI.transfer16(ADC_Befehle[i]); }
-        digitalWriteFast(CS_LineC, HIGH);
+    digitalWriteFast(CS_LineC, LOW);
+    for (int i = 0; i < 8; i++) { calib_line[i+16] = SPI.transfer16(ADC_Befehle[i]); }
+    digitalWriteFast(CS_LineC, HIGH);
 
-        digitalWriteFast(CS_LineD, LOW);
-        for (int i = 0; i < 8; i++) { raw[idx++] = SPI.transfer16(ADC_Befehle[i]); }
-        digitalWriteFast(CS_LineD, HIGH);
+    digitalWriteFast(CS_LineD, LOW);
+    for (int i = 0; i < 8; i++) { calib_line[i+24] = SPI.transfer16(ADC_Befehle[i]); }
+    digitalWriteFast(CS_LineD, HIGH);
 
-        SPI.endTransaction();
+    digitalWriteFast(CS_LineVW, LOW);
+    for (int i = 0; i < 8; i++) { calib_line[i+32] = SPI.transfer16(ADC_Befehle[i]); }
+    digitalWriteFast(CS_LineVW, HIGH);
 
-        uint32_t sum = 0;
-        for (int i = 0; i < 40; i++) { sum += raw[i]; }
-        Line_Grass = sum / 40;
-    }
-    else if (Modes == 2) {
-
-        SPI.beginTransaction(SPISettings(14000000, MSBFIRST, SPI_MODE3));
-
-        digitalWriteFast(CS_LineA, LOW);
-        for (int i = 0; i < 8; i++) { raw[idx++] = SPI.transfer16(ADC_Befehle[i]); }
-        digitalWriteFast(CS_LineA, HIGH);
-
-        digitalWriteFast(CS_LineB, LOW);
-        for (int i = 0; i < 8; i++) { raw[idx++] = SPI.transfer16(ADC_Befehle[i]); }
-        digitalWriteFast(CS_LineB, HIGH);
-
-        digitalWriteFast(CS_LineC, LOW);
-        for (int i = 0; i < 8; i++) { raw[idx++] = SPI.transfer16(ADC_Befehle[i]); }
-        digitalWriteFast(CS_LineC, HIGH);
-
-        digitalWriteFast(CS_LineD, LOW);
-        for (int i = 0; i < 8; i++) { raw[idx++] = SPI.transfer16(ADC_Befehle[i]); }
-        digitalWriteFast(CS_LineD, HIGH);
-
-        SPI.endTransaction();
-
-        uint16_t maxVal = 0;
-        for (int i = 0; i < 40; i++) { if (raw[i] > maxVal) maxVal = raw[i]; }
-        Line_Norm = maxVal;
-    }
-
-    if (Modes == 3) {
-        uint32_t sum = 0;
-        SPI.beginTransaction(SPISettings(14000000, MSBFIRST, SPI_MODE3));
-
-        digitalWriteFast(CS_LineVW, LOW);
-        for (int i = 0; i < 8; i++) { raw[idx++] = SPI.transfer16(ADC_Befehle[i]); }
-        digitalWriteFast(CS_LineVW, HIGH);
-
-        SPI.endTransaction();
-        
-        sum = 0;
-        for (int i = 0; i < 40; i++) { sum += raw[i]; }
-        Line_Grass_VW = sum / 40;
-    }
-
-
-    else if (Modes == 4) {
-        uint16_t maxVal = 0;
-        SPI.beginTransaction(SPISettings(14000000, MSBFIRST, SPI_MODE3));
-
-        digitalWriteFast(CS_LineVW, LOW);
-        for (int i = 0; i < 8; i++) { raw[idx++] = SPI.transfer16(ADC_Befehle[i]); }
-        digitalWriteFast(CS_LineVW, HIGH);
-
-        SPI.endTransaction();
-
-        maxVal = 0;
-        for (int i = 0; i < 40; i++) { if (raw[i] > maxVal) maxVal = raw[i]; }
-        Line_Norm_VW = maxVal;
-    }
-
-    Line_Schwelle = Line_Grass + (uint16_t)(0.6f * (Line_Norm - Line_Grass));
-    Line_Schwelle_VW = Line_Grass_VW + (uint16_t)(0.6f * (Line_Norm_VW - Line_Grass_VW));
+    SPI.endTransaction();
 }
 
 void LineC::read_Fast(){
@@ -114,31 +51,23 @@ void LineC::read_Fast(){
     VW_Summe = 0;
     SPI.beginTransaction(SPISettings(14000000, MSBFIRST, SPI_MODE3)); //Start SPI und Einstellern der Übertragungsparameter
     digitalWriteFast(CS_LineA, LOW);  /* prepare default state of ADC chip select */
-    for (int i = 0 ; i<6 ; i++){if(SPI.transfer16(ADC_Befehle[i])<Line_Schwelle){line[i]=0;}else{line[i]=1;Summe++;}}
-    digitalWriteFast(CS_LineA, HIGH);  // prepare default state of ADC chip select 
-
-    digitalWriteFast(CS_LineA, LOW);  /* prepare default state of ADC chip select */
-    for (int i = 6 ; i<8 ; i++){if(SPI.transfer16(ADC_Befehle[i])<Line_Schwelle_VW){line[i]=0;}else{line[i]=1;Summe++;}}
+    for (int i = 0 ; i<8 ; i++){Values_raw[i]= SPI.transfer16(ADC_Befehle[i])-calib_line[i];if(Values_raw[i]<Line_Schwelle){line[i]=0;}else{line[i]=1;Summe++;}}
     digitalWriteFast(CS_LineA, HIGH);  // prepare default state of ADC chip select 
 
     digitalWriteFast(CS_LineB, LOW);  /* prepare default state of ADC chip select */
-    for (int i = 0 ; i<2 ; i++){if(SPI.transfer16(ADC_Befehle[i])<Line_Schwelle_VW){line[i+8]=0;}else{line[i+8]=1;Summe++;}}
-    digitalWriteFast(CS_LineB, HIGH);  // prepare default state of ADC chip select 
-
-    digitalWriteFast(CS_LineB, LOW);  /* prepare default state of ADC chip select */
-    for (int i = 2 ; i<8 ; i++){if(SPI.transfer16(ADC_Befehle[i])<Line_Schwelle){line[i+8]=0;}else{line[i+8]=1;Summe++;}}
+    for (int i = 0 ; i<8 ; i++){Values_raw[i+8]= SPI.transfer16(ADC_Befehle[i])-calib_line[i+8];if(Values_raw[i+8]<Line_Schwelle){line[i+8]=0;}else{line[i+8]=1;Summe++;}}
     digitalWriteFast(CS_LineB, HIGH);  // prepare default state of ADC chip select 
 
     digitalWriteFast(CS_LineC, LOW);  /* prepare default state of ADC chip select */
-    for (int i = 0 ; i<8 ; i++){if(SPI.transfer16(ADC_Befehle[i])<Line_Schwelle){line[i+16]=0;}else{line[i+16]=1;Summe++;}}
+    for (int i = 0 ; i<8 ; i++){Values_raw[i+16]= SPI.transfer16(ADC_Befehle[i])-calib_line[i+16];if(Values_raw[i+16]<Line_Schwelle){line[i+16]=0;}else{line[i+16]=1;Summe++;}}
     digitalWriteFast(CS_LineC, HIGH);  // prepare default state of ADC chip select 
 
     digitalWriteFast(CS_LineD, LOW);  /* prepare default state of ADC chip select */
-    for (int i = 0 ; i<8 ; i++){if(SPI.transfer16(ADC_Befehle[i])<Line_Schwelle){line[i+24]=0;}else{line[i+24]=1;Summe++;}Values_raw[i]= SPI.transfer16(ADC_Befehle[i]);}
+    for (int i = 0 ; i<8 ; i++){Values_raw[i+24]= SPI.transfer16(ADC_Befehle[i])-calib_line[i+24];if(Values_raw[i+24]<Line_Schwelle){line[i+24]=0;}else{line[i+24]=1;Summe++;}}
     digitalWriteFast(CS_LineD, HIGH);  // prepare default state of ADC chip select 
 
     digitalWriteFast(CS_LineVW, LOW);  /* prepare default state of ADC chip select */
-    for (int i = 0 ; i<8 ; i++){if(SPI.transfer16(ADC_Befehle[i])<Line_Schwelle_VW){lineVW[i]=0;}else{lineVW[i]=1;VW_Summe++;}Values_raw_VW[i]= SPI.transfer16(ADC_Befehle[i]);}
+    for (int i = 0 ; i<8 ; i++){Values_raw_VW[i]= SPI.transfer16(ADC_Befehle[i])-calib_line[i+32];if(Values_raw_VW[i]<Line_Schwelle){lineVW[i]=0;}else{lineVW[i]=1;VW_Summe++;}}
     digitalWriteFast(CS_LineVW, HIGH);  // prepare default state of ADC chip select 
     SPI.endTransaction();
 }

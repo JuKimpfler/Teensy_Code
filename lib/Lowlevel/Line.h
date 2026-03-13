@@ -7,9 +7,10 @@ class LineC {
     public:
         int VW_Summe;
         int Summe;
+        float calib_line[40];
         uint16_t line[32] ;
         uint16_t lineVW[8];
-        uint16_t Values_raw[8];
+        uint16_t Values_raw[32];
         uint16_t Values_raw_VW[8];
         void read_Fast(); 
         void init();

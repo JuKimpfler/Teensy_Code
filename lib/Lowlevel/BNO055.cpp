@@ -20,6 +20,7 @@ void BNO055C::read(){
 }
 
 void BNO055C::Calibrate(){
+    ready2 = true;
     BNO_Cal = U.Circel(BNO_beaver.eulHeading());
 }
 
