@@ -7,6 +7,8 @@
 class AttackerTacticsC{
     private:
     public:
+        bool doTurn;
+
         void step();
         void GoalAttak();
         void BallSearch();

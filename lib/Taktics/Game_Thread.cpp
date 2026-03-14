@@ -4,6 +4,7 @@
 #include "Taktics.h"
 #include "Debug.h"
 #include "BL.h"
+#include "Cam.h"
 GameC Game;
 
 elapsedMillis Line_Timer;

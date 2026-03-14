@@ -15,6 +15,7 @@
 #include "Cam.h"
 #include "Mouse.h"
 #include "US.h"
+#include "Attacker.h"
 
 
 class SystemC {

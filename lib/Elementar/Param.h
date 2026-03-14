@@ -1,8 +1,9 @@
 #pragma once
 #include "Arduino.h"
- 
-// Modus wahl8
+
+// Modus wahl
 #define Robo_s // Robo_w oder Robo_s für Roboter Auswahl
+
 
 #define Debug_EN // Debug Ausgabe
 //#define Ir_Calib // calibration Mode IR Values
@@ -11,6 +12,8 @@
 //#define PID_Calib
 //#define Com_Debug 
 
+#define HighSpeed 40 // Speed im HS modus
+inline float LowSpeed = 14; // Speed im LS modus
 #define HighSpeed 40 // Speed im HS modus
 inline float LowSpeed = 30; // Speed im LS modus
 
@@ -21,6 +24,11 @@ inline float PID_Mult = 0.1; // Belassen
 
 inline float PID_Konstante = 0.5; // 0.3
 
+inline double E_Faktor = 1.35;
+inline double B_Faktor = -4;
+inline double F_Faktor = 1.5;
+inline double C_Faktor = 0.85;
+inline double H_Faktor = 1.9;
 inline double E_Faktor = 110;
 inline double B_Faktor = 1.2;
 inline double F_Faktor = -160;

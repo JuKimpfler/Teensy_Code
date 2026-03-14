@@ -150,8 +150,8 @@ void SystemC::UpdateC::Sensors(){
         Debug.Plot("goal_angle",Goal.Angle);
         Debug.Plot("overload",abs(Goal.Angle-BNO055.TiltZ));
         Debug.Plot("regeln",LineCalc.DriveAngle);
-        Debug.Plot("ball_dist2",Ball.Distance_P2);
-        Debug.Plot("Rolle",BL.Rolle);
+        Debug.Plot("ball_dist2",Ball.Distance_raw);
+        Debug.Plot("Rolle",Zone);
         Debug.Send();
         //BL.sendDebug("BNO: " + String(BNO055.TiltZ));
         #endif

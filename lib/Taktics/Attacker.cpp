@@ -23,7 +23,8 @@ void AttackerTacticsC::GoalAttak(){
 
 void AttackerTacticsC::BallSearch(){
 	if(Ball.inSight){
-		if((Goal_Turn == true) &&(U.Ran(Ball.Angle,-30,30))){
+		doTurn = (Goal_Turn == true) &&(U.Ran(Ball.Angle,-30,30));
+		if(doTurn){
 			Robot.Drive(BallCalc.DriveAngle,999,MainSpeed);
 		}
 		else{
