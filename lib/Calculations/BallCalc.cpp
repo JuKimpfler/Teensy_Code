@@ -63,7 +63,20 @@ void BallCalcC::getAngle(){
 
      
 
-    DriveAngle = Ball.Angle;
+    if (Ball.Distance < 30){
+        if(abs(Ball.Angle) < 30){
+            DriveAngle = Ball.Angle * 1.335;
+        }
+        //else if(Ball.Distance < 10){
+        //    DriveAngle = Ball.Angle * 1.7;
+        //}
+        else {
+            DriveAngle = Ball.Angle * 1.5;
+        }
+    }
+    else{ 
+        DriveAngle = Ball.Angle;
+    }
     //(1+Ball.Distance_raw/(780*2));// (abs(Ball.Angle)/360)
 
     DriveAngle = DriveAngle*-1;
