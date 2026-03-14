@@ -34,18 +34,22 @@ void CamC::Decode(String message){
     {
         if (message.substring(1,3) == "tf"){
             goal = true;
-            RGB.write(2,"Y");
-            Goal.inSight = false;
+            Goal.inSight = true; 
         }
         else if (message.substring(1,3) == "ft"){
             goal = false;
-            RGB.write(2,"B");
-            Goal.inSight = true;
+            Goal.inSight = false;
         }
         x = ((message.substring(3,7)).toInt());
         y = ((message.substring(7,11)).toInt());
         area = ((message.substring(11,15)).toInt())*25; // daten übertragung mit geminderter auflösung um große zahlen darzustellen
         rest = ((message.substring(15,19)).toInt());
+        #ifdef Robo_w
+        x = x-40;
+        #endif
+        #ifdef Robo_s
+        x = x-10;
+        #endif
     }
     else { 
         RGB.write(2,"R");
@@ -70,6 +74,6 @@ void CamC::Decode(String message){
     }
     else{
         Goal.Angle = 0;
+        //Serial.println("Goal no in sight");
     }
-
 }

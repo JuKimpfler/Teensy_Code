@@ -12,15 +12,7 @@ elapsedMicros Mess_Timer;
 
 
 void SystemC::Start_Update(){
-    if ((ready1=true)&&(ready2=true)){
-        System.Start = digitalRead(Start_Port);
-        //if(System.Start == false ){
-        //    System.Start = digitalRead(RCJ_Port);
-        //}
-    }
-    else{
-        System.Start=false;
-    }    
+    System.Start = digitalRead(RCJ_Port);    
 }
 
 void SystemC::Button_Update(){
@@ -122,12 +114,12 @@ void SystemC::UpdateC::Sensors(){
         #endif
         #ifdef Line_Calib
         Debug.Start();
-        //Debug.Plot_List("L", Line.Values_raw, 8);
-        //Debug.Plot_List("LV", Line.Values_raw_VW, 8);
+        Debug.Plot_List("L", Line.Values_raw, 32);
+        Debug.Plot_List("LV", Line.Values_raw_VW, 8);
         //Debug.Plot_List("L", Line.line, 32);
         //Debug.Plot("angle",LineCalc.DriveAngle);
-        Debug.Plot("Summe",Line.Summe);
-        Debug.Plot("Summe_VW",Line.VW_Summe);
+        //Debug.Plot("Summe",Line.Summe);
+        //Debug.Plot("Summe_VW",Line.VW_Summe);
         //Debug.Plot("LVW",Line_Schwelle_VW);
         //Debug.Plot("L",Line_Schwelle);
         Debug.Send();
@@ -158,8 +150,8 @@ void SystemC::UpdateC::Sensors(){
         Debug.Plot("goal_angle",Goal.Angle);
         Debug.Plot("overload",abs(Goal.Angle-BNO055.TiltZ));
         Debug.Plot("regeln",LineCalc.DriveAngle);
-        Debug.Plot("ball_dist2",Ball.Distance_raw);
-        Debug.Plot("Rolle",Zone);
+        Debug.Plot("ball_dist2",Ball.Distance_P2);
+        Debug.Plot("Rolle",BL.Rolle);
         Debug.Send();
         //BL.sendDebug("BNO: " + String(BNO055.TiltZ));
         #endif
