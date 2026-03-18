@@ -12,7 +12,7 @@ elapsedMicros Mess_Timer;
 
 
 void SystemC::Start_Update(){
-    System.Start = digitalRead(RCJ_Port);    
+    System.Start = digitalRead(Start_Port);    
 }
 
 void SystemC::Button_Update(){
