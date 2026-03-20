@@ -5,15 +5,15 @@
 #define Robo_s // Robo_w oder Robo_s für Roboter Auswahl
 
 
-#define Debug_EN // Debug Ausgabe
+//#define Debug_EN // Debug Ausgabe
 //#define Ir_Calib // calibration Mode IR Values
 //#define Calib // calibration Mode Normal
 //#define Line_Calib
 //#define PID_Calib
 //#define Com_Debug 
 
-#define HighSpeed 40 // Speed im HS modus
-inline float LowSpeed = 14; // Speed im LS modus
+#define HighSpeed 30 // Speed im HS modus
+inline float LowSpeed = 25; // Speed im LS modus
 
 inline float Kp = 1.6; // Startwert, dann erhöhen  1
 inline float Kd = 35.0; // Startwert, dann erhöhen 

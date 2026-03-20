@@ -7,6 +7,7 @@
 #include "Debug.h"
 #include "BL.h"
 #include "Game_Thread.h"
+#include "BotConnect.h"
 
 void setup() {
     SPI.begin();
