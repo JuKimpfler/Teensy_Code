@@ -7,7 +7,7 @@
 class RobotC {
 public:
     void Turn(float Angel ,int Speed = HighSpeed);
-    void Drive(float Dir , float Angel = 0 ,int Speed = HighSpeed);
+    void Drive(float Dir , float Angel,int Speed);
     void Stop();
     void Break();   
     void Turn_Drachen();

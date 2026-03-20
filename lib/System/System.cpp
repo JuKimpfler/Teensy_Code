@@ -1,7 +1,6 @@
 #include "System.h"
 #include "Debug.h"
 #include "Game_Thread.h"
-#include "BL.h"
 
 SystemC System;
 
@@ -87,8 +86,8 @@ void SystemC::UpdateC::Sensors(){
     PID.Calculate(); // 1 micro
     BNO055.read(); // 100-500 micro
     IR.read(); // 300 micro
-    BL.doRolle();
-
+    
+    /*
     if ((Cycle_P3 > 50)){
         #ifdef Debug_EN
         #ifdef Ir_Calib // IR_Calibration 
@@ -164,5 +163,5 @@ void SystemC::UpdateC::Sensors(){
 
     #ifdef PID_Calib
     Robot.Turn(999);
-    #endif
+    #endif*/
 }
