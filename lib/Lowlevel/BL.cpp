@@ -135,23 +135,3 @@ void BLC::decode(const char* payload){
         Rolle = "N";
     }
 }
-
-void BLC::sendDebug(String msg){
-    if (!Debug.debugEnabled) return;
-    // "DBG:" prefix is recognised by the ESP bridge and routed to the
-    // debug monitor instead of being forwarded to the peer robot.
-    UART_Pixy.print("DBG:");
-    UART_Pixy.print(msg);
-    UART_Pixy.print("\r\n");
-}
-
-// Only call this during setup/config – never inside the game loop.
-// AT commands are sent to the ESP module; no blocking delay is needed
-// here because the caller is responsible for waiting if required.
-void BLC::setDebugEnabled(bool enabled){
-    UART_Pixy.print("ET+OPEN\r\n");
-    UART_Pixy.print("ET+DBGMON\r\n");
-    UART_Pixy.print("ET+SAVE\r\n");
-    Debug.debugEnabled = enabled;
-}
-
