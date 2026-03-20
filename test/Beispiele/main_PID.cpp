@@ -7,7 +7,7 @@
 void printPID() {
     Serial.print("Kp: "); Serial.print(Kp);
     Serial.print(" | Ki: "); Serial.print(Ki);
-    Serial.print(" | Kd: "); Serial.print(Kd);
+    Serial.print(" | Kd: "); Serial.print(Kd); 
     Serial.print(" | PID_Mult: "); Serial.println(PID_Mult);
 }
 
