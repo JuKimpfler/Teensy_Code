@@ -14,6 +14,8 @@ void setup() {
     Serial.begin(115200);
     UART_2.begin(115200);
     UART_Pixy.begin(115200);
+    pinMode(33,OUTPUT);
+    analogWrite(33,0);
 
     #ifdef Robo_s 
         System.Calibrate("s");
@@ -46,7 +48,8 @@ void loop() {
     
     #ifndef PID_Calib
     if(System.Start){ 
-        Game.Run();
+        //Game.Run();
+        analogWrite(33,150);
         //DefenderTactics.Homing();
         //Robot.Turn(999, MainSpeed); 
         

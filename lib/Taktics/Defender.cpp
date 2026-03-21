@@ -17,7 +17,7 @@ void DefenderTacticsC::step(){
 void DefenderTacticsC::Homing(){
     #ifdef Robo_s
     if ((US.Distance_raw[0] < 40)){
-        Robot.Drive(0,0);
+        Robot.Drive(0,0,40);
     }  
     else{
         if ((Goal.Angle > 3)){

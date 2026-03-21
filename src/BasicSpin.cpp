@@ -25,19 +25,20 @@
  */
 
 #include <Wire.h>
+#include "Arduino.h"
 #include "MCF8316C.h"
 
 // ---------------------------------------------------------------------------
 // Pin definitions — change these to match your wiring
 // ---------------------------------------------------------------------------
-static constexpr uint8_t PIN_SPEED  = 3;   // PWM output  -> SPEED
+static constexpr uint8_t PIN_SPEED  = 33;   // PWM output  -> SPEED
 static constexpr uint8_t PIN_DIR    = 4;   // digital     -> DIR
 static constexpr uint8_t PIN_BRAKE  = 5;   // digital     -> BRAKE  (active-HIGH on this board)
 static constexpr uint8_t PIN_DRVOFF = 6;   // digital     -> DRVOFF (active-HIGH = off)
-static constexpr uint8_t PIN_FAULT  = 7;   // digital input <- FAULT (active-LOW)
+static constexpr uint8_t PIN_FAULT  = 10;   // digital input <- FAULT (active-LOW)
 
 // I2C address — match jumper/ADDR pin on your board
-static constexpr uint8_t DRIVER_ADDR = MCF8316C_DEFAULT_ADDR;
+static constexpr uint8_t DRIVER_ADDR = 0x01;
 
 // ---------------------------------------------------------------------------
 // Globals
@@ -50,7 +51,7 @@ MCF8316C driver;
 void setup()
 {
     Serial.begin(115200);
-    while (!Serial && millis() < 3000) { /* wait for USB CDC */ }
+    while (!Serial && millis() < 9000) { /* wait for USB CDC */ }
     Serial.println(F("=== MCF8316C BasicSpin example ==="));
 
     // ----- Hardware pin initialisation -----
@@ -71,13 +72,13 @@ void setup()
     analogWrite(PIN_SPEED, 0);         // 0 % speed initially
 
     // ----- I2C initialisation -----
-    Wire.begin();
-    Wire.setClock(400000);  // 400 kHz fast mode
+    Wire1.begin();
+    Wire1.setClock(100000);  // 400 kHz fast mode
 
     Serial.print(F("Connecting to MCF8316C at I2C address 0x"));
     Serial.println(DRIVER_ADDR, HEX);
 
-    if (!driver.begin(Wire, DRIVER_ADDR)) {
+    if (!driver.begin(Wire1, DRIVER_ADDR)) {
         Serial.println(F("ERROR: MCF8316C not found on I2C bus!"));
         Serial.println(F("Check wiring, I2C address and pull-up resistors."));
         while (true) { delay(1000); }
