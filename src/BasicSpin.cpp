@@ -6,11 +6,11 @@
  * Wiring (adjust pin numbers to your board):
  *   I2C SDA   -> Teensy pin 18  (Wire default)
  *   I2C SCL   -> Teensy pin 19  (Wire default)
- *   SPEED     -> Teensy pin  3  (PWM capable)
- *   DIR       -> Teensy pin  4
- *   BRAKE     -> Teensy pin  5  (optional; tie to GND if not used)
- *   DRVOFF    -> Teensy pin  6  (optional; tie to GND to always enable)
- *   FAULT     -> Teensy pin  7  (optional; INPUT_PULLUP)
+ *   SPEED     -> Teensy pin 33  (PWM capable)
+ *   DIR       -> GND (hard-wired)
+ *   BRAKE     -> GND (hard-wired)
+ *   DRVOFF    -> GND (hard-wired, always enabled)
+ *   FAULT     -> LED (hard-wired)
  *
  * This sketch:
  *   1. Initialises I2C and checks device communication
@@ -32,10 +32,6 @@
 // Pin definitions — change these to match your wiring
 // ---------------------------------------------------------------------------
 static constexpr uint8_t PIN_SPEED  = 33;   // PWM output  -> SPEED
-static constexpr uint8_t PIN_DIR    = 4;   // digital     -> DIR
-static constexpr uint8_t PIN_BRAKE  = 5;   // digital     -> BRAKE  (active-HIGH on this board)
-static constexpr uint8_t PIN_DRVOFF = 6;   // digital     -> DRVOFF (active-HIGH = off)
-static constexpr uint8_t PIN_FAULT  = 10;   // digital input <- FAULT (active-LOW)
 
 // I2C address — match jumper/ADDR pin on your board
 static constexpr uint8_t DRIVER_ADDR = 0x01;
@@ -55,15 +51,7 @@ void setup()
     Serial.println(F("=== MCF8316C BasicSpin example ==="));
 
     // ----- Hardware pin initialisation -----
-    pinMode(PIN_DIR,    OUTPUT);
-    pinMode(PIN_BRAKE,  OUTPUT);
-    pinMode(PIN_DRVOFF, OUTPUT);
-    pinMode(PIN_FAULT,  INPUT_PULLUP);
-
-    // Safe initial states BEFORE I2C configuration
-    digitalWrite(PIN_DRVOFF, HIGH);   // keep driver OFF while configuring
-    digitalWrite(PIN_BRAKE,  LOW);    // brake released
-    digitalWrite(PIN_DIR,    HIGH);   // CW
+    // DIR/BRAKE/DRVOFF/FAULT are hard-wired on the driver board.
 
     // SPEED pin: use analogWrite for PWM.  Resolution and frequency can be
     // adjusted below — check MCF8316C-Q1 datasheet for accepted SPEED range.
@@ -73,7 +61,7 @@ void setup()
 
     // ----- I2C initialisation -----
     Wire1.begin();
-    Wire1.setClock(100000);  // 400 kHz fast mode
+    Wire1.setClock(100000);  // 100 kHz standard mode
 
     Serial.print(F("Connecting to MCF8316C at I2C address 0x"));
     Serial.println(DRIVER_ADDR, HEX);
@@ -109,14 +97,9 @@ void setup()
         }
     }
 
-    // ----- Set direction -----
-    driver.setDirection(true);         // CW
-    digitalWrite(PIN_DIR, HIGH);       // also drive hardware pin
-
     // ----- Enable the driver via I2C -----
     Serial.println(F("Enabling driver..."));
     driver.enableDriver();
-    digitalWrite(PIN_DRVOFF, LOW);     // also drive hardware pin LOW to enable
 
     delay(200);  // give driver time to power up gate drive
 
@@ -191,8 +174,4 @@ void loop()
         Serial.println(F("[OK] No faults."));
     }
 
-    // Also read the hardware FAULT pin for belt-and-suspenders check
-    if (digitalRead(PIN_FAULT) == LOW) {
-        Serial.println(F("[HW] FAULT pin is LOW — hardware fault signal active."));
-    }
 }

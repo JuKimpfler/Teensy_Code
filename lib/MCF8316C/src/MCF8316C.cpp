@@ -105,10 +105,11 @@ bool MCF8316C::basicConfigure()
 {
     bool ok = true;
 
-    // --- ALGO_CTRL1: direction = CW, brake = off, driver = enabled ----------
-    // Start with driver OFF while we configure; enableDriver() is called by
-    // the user after basicConfigure().
-    _algo1Cache = MCF8316C_ALGO1_DRVOFF_BIT;  // driver off, CW, no brake
+    // --- ALGO_CTRL1: direction/enable pins are often hard-strapped ----------
+    // Keep software defaults neutral: DIR=0 (CCW), BRAKE=0 (run), DRVOFF=0
+    // (driver enabled).  This matches common bring-up wiring where DIR/BRAKE/
+    // DRVOFF are tied to GND and only SPEED is driven from PWM.
+    _algo1Cache = 0u;
     ok &= writeReg(MCF8316C_REG_ALGO_CTRL1, _algo1Cache);
 
     // --- ALGO_CTRL2: speed = 0 (motor stopped), conservative ramp rate ------
