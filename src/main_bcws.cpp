@@ -59,9 +59,10 @@ void loop() {
             Game.Run();
         }
         if (BC.mode2) {
+            Serial.print("Aktive: ");
             // ── Control ───────────────────────────────────────────────
             // controlActive is true while commands were received within the last 500 ms.
-            if (BC.controlActive) {Robot.Drive(BC.angle,0,BC.speed);}else{Robot.Stop();}
+            if (BC.controlActive) {Robot.Drive(BC.angle,0,BC.speed);Serial.println("control");}else{Robot.Stop();Serial.println("stop");}
         }
         if (BC.mode3) {Robot.Turn(0,40);}
         if (BC.mode4) {Robot.Stop();}

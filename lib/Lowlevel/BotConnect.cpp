@@ -44,7 +44,7 @@ void BotConnect::process() {
     }
 
     // Update controlActive: true while a ctrl command was received within 500 ms
-    if (_ctrlReceived && (millis() - _lastCtrlMs < 500)) {
+    if (_ctrlReceived && (millis() - _lastCtrlMs < 100)) {
         controlActive = true;
     } else {
         controlActive = false;

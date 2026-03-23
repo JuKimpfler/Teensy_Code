@@ -34,7 +34,7 @@
 static constexpr uint8_t PIN_SPEED  = 33;   // PWM output  -> SPEED
 
 // I2C address — match jumper/ADDR pin on your board
-static constexpr uint8_t DRIVER_ADDR = 0x01;
+static constexpr uint8_t DRIVER_ADDR = 0x1;
 
 // ---------------------------------------------------------------------------
 // Globals
@@ -69,9 +69,9 @@ void setup()
     if (!driver.begin(Wire1, DRIVER_ADDR)) {
         Serial.println(F("ERROR: MCF8316C not found on I2C bus!"));
         Serial.println(F("Check wiring, I2C address and pull-up resistors."));
-        while (true) { delay(1000); }
+        //while (true) { delay(1000); }
     }
-    Serial.println(F("MCF8316C found."));
+    //Serial.println(F("MCF8316C found."));
     driver.printDeviceId();
 
     // ----- Basic configuration -----
