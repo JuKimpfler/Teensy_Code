@@ -80,6 +80,7 @@ void loop() {
     if (System.Button[1]){Robot.Kicker.On();} // Kicker test
  
     if (System.Button[2]){IR.Calib_Dist();} 
+    if (System.Button[3]){PowerPump.shoot();} // Power pump single shot test
     else{}
     #endif
     #ifdef Ir_Calib
@@ -101,4 +102,3 @@ void loop() {
     Cycletime = Cycle_Timer;
     Robot.Kicker.Update(); // 1 micro
 }
-
