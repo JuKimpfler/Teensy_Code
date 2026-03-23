@@ -1,6 +1,7 @@
 #include "System.h"
 #include "Debug.h"
 #include "Game_Thread.h"
+#include "PowerPump.h"
 
 SystemC System;
 
@@ -47,6 +48,7 @@ void SystemC::init(){
 
     pinMode(Start_Port,INPUT);
     pinMode(Kicker_Port, OUTPUT);
+    PowerPump.init();
     LDR.init(); 
 
     Line.init();
