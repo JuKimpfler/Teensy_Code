@@ -168,8 +168,11 @@ constexpr uint32_t FAULT_CONFIG2_CFG =
                     // = 0x00048000
 
 // ── PIN_CONFIG1 (0x0A4) ──────────────────────────────────────
-// Bits [1:0]  SPEED_MODE = 01b  → PWM-Duty-Cycle auf SPEED-Pin steuert Motor
-constexpr uint32_t PIN_CONFIG1_PWM_MODE = 0x00000001;
+// Bits [1:0]  SPEED_MODE = 00b  → PWM-Duty-Cycle auf SPEED-Pin steuert Motor
+// 00b = PWM-Eingang (Standard / EEPROM-Default)
+// 01b = Analogspannungs-Eingang  ← FALSCH für PWM-Betrieb!
+// 10b = I2C-Sollwert
+constexpr uint32_t PIN_CONFIG1_PWM_MODE = 0x00000000;
 
 // ── ALGO_CTRL1 Steuerbits (0x0EA) ────────────────────────────
 // Bit [29]  CLR_FLT = 1   → Alle latch-basierten Fehler löschen
@@ -364,13 +367,13 @@ static bool mcf8316Init() {
   Serial.printf("OK (0x%08lX)\n", (unsigned long)FAULT_CONFIG2_CFG);
   delay(10);
 
-  // ── Schritt 6: PIN_CONFIG1 – SPEED_MODE = 01b (PWM) ────────
+  // ── Schritt 6: PIN_CONFIG1 – SPEED_MODE = 00b (PWM) ────────
   // Konfiguriert die Geschwindigkeits-Eingabequelle auf PWM-Duty-Cycle.
   // Hinweis: Schreiben in den Shadow-Register wirkt sofort im RAM.
   // Für dauerhafte Speicherung (nach Power-Cycle) wäre zusätzlich
   // der EEPROM-Brennvorgang nötig (REG_ALGO_CTRL1, EEPROM_WRITE_KEY).
   // Das wird hier NICHT gemacht, um unnötige EEPROM-Zyklen zu vermeiden!
-  Serial.print("[MCF8316] PIN_CONFIG1  (0x0A4): SPEED_MODE = 01b (PWM) ... ");
+  Serial.print("[MCF8316] PIN_CONFIG1  (0x0A4): SPEED_MODE = 00b (PWM) ... ");
   if (!i2cWrite32(REG_PIN_CONFIG1, PIN_CONFIG1_PWM_MODE)) {
     Serial.println("FEHLER!");
     return false;

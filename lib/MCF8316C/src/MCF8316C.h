@@ -4,14 +4,20 @@
  * Arduino/Teensy library for the Texas Instruments MCF8316C-Q1
  * sensorless BLDC motor driver over I2C.
  *
- * IMPORTANT: Register addresses and bit-field definitions are based on the
- * MCF8316C-Q1 datasheet (SLVSEO5, rev. A).  Always cross-check with your
- * specific silicon revision and the TI EVM GUI register export before
- * deploying to production.  Uncertain fields are marked with "// VERIFY".
+ * I2C protocol (MCF8316C-Q1, datasheet SLLSFV2 + app-note SLLA662):
+ *   The device does NOT use a standard 2-byte register address.
+ *   Every transaction starts with a 24-bit Control Word (3 bytes, MSB first):
+ *     Bit [23]    OP_R/W   : 0 = Write, 1 = Read
+ *     Bit [22]    CRC_EN   : 0 = CRC disabled
+ *     Bits [21:20] DLEN    : 01b = 32-bit data (always used here)
+ *     Bits [19:16] MEM_SEC : 0x0
+ *     Bits [15:12] MEM_PAGE: 0x0
+ *     Bits [11:0]  MEM_ADDR: 12-bit register address
+ *   Data bytes are transmitted/received LSB-first.
  *
  * Wiring assumptions (see README.md for full details):
- *   SDA / SCL  — I2C bus (Teensy 4.0: pins 18/19 by default)
- *   SPEED      — PWM output from Teensy to SPEED pin of driver
+ *   SDA / SCL  — I2C bus (Teensy 4.0: Wire1 pins 17/16)
+ *   SPEED      — PWM output from Teensy to SPEED/WAKE pin of driver
  *   DIR        — digital output (HIGH = CW, LOW = CCW) or tie to GND/VCC
  *   BRAKE      — digital output (HIGH = brake, LOW = coast/run)
  *   DRVOFF     — digital output (LOW = driver enabled, HIGH = driver off)
@@ -28,58 +34,65 @@
 
 // ---------------------------------------------------------------------------
 // Default I2C address
-// The MCF8316C-Q1 base address is 0x60; the two LSBs are set by the ADDR pin.
-//   ADDR = GND  -> 0x60
-//   ADDR = VCC  -> 0x61   (VERIFY with your board)
+// The MCF8316C-Q1 7-bit I2C address defaults to 0x01 (ADDR pin = GND).
 // ---------------------------------------------------------------------------
-#define MCF8316C_DEFAULT_ADDR  0x60u
+#define MCF8316C_DEFAULT_ADDR  0x01u
 
 // ---------------------------------------------------------------------------
-// Register addresses  (VERIFY against datasheet Table 7-x)
-// All registers are 32-bit wide; the driver auto-increments by 4 bytes.
-// The I2C transaction sends: [addr_high, addr_low, byte3, byte2, byte1, byte0]
+// Register addresses  (12-bit MEM_ADDR field used inside the control word)
+//
+// EEPROM Shadow registers (0x080–0x0AE): writes take effect immediately in
+// shadow RAM; EEPROM is NOT changed unless EEPROM_WRT is triggered.
 // ---------------------------------------------------------------------------
-#define MCF8316C_REG_ALGO_CTRL1      0x0080u  ///< Algorithm Control 1
-#define MCF8316C_REG_ALGO_CTRL2      0x0084u  ///< Algorithm Control 2
-#define MCF8316C_REG_ALGO_CTRL3      0x0088u  ///< Algorithm Control 3
-#define MCF8316C_REG_ALGO_CTRL4      0x008Cu  ///< Algorithm Control 4
-#define MCF8316C_REG_ALGO_CTRL5      0x0090u  ///< Algorithm Control 5
-#define MCF8316C_REG_ALGO_CTRL6      0x0094u  ///< Algorithm Control 6
-#define MCF8316C_REG_ALGO_CTRL7      0x0098u  ///< Algorithm Control 7
-#define MCF8316C_REG_ALGO_CTRL8      0x009Cu  ///< Algorithm Control 8
+#define MCF8316C_REG_ISD_CONFIG      0x0080u  ///< ISD Configuration
+#define MCF8316C_REG_REV_DRIVE       0x0082u  ///< Reverse Drive Configuration
+#define MCF8316C_REG_MOTOR_STARTUP1  0x0084u  ///< Motor Startup 1
+#define MCF8316C_REG_MOTOR_STARTUP2  0x0086u  ///< Motor Startup 2
+#define MCF8316C_REG_CLOSED_LOOP1    0x0088u  ///< Closed-Loop Control 1
+#define MCF8316C_REG_CLOSED_LOOP2    0x008Au  ///< Closed-Loop Control 2
+#define MCF8316C_REG_CLOSED_LOOP3    0x008Cu  ///< Closed-Loop Control 3
+#define MCF8316C_REG_CLOSED_LOOP4    0x008Eu  ///< Closed-Loop Control 4 (MAX_SPEED)
+#define MCF8316C_REG_FAULT_CONFIG1   0x0090u  ///< Fault Configuration 1
+#define MCF8316C_REG_FAULT_CONFIG2   0x0092u  ///< Fault Configuration 2
+#define MCF8316C_REG_PIN_CONFIG1     0x00A4u  ///< Pin Configuration 1 (SPEED_MODE)
 
-#define MCF8316C_REG_SYS_CTRL1       0x00E0u  ///< System Control 1
-#define MCF8316C_REG_SYS_CTRL2       0x00E4u  ///< System Control 2
-
-#define MCF8316C_REG_FAULT_STATUS    0x00E8u  ///< Fault Status (read-only)
-#define MCF8316C_REG_MOTOR_STATUS    0x00ECu  ///< Motor Status  (read-only)
-
-#define MCF8316C_REG_DEVICE_ID       0x00F8u  ///< Device ID / revision (read-only)
-
-// ---------------------------------------------------------------------------
-// ALGO_CTRL1 bit-fields  (VERIFY)
-// ---------------------------------------------------------------------------
-#define MCF8316C_ALGO1_DIR_BIT       (1u << 0)   ///< 0 = CCW, 1 = CW
-#define MCF8316C_ALGO1_BRAKE_BIT     (1u << 1)   ///< 0 = run, 1 = brake
-#define MCF8316C_ALGO1_DRVOFF_BIT    (1u << 2)   ///< 0 = driver on, 1 = off
+// RAM registers (0x0C0–0x0EE): runtime status and algorithm control
+#define MCF8316C_REG_GD_FAULT_STATUS 0x00E0u  ///< Gate Driver Fault Status (read-only)
+#define MCF8316C_REG_CT_FAULT_STATUS 0x00E2u  ///< Controller Fault Status  (read-only)
+#define MCF8316C_REG_ALGO_CTRL1      0x00EAu  ///< Algorithm Control 1 (CLR_FLT / EEPROM ops)
 
 // ---------------------------------------------------------------------------
-// SYS_CTRL1 bit-fields  (VERIFY)
+// PIN_CONFIG1 — SPEED_MODE field (bits [1:0])
 // ---------------------------------------------------------------------------
-#define MCF8316C_SYSCTRL1_CLR_FLT    (1u << 0)   ///< Write 1 to clear faults
+#define MCF8316C_SPEED_MODE_PWM      0x0000u  ///< 0b00 = PWM input  (EEPROM default)
+#define MCF8316C_SPEED_MODE_ANALOG   0x0001u  ///< 0b01 = Analog voltage input
+#define MCF8316C_SPEED_MODE_I2C      0x0002u  ///< 0b10 = I2C speed register
 
 // ---------------------------------------------------------------------------
-// FAULT_STATUS bit masks  (VERIFY against Table 8-x)
+// ALGO_CTRL1 bit-fields  (register 0x0EA)
 // ---------------------------------------------------------------------------
-#define MCF8316C_FAULT_OCP           (1u << 0)   ///< Over-current protection
-#define MCF8316C_FAULT_OVP           (1u << 1)   ///< Over-voltage protection
-#define MCF8316C_FAULT_UVLO          (1u << 2)   ///< Under-voltage lockout
-#define MCF8316C_FAULT_OTW           (1u << 3)   ///< Over-temperature warning
-#define MCF8316C_FAULT_OTS           (1u << 4)   ///< Over-temperature shutdown
-#define MCF8316C_FAULT_MOTOR_LOCK    (1u << 5)   ///< Motor lock detected
-#define MCF8316C_FAULT_STARTUP_FAIL  (1u << 6)   ///< Startup failure
-#define MCF8316C_FAULT_ANY           (0x7Fu)      ///< Any fault mask
+#define MCF8316C_ALGO1_CLR_FLT       (1u << 29)  ///< Clear latched faults
+#define MCF8316C_ALGO1_EEPROM_READ   (1u << 30)  ///< Load EEPROM → shadow RAM
+#define MCF8316C_ALGO1_EEPROM_WRT    (1u << 31)  ///< Write shadow RAM → EEPROM
 
+// ---------------------------------------------------------------------------
+// CLOSED_LOOP1 bit-fields  (register 0x0088)
+// ---------------------------------------------------------------------------
+#define MCF8316C_CL1_SPEED_LOOP_DIS  (1u << 1)   ///< 1 = Torque/current mode
+
+// ---------------------------------------------------------------------------
+// Fault status bit masks
+// Gate Driver Fault Status register (0x00E0)
+// ---------------------------------------------------------------------------
+#define MCF8316C_FAULT_OCP           (1u << 28)  ///< Over-current protection
+#define MCF8316C_FAULT_OVP           (1u << 26)  ///< Over-voltage protection
+#define MCF8316C_FAULT_OTW           (1u << 25)  ///< Over-temperature warning
+#define MCF8316C_FAULT_UVLO          (1u << 24)  ///< Under-voltage lockout
+// Controller Fault Status register (0x00E2)
+#define MCF8316C_FAULT_MOTOR_LOCK    (1u << 27)  ///< Motor lock detected
+#define MCF8316C_FAULT_STARTUP_FAIL  (1u << 26)  ///< Startup failure
+#define MCF8316C_FAULT_ANY           (MCF8316C_FAULT_OCP | MCF8316C_FAULT_OVP | \
+                                      MCF8316C_FAULT_OTW | MCF8316C_FAULT_UVLO)
 
 // ---------------------------------------------------------------------------
 // Class declaration
@@ -96,7 +109,7 @@ public:
      * Initialise the library and verify I2C communication.
      *
      * @param wire     Reference to a TwoWire bus (Wire, Wire1, …)
-     * @param i2cAddr  7-bit I2C address of the device (default 0x60)
+     * @param i2cAddr  7-bit I2C address of the device (default 0x01)
      * @return true on success (device acknowledged), false otherwise
      */
     bool begin(TwoWire& wire = Wire, uint8_t i2cAddr = MCF8316C_DEFAULT_ADDR);
@@ -108,7 +121,7 @@ public:
     /**
      * Read a 32-bit register.
      *
-     * @param regAddr  16-bit register address
+     * @param regAddr  12-bit register address (MEM_ADDR field)
      * @param value    Receives the 32-bit value
      * @return true on success
      */
@@ -117,7 +130,7 @@ public:
     /**
      * Write a 32-bit register.
      *
-     * @param regAddr  16-bit register address
+     * @param regAddr  12-bit register address (MEM_ADDR field)
      * @param value    32-bit value to write
      * @return true on success
      */
@@ -126,7 +139,7 @@ public:
     /**
      * Read-modify-write a register (set bits in mask to values).
      *
-     * @param regAddr  16-bit register address
+     * @param regAddr  12-bit register address
      * @param mask     Bits to modify
      * @param values   New bit values (only bits in mask are applied)
      * @return true on success
@@ -138,22 +151,26 @@ public:
     // -----------------------------------------------------------------------
 
     /**
-     * Apply safe startup defaults via I2C registers.
+     * Apply safe startup defaults via I2C shadow registers.
      * Call once after begin() before enabling the driver.
+     * Configures torque (current) mode to avoid the MAX_SPEED=0 default problem.
      *
      * @return true on success
      */
     bool basicConfigure();
 
     /**
-     * Enable the motor driver (clear DRVOFF bit in register).
+     * Enable the motor driver.
+     * On hardware where DRVOFF is hard-wired LOW, this is effectively a
+     * preventive CLR_FLT to ensure a clean start state.
      * @return true on success
      */
     bool enableDriver();
 
     /**
-     * Disable the motor driver (set DRVOFF bit in register).
-     * @return true on success
+     * Disable the motor driver (set speed to 0 via analogWrite externally;
+     * no dedicated I2C disable register exists when DRVOFF is hard-wired).
+     * @return true
      */
     bool disableDriver();
 
@@ -167,11 +184,13 @@ public:
 
     /**
      * Set motor speed as a percentage of full speed.
-     * The speed is mapped to the SPEED_INPUT register field.
-     * Note: actual shaft speed depends on motor parameters and load.
+     * NOTE: In PWM speed mode (SPEED_MODE = 00b, the default) the actual
+     * speed is controlled by the duty cycle on the hardware SPEED pin via
+     * analogWrite().  This function is a no-op in that mode.
+     * Switch to I2C speed mode (SPEED_MODE = 10b) to use this function.
      *
      * @param pct  0.0 … 100.0  (clamped to valid range)
-     * @return true on success
+     * @return true
      */
     bool setSpeedPercent(float pct);
 
@@ -179,7 +198,7 @@ public:
      * Enable or disable the brake function.
      *
      * @param on  true = brake active, false = brake released
-     * @return true on success
+     * @return true
      */
     bool setBrake(bool on);
 
@@ -188,9 +207,9 @@ public:
     // -----------------------------------------------------------------------
 
     /**
-     * Read the 32-bit fault status register.
+     * Read the Gate Driver fault status register (0x00E0).
      *
-     * @param faultBits  Receives the raw fault status word
+     * @param faultBits  Receives the raw 32-bit fault status word
      * @return true if the read was successful
      */
     bool readFault(uint32_t& faultBits);
@@ -206,7 +225,9 @@ public:
     bool hasFault(bool* commError = nullptr);
 
     /**
-     * Attempt to clear latched faults by writing the CLR_FLT bit.
+     * Clear latched faults by writing CLR_FLT (bit 29) in ALGO_CTRL1.
+     * Blocks for up to 200 ms (per datasheet) to allow the chip to process
+     * the fault clear before the next operation.
      * @return true on success
      */
     bool clearFaults();
@@ -216,18 +237,15 @@ public:
     // -----------------------------------------------------------------------
 
     /**
-     * Read the device-ID register and print it over Serial for verification.
-     * Useful during first bring-up.
+     * Read the Gate Driver Fault Status register and print it over Serial.
+     * Useful during first bring-up to confirm I2C communication.
      */
     void printDeviceId();
 
 private:
     TwoWire* _wire;
     uint8_t  _addr;
-    uint32_t _algo1Cache;  ///< cached value of ALGO_CTRL1 to avoid extra reads
 
-    // Speed is stored in ALGO_CTRL2[31:22] as a 10-bit value (0–1023) // VERIFY
-    static constexpr uint32_t SPEED_FIELD_MASK  = 0xFFC00000u;
-    static constexpr uint8_t  SPEED_FIELD_SHIFT = 22u;
-    static constexpr uint32_t SPEED_MAX_RAW     = 1023u;
+    // Build the 24-bit MCF8316C control word
+    static uint32_t buildControlWord(bool isRead, uint16_t addr);
 };
