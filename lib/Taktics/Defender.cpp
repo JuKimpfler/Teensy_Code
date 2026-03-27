@@ -32,7 +32,7 @@ void DefenderTacticsC::Homing(){
         else{
             Robot.Turn(0);
         }
-    }  
+    }
     #endif
     #ifdef Robo_w
     if ((US.Distance_raw[1] < 40)){
@@ -55,6 +55,8 @@ void DefenderTacticsC::Homing(){
     #endif
 }
 
+<<<<<<< HEAD
+=======
 void DefenderTacticsC::Homing_Test(){
     #ifdef Robot_s
     if(US.Distance_raw[0] < 60 && US.Distance_raw[0] > 40){
@@ -111,6 +113,7 @@ void DefenderTacticsC::Homing_Test(){
     }
     #endif
 }
+>>>>>>> 820ccfe06c50c9c550e2a8db90330c65b9e36d9a
 
 void DefenderTacticsC::Goal_Defens(){
     if (US.Distance_raw[1] < 45) { //wenn Abstand hinten kleiner 45
