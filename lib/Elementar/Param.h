@@ -10,7 +10,8 @@
 //#define Calib // calibration Mode Normal
 //#define Line_Calib
 //#define PID_Calib
-//#define Com_Debug 
+//#define Com_Debug
+//#define MOUSETEST
 
 #define HighSpeed 30 // Speed im HS modus
 inline float LowSpeed = 25; // Speed im LS modus

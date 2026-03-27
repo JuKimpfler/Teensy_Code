@@ -1,6 +1,9 @@
 #include  "Robot.h"
 #include "Mouse.h"
+#include "structs.h"
 #include "Cam.h"
+#include "Calculations.h"
+#include "Param.h"
 RobotC Robot;
 
 elapsedMillis Kicker_Timer;
@@ -29,6 +32,12 @@ void RobotC::Turn(float Angle ,int Speed1 = HighSpeed){
 }
 
 void RobotC::Drive(float Dir , float Angle,int Speed1){
+    #ifdef MOUSETEST
+        Vec2 target = Vec2(cos(Dir)*Speed1,sin(Dir)*Speed1);
+        target = VectorCalc.GetWantedVector(Vec2(0,0) /*<- gradiger Move vector*/, target);
+        Dir = target.angle();
+        Speed1 = target.magnitdude();
+    #endif
     // Links -> Minus (Counter-Clock)
     // Rechts -> Plus (Clock)
 
