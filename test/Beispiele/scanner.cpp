@@ -58,7 +58,7 @@ void setup(){
 void loop() {
   scanI2C(100000);
   scanI2C(400000);
-//  scanI2C(1000000); // nur aktivieren, wenn der Microcontroller diese Frequenz unterstützt
+  scanI2C(1000000); // nur aktivieren, wenn der Microcontroller diese Frequenz unterstützt
 //  scanI2C(3400000); // nur aktivieren, wenn der Microcontroller diese Frequenz unterstützt
 //  scanI2C(5000000); // nur aktivieren, wenn der Microcontroller diese Frequenz unterstützt
   

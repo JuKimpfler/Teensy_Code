@@ -48,18 +48,20 @@ bool MCF8316C::begin(TwoWire& wire, uint8_t i2cAddr)
 // ---------------------------------------------------------------------------
 bool MCF8316C::readReg(uint16_t regAddr, uint32_t& value)
 {
-    if (!_wire) return false;
+    if (!_wire) {return false;Serial.println("no definition of wire");}
 
     // Send register address (2 bytes, big-endian)
     _wire->beginTransmission(_addr);
     _wire->write(static_cast<uint8_t>(regAddr >> 8));
     _wire->write(static_cast<uint8_t>(regAddr & 0xFF));
-    if (_wire->endTransmission(false) != 0) {  // false = repeated start
+    if (_wire->endTransmission() != 0) {  // false = repeated start
+        Serial.println("fail to connect");
         return false;
     }
 
     // Request 4 bytes (32-bit register, MSB first)
     if (_wire->requestFrom(_addr, static_cast<uint8_t>(4)) != 4) {
+        Serial.println("fail to receive");
         return false;
     }
 

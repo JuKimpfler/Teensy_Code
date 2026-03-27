@@ -23,7 +23,7 @@
  *       Using wrong parameters may prevent the motor from starting or
  *       cause over-current trips.
  */
-
+#include "enum.h"
 #include <Wire.h>
 #include "Arduino.h"
 #include "MCF8316C.h"
@@ -69,7 +69,7 @@ void setup()
     if (!driver.begin(Wire1, DRIVER_ADDR)) {
         Serial.println(F("ERROR: MCF8316C not found on I2C bus!"));
         Serial.println(F("Check wiring, I2C address and pull-up resistors."));
-        //while (true) { delay(1000); }
+        while (true) { delay(1000); }
     }
     //Serial.println(F("MCF8316C found."));
     driver.printDeviceId();
@@ -102,6 +102,8 @@ void setup()
     driver.enableDriver();
 
     delay(200);  // give driver time to power up gate drive
+
+    while(digitalRead(Start_Port)==false){};
 
     // ----- Gradual speed ramp from 0 to 80 % -----
     Serial.println(F("Ramping speed 0 -> 80 %..."));
