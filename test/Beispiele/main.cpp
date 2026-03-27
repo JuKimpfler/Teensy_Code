@@ -7,12 +7,15 @@
 #include "Debug.h"
 #include "BL.h"
 #include "Game_Thread.h"
+#include "BotConnect.h"
 
 void setup() {
     SPI.begin();
     Serial.begin(115200);
     UART_2.begin(115200);
     UART_Pixy.begin(115200);
+    pinMode(33,OUTPUT);
+    analogWrite(33,0);
 
     #ifdef Robo_s 
         System.Calibrate("s");
@@ -45,7 +48,8 @@ void loop() {
     
     #ifndef PID_Calib
     if(System.Start){ 
-        Game.Run();
+        //Game.Run();
+        analogWrite(33,150);
         //DefenderTactics.Homing();
         //Robot.Turn(999, MainSpeed); 
         
@@ -70,12 +74,24 @@ void loop() {
     Goal_Turn = System.Switches[1];
 
     // Buttons
-    if(System.Button[0]){BNO055.Calibrate();} // BNO055 set to 0
+    #ifndef Ir_Calib
+    if(System.Button[0]){BNO055.Calibrate();Line.Calibrate(1);} // BNO055 set to 0
 
     if (System.Button[1]){Robot.Kicker.On();} // Kicker test
-
+ 
     if (System.Button[2]){IR.Calib_Dist();} 
+    if (System.Button[3]){PowerPump.shoot();} // Power pump single shot test
     else{}
+    #endif
+    #ifdef Ir_Calib
+    if(System.Button[0]){IR.Calib_Dist();} // BNO055 set to 0
+
+    if (System.Button[1]){IR.Calib_Offset();} // Kicker test
+
+    if (System.Button[2]){} 
+
+    if(System.Button[3]){IR.Save();}
+    #endif
 
     //if (System.Switches[2]){if (System.Button[3]){Line.Calibrate(2);}} // Wenn SW3 == true: Line_Calibration mit Linie
     //else{if (System.Button[3]){Line.Calibrate(1);}} // Wenn SW3 == false: Line_Calibration ohne Linie
@@ -86,4 +102,3 @@ void loop() {
     Cycletime = Cycle_Timer;
     Robot.Kicker.Update(); // 1 micro
 }
-

@@ -28,7 +28,6 @@ void MotorC::init(){
 }
 
 void MotorC::On(int Speed , int Motor){
-    if (Enable){ 
 
     Speed = Speed*2.55;
     bool Dir;
@@ -111,8 +110,6 @@ void MotorC::On(int Speed , int Motor){
                 digitalWriteFast(HL_ExpanderB,0);
             #endif
         }
-    }
-
     }
 }
 

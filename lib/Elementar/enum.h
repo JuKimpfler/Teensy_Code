@@ -45,7 +45,7 @@ enum US_Ports {
 enum Pinout {
     LDR_Port = 23,
     Start_Port = 10,
-    RCJ_Port = 7,
+    RCJ_Port = 25,
     BT_State_Port = 31,
     Schuss_Port = 30,
     Kicker_Port = 18

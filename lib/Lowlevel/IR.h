@@ -14,12 +14,17 @@ class IRC {
         double visable_th = 0;
         int Dist_Offset=0;
         double Angle_Offset=0;
+        bool once_IR_Calib = false;
+        uint16_t gains[16];
+        int16_t offsets[16];
         void read();
         int GetData(int Port);
         int GetTSSP();
         void init();
         void Calib_Offset();
         void Calib_Dist();
+        void Save();
+        void Reset_Calib();
 
 };
 

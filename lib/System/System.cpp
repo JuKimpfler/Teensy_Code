@@ -1,7 +1,7 @@
 #include "System.h"
 #include "Debug.h"
 #include "Game_Thread.h"
-#include "BL.h"
+#include "PowerPump.h"
 
 SystemC System;
 
@@ -12,7 +12,7 @@ elapsedMicros Mess_Timer;
 
 
 void SystemC::Start_Update(){
-    System.Start = digitalRead(Start_Port);
+    System.Start = digitalRead(Start_Port);    
 }
 
 void SystemC::Button_Update(){
@@ -48,6 +48,7 @@ void SystemC::init(){
 
     pinMode(Start_Port,INPUT);
     pinMode(Kicker_Port, OUTPUT);
+    PowerPump.init();
     LDR.init(); 
 
     Line.init();
@@ -87,13 +88,15 @@ void SystemC::UpdateC::Sensors(){
     PID.Calculate(); // 1 micro
     BNO055.read(); // 100-500 micro
     IR.read(); // 300 micro
-    BL.doRolle();
-
+    
+    /*
     if ((Cycle_P3 > 50)){
         #ifdef Debug_EN
         #ifdef Ir_Calib // IR_Calibration 
         Debug.Start();
-        Debug.Plot_List("IR",IR.IR_Values_raw,16);
+        Debug.Plot("Ball_angle",Ball.Angle);
+        Debug.Plot("Ball_Dist",Ball.Distance);
+        Debug.Plot_List("Gain",IR.gains,16);
         Debug.Send();
         #endif
         #ifdef Calib // Normal_Calibration
@@ -112,10 +115,12 @@ void SystemC::UpdateC::Sensors(){
         #endif
         #ifdef Line_Calib
         Debug.Start();
-        Debug.Plot_List("Line", Line.Values_raw, 8);
+        Debug.Plot_List("L", Line.Values_raw, 32);
         Debug.Plot_List("LV", Line.Values_raw_VW, 8);
         //Debug.Plot_List("L", Line.line, 32);
         //Debug.Plot("angle",LineCalc.DriveAngle);
+        //Debug.Plot("Summe",Line.Summe);
+        //Debug.Plot("Summe_VW",Line.VW_Summe);
         //Debug.Plot("LVW",Line_Schwelle_VW);
         //Debug.Plot("L",Line_Schwelle);
         Debug.Send();
@@ -148,8 +153,6 @@ void SystemC::UpdateC::Sensors(){
         Debug.Plot("regeln",LineCalc.DriveAngle);
         Debug.Plot("ball_dist2",Ball.Distance_raw);
         Debug.Plot("Rolle",Zone);
-        Debug.Plot("Ausrichtung y/n", AttackerTactics.doTurn);
-        Debug.Plot("Echt Ausrichtung", Goal.Regeln);
         Debug.Send();
         //BL.sendDebug("BNO: " + String(BNO055.TiltZ));
         #endif
@@ -162,5 +165,5 @@ void SystemC::UpdateC::Sensors(){
 
     #ifdef PID_Calib
     Robot.Turn(999);
-    #endif
+    #endif*/
 }

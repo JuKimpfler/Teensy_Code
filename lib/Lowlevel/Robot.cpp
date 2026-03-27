@@ -28,7 +28,7 @@ void RobotC::Turn(float Angle ,int Speed1 = HighSpeed){
     Motor.On(PID.Out,HL_Motor);
 }
 
-void RobotC::Drive(float Dir , float Angle = 0 ,int Speed1 = HighSpeed){
+void RobotC::Drive(float Dir , float Angle,int Speed1){
     // Links -> Minus (Counter-Clock)
     // Rechts -> Plus (Clock)
 
