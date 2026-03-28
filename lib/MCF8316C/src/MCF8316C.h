@@ -17,7 +17,7 @@
  *
  * Wiring assumptions (see README.md for full details):
  *   SDA / SCL  — I2C bus (Teensy 4.0: Wire1 pins 17/16)
- *   SPEED      — PWM output from Teensy to SPEED/WAKE pin of driver
+ *   SPEED/WAKE — optional digital wake pulse from Teensy
  *   DIR        — digital output (HIGH = CW, LOW = CCW) or tie to GND/VCC
  *   BRAKE      — digital output (HIGH = brake, LOW = coast/run)
  *   DRVOFF     — digital output (LOW = driver enabled, HIGH = driver off)
@@ -55,6 +55,7 @@
 #define MCF8316C_REG_FAULT_CONFIG1   0x0090u  ///< Fault Configuration 1
 #define MCF8316C_REG_FAULT_CONFIG2   0x0092u  ///< Fault Configuration 2
 #define MCF8316C_REG_PIN_CONFIG1     0x00A4u  ///< Pin Configuration 1 (SPEED_MODE)
+#define MCF8316C_REG_DEVICE_CONFIG2  0x00A8u  ///< Device Configuration 2 (DEV_MODE)
 
 // RAM registers (0x0C0–0x0EE): runtime status and algorithm control
 #define MCF8316C_REG_GD_FAULT_STATUS 0x00E0u  ///< Gate Driver Fault Status (read-only)
@@ -168,7 +169,7 @@ public:
     bool enableDriver();
 
     /**
-     * Disable the motor driver (set speed to 0 via analogWrite externally;
+     * Disable the motor driver (set speed reference to 0 via I2C;
      * no dedicated I2C disable register exists when DRVOFF is hard-wired).
      * @return true
      */
@@ -184,13 +185,10 @@ public:
 
     /**
      * Set motor speed as a percentage of full speed.
-     * NOTE: In PWM speed mode (SPEED_MODE = 00b, the default) the actual
-     * speed is controlled by the duty cycle on the hardware SPEED pin via
-     * analogWrite().  This function is a no-op in that mode.
-     * Switch to I2C speed mode (SPEED_MODE = 10b) to use this function.
+     * Uses CLOSED_LOOP3[11:0] SPEED_REF in I2C speed mode (SPEED_MODE = 10b).
      *
      * @param pct  0.0 … 100.0  (clamped to valid range)
-     * @return true
+     * @return true on success
      */
     bool setSpeedPercent(float pct);
 

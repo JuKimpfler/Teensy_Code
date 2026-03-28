@@ -186,11 +186,14 @@ bool MCF8316C::basicConfigure()
     //   Bits [18:15] HW_LOCK_ILIMIT_MODE = 9 → disabled
     ok &= writeReg(MCF8316C_REG_FAULT_CONFIG2, (9UL << 15));  // 0x00048000
 
-    // --- PIN_CONFIG1 (0x00A4): confirm PWM speed mode -----------------------
-    // SPEED_MODE = 00b: duty cycle on SPEED pin controls current reference.
-    // 00b is the EEPROM default; writing it explicitly guards against any
-    // prior misconfiguration.
-    ok &= writeReg(MCF8316C_REG_PIN_CONFIG1, MCF8316C_SPEED_MODE_PWM);  // 0x00000000
+    // --- PIN_CONFIG1 (0x00A4): switch to I2C speed mode ---------------------
+    // SPEED_MODE = 10b: speed reference is written via CLOSED_LOOP3.SPEED_REF.
+    ok &= writeReg(MCF8316C_REG_PIN_CONFIG1, MCF8316C_SPEED_MODE_I2C);  // 0x00000002
+
+    // --- DEVICE_CONFIG2 (0x00A8): keep DEV_MODE = 0 (standby) ---------------
+    // Datasheet Table 7-7: with DEV_MODE=1 and zero speed command, the device
+    // can enter Sleep, disabling I2C. Force DEV_MODE=0 to stay in Standby.
+    ok &= modifyReg(MCF8316C_REG_DEVICE_CONFIG2, (1UL << 11), 0UL);
 
     // --- Clear any latched faults from previous run -------------------------
     clearFaults();
@@ -211,7 +214,8 @@ bool MCF8316C::enableDriver()
 
 bool MCF8316C::disableDriver()
 {
-    // DRVOFF is hard-wired; motor is stopped externally by setting PWM to 0.
+    // DRVOFF is hard-wired; stop by commanding speed reference = 0.
+    setSpeedPercent(0.0f);
     return true;
 }
 
@@ -230,12 +234,12 @@ bool MCF8316C::setDirection(bool cw)
 // ---------------------------------------------------------------------------
 bool MCF8316C::setSpeedPercent(float pct)
 {
-    // In PWM speed mode (SPEED_MODE = 00b, the default) the MCF8316C-Q1
-    // derives its speed/current reference directly from the duty cycle on the
-    // hardware SPEED pin.  Use analogWrite() on the SPEED pin to set speed;
-    // no I2C register write is needed or effective in this mode.
-    (void)pct;
-    return true;
+    if (pct < 0.0f) pct = 0.0f;
+    if (pct > 100.0f) pct = 100.0f;
+
+    // CLOSED_LOOP3[11:0] SPEED_REF (12-bit): 0..4095 maps to 0..100%.
+    const uint32_t speedRef = static_cast<uint32_t>((pct * 4095.0f) / 100.0f + 0.5f);
+    return modifyReg(MCF8316C_REG_CLOSED_LOOP3, 0x00000FFFu, speedRef);
 }
 
 // ---------------------------------------------------------------------------

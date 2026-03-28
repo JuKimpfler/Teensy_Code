@@ -7,7 +7,7 @@
  *  Hardware-Verdrahtung (Teensy 4.0):
  *    Wire1 SDA  →  Pin 17  →  MCF8316 SDA
  *    Wire1 SCL  →  Pin 16  →  MCF8316 SCL
- *    PWM-Out    →  Pin 33  →  MCF8316 SPEED/WAKE
+ *    GPIO-Out   →  Pin 33  →  MCF8316 SPEED/WAKE (Wake-Puls optional)
  *    Pull-ups (4,7 kΩ) auf SDA und SCL nach 3,3 V !
  *    nFAULT-LED extern verdrahtet (hardwired lt. Aufbau)
  *
@@ -21,13 +21,10 @@
  *    - MCF8316 unterstützt Clock-Stretching (Timeout 4,66 ms)
  *      → übernimmt das nötige 100 µs Inter-Byte-Delay automatisch
  *
- *  Steuerprinzip (Strommodus / Torque-Mode):
- *    SPEED_MODE   = 01b  → PWM-Duty-Cycle auf Pin 33 steuert Sollstrom
- *    SPEED_LOOP_DIS = 1  → Strommodus (Torque-Mode) statt Drehzahlregelung
+ *  Steuerprinzip (I2C-Sollwert):
+ *    SPEED_MODE     = 10b  → Solldrehzahl über I2C-Register CLOSED_LOOP3[11:0]
+ *    SPEED_LOOP_DIS = 1    → Strommodus (Torque-Mode) statt Drehzahlregelung
  *      Vorteil: funktioniert ohne motorbezogene Parameter (MAX_SPEED etc.)
- *      CURRENT_REF = Duty% × ILIMIT  (z.B. 50 % × 3 A = 1,5 A)
- *    → 0 % Duty  = Motor aus / Standby
- *    → 100 % Duty = ILIMIT (3 A) Strom-Sollwert
  *
  *  Warum NICHT reine Drehzahlregelung (SPEED_LOOP_DIS = 0)?
  *    Das EEPROM des Chips ist im Auslieferungszustand auf 0 gesetzt.
@@ -36,7 +33,7 @@
  *    motorbezogenen Wert in elektrischen Hz konfiguriert werden.
  *
  *  Testschleife:
- *    10 Sekunden Motor EIN (50 % → 1,5 A Sollstrom)  →  10 s Motor AUS  →  ...
+ *    10 Sekunden Motor EIN (50 % Sollwert per I2C)  →  10 s Motor AUS  →  ...
  *
  * ============================================================
  */
@@ -48,8 +45,7 @@
 //  Hardware-Konfiguration
 // ─────────────────────────────────────────────────────────────
 constexpr uint8_t  MCF_I2C_ADDR   = 0x01;    // TARGET_ID (Default = 0x01)
-constexpr uint8_t  PWM_PIN        = 33;       // Teensy 4.0 PWM-Ausgang
-constexpr uint32_t PWM_FREQ_HZ    = 20000;    // 20 kHz PWM (gut für BLDC)
+constexpr uint8_t  PWM_PIN        = 33;       // Teensy 4.0 GPIO-Ausgang (Wake)
 constexpr uint32_t WAKE_PULSE_MS  = 30;       // SPEED/WAKE kurz statisch HIGH zum Aufwecken
 constexpr uint32_t I2C_CLOCK_HZ   = 100000;   // 100 kHz  (Standard Mode)
                                                // Clock-Stretching deckt 100µs-Delay ab
@@ -73,6 +69,9 @@ constexpr uint16_t REG_MOTOR_STARTUP2   = 0x086;
 
 //  EEPROM Shadow: Closed-Loop-Konfiguration 1 (Datasheet 7.7.1.5, Offset 88h)
 constexpr uint16_t REG_CLOSED_LOOP1     = 0x088;
+//  EEPROM Shadow: Closed-Loop-Konfiguration 3 (Datasheet 7.7.1.7, Offset 8Ch)
+//  SPEED_REF liegt in Bits [11:0]
+constexpr uint16_t REG_CLOSED_LOOP3     = 0x08C;
 
 //  EEPROM Shadow: Fehler-Konfiguration 1      (Datasheet 7.7.2.1, Offset 90h)
 constexpr uint16_t REG_FAULT_CONFIG1    = 0x090;
@@ -83,6 +82,9 @@ constexpr uint16_t REG_FAULT_CONFIG2    = 0x092;
 //  EEPROM Shadow: Pin-Konfiguration 1         (Datasheet 7.7.3.1, Offset A4h)
 //  Enthält SPEED_MODE – wirkt sofort auf den Shadow-RAM
 constexpr uint16_t REG_PIN_CONFIG1      = 0x0A4;
+//  EEPROM Shadow: Device-Konfiguration 2      (Datasheet 7.7.3.3, Offset A8h)
+//  Bit 11 = DEV_MODE (0=Standby, 1=Sleep)
+constexpr uint16_t REG_DEVICE_CONFIG2   = 0x0A8;
 
 //  Algorithm Control 1 / EEPROM-Trigger       (Datasheet 7.8.3.1, Offset EAh)
 //  Enthält CLR_FLT (Bit 29), EEPROM_READ (Bit 30), EEPROM_WRT (Bit 31)
@@ -168,11 +170,9 @@ constexpr uint32_t FAULT_CONFIG2_CFG =
                     // = 0x00048000
 
 // ── PIN_CONFIG1 (0x0A4) ──────────────────────────────────────
-// Bits [1:0]  SPEED_MODE = 00b  → PWM-Duty-Cycle auf SPEED-Pin steuert Motor
-// 00b = PWM-Eingang (Standard / EEPROM-Default)
-// 01b = Analogspannungs-Eingang  ← FALSCH für PWM-Betrieb!
-// 10b = I2C-Sollwert
-constexpr uint32_t PIN_CONFIG1_PWM_MODE = 0x00000000;
+// Bits [1:0]  SPEED_MODE = 10b  → I2C-Sollwert (CLOSED_LOOP3.SPEED_REF)
+constexpr uint32_t PIN_CONFIG1_I2C_MODE = 0x00000002;
+constexpr uint32_t DEVICE_CFG2_DEV_MODE_BIT = (1UL << 11);
 
 // ── ALGO_CTRL1 Steuerbits (0x0EA) ────────────────────────────
 // Bit [29]  CLR_FLT = 1   → Alle latch-basierten Fehler löschen
@@ -293,6 +293,12 @@ static bool i2cRead32(uint16_t addr, uint32_t &result) {
   return true;
 }
 
+static bool setSpeedPercentI2C(uint8_t speed_pct) {
+  if (speed_pct > 100) speed_pct = 100;
+  const uint32_t speedRef = ((uint32_t)speed_pct * 4095UL + 50UL) / 100UL;
+  return i2cWrite32(REG_CLOSED_LOOP3, speedRef & 0x0FFFUL);
+}
+
 // ─────────────────────────────────────────────────────────────
 //  MCF8316C-Q1 Initialisierung
 //
@@ -367,18 +373,35 @@ static bool mcf8316Init() {
   Serial.printf("OK (0x%08lX)\n", (unsigned long)FAULT_CONFIG2_CFG);
   delay(10);
 
-  // ── Schritt 6: PIN_CONFIG1 – SPEED_MODE = 00b (PWM) ────────
-  // Konfiguriert die Geschwindigkeits-Eingabequelle auf PWM-Duty-Cycle.
+  // ── Schritt 6: PIN_CONFIG1 – SPEED_MODE = 10b (I2C) ─────────
+  // Konfiguriert die Geschwindigkeits-Eingabequelle auf I2C SPEED_REF.
   // Hinweis: Schreiben in den Shadow-Register wirkt sofort im RAM.
   // Für dauerhafte Speicherung (nach Power-Cycle) wäre zusätzlich
   // der EEPROM-Brennvorgang nötig (REG_ALGO_CTRL1, EEPROM_WRITE_KEY).
   // Das wird hier NICHT gemacht, um unnötige EEPROM-Zyklen zu vermeiden!
-  Serial.print("[MCF8316] PIN_CONFIG1  (0x0A4): SPEED_MODE = 00b (PWM) ... ");
-  if (!i2cWrite32(REG_PIN_CONFIG1, PIN_CONFIG1_PWM_MODE)) {
+  Serial.print("[MCF8316] PIN_CONFIG1  (0x0A4): SPEED_MODE = 10b (I2C) ... ");
+  if (!i2cWrite32(REG_PIN_CONFIG1, PIN_CONFIG1_I2C_MODE)) {
     Serial.println("FEHLER!");
     return false;
   }
-  Serial.printf("OK (0x%08lX)\n", (unsigned long)PIN_CONFIG1_PWM_MODE);
+  Serial.printf("OK (0x%08lX)\n", (unsigned long)PIN_CONFIG1_I2C_MODE);
+  delay(10);
+
+  // ── Schritt 6b: DEVICE_CONFIG2 – DEV_MODE = 0 (Standby) ────
+  // Datasheet Tabelle 7-7: Bei DEV_MODE=1 kann der Chip bei SPEED_REF=0 in
+  // Sleep gehen (I2C aus). Wir erzwingen DEV_MODE=0, damit I2C aktiv bleibt.
+  uint32_t deviceCfg2 = 0;
+  Serial.print("[MCF8316] DEVICE_CONFIG2 (0x0A8): DEV_MODE auf Standby ... ");
+  if (!i2cRead32(REG_DEVICE_CONFIG2, deviceCfg2)) {
+    Serial.println("FEHLER (Read)!");
+    return false;
+  }
+  deviceCfg2 &= ~DEVICE_CFG2_DEV_MODE_BIT;
+  if (!i2cWrite32(REG_DEVICE_CONFIG2, deviceCfg2)) {
+    Serial.println("FEHLER (Write)!");
+    return false;
+  }
+  Serial.printf("OK (0x%08lX)\n", (unsigned long)deviceCfg2);
   delay(10);
 
   // ── Schritt 7: Fault-Status lesen und ausgeben ─────────────
@@ -434,24 +457,30 @@ static void motorSetSpeed(uint8_t speed_pct) {
   if (shouldSendWakePulse) {
     digitalWrite(PWM_PIN, HIGH);
     delay(WAKE_PULSE_MS);  // intentionally blocking: one-time short wake pulse at start
+    digitalWrite(PWM_PIN, LOW);
   }
 
-  // Teensy analogWrite: 8-Bit Auflösung (0–255)
-  uint32_t pwmVal = ((uint32_t)speed_pct * 255UL) / 100UL;
-  analogWrite(PWM_PIN, (int)pwmVal);
+  if (!setSpeedPercentI2C(speed_pct)) {
+    Serial.printf("[ERR]  I2C-Speedwrite fehlgeschlagen! Soll=%u%%\n", speed_pct);
+    return;
+  }
+
+  const uint32_t speedRef = ((uint32_t)speed_pct * 4095UL + 50UL) / 100UL;
   if (shouldSendWakePulse) {
-    Serial.printf("[Motor] Geschwindigkeit: %3d %%  (PWM = %3lu / 255, Wake=%lums)\n",
-                  speed_pct, pwmVal, (unsigned long)WAKE_PULSE_MS);
+    Serial.printf("[Motor] Geschwindigkeit: %3d %%  (SPEED_REF = %4lu / 4095, Wake=%lums)\n",
+                  speed_pct, speedRef, (unsigned long)WAKE_PULSE_MS);
   } else {
-    Serial.printf("[Motor] Geschwindigkeit: %3d %%  (PWM = %3lu / 255)\n", speed_pct, pwmVal);
+    Serial.printf("[Motor] Geschwindigkeit: %3d %%  (SPEED_REF = %4lu / 4095)\n", speed_pct, speedRef);
   }
   s_motorRunning = (speed_pct > 0);
 }
 
 static void motorStop() {
-  analogWrite(PWM_PIN, 0);
+  if (!setSpeedPercentI2C(0)) {
+    Serial.println("[ERR]  I2C-Speedwrite fehlgeschlagen! Stop konnte nicht gesetzt werden.");
+  }
   s_motorRunning = false;
-  Serial.println("[Motor] STOP — PWM = 0");
+  Serial.println("[Motor] STOP — SPEED_REF = 0");
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -465,15 +494,12 @@ void setup() {
   Serial.println("║  MCF8316C-Q1  BLDC Test  |  Teensy 4.0  ║");
   Serial.println("╚══════════════════════════════════════════╝\n");
 
-  // ── PWM konfigurieren ──────────────────────────────────────
-  // Teensy 4.0: analogWriteFrequency() setzt die Frequenz pro Pin
-  // analogWriteResolution() setzt global die Bit-Tiefe
+  // ── SPEED/WAKE-Pin konfigurieren ───────────────────────────
+  // Der Pin wird nur noch als Wake-Puls genutzt; Sollwert kommt per I2C.
   pinMode(PWM_PIN, OUTPUT);
-  analogWriteFrequency(PWM_PIN, PWM_FREQ_HZ);  // 20 kHz
-  analogWriteResolution(8);                      // 8-Bit (0–255)
-  motorStop();  // Sicher starten: PWM = 0
-  Serial.printf("[PWM]   Pin %d, Frequenz = %lu Hz, Auflösung = 8-Bit\n",
-                PWM_PIN, (unsigned long)PWM_FREQ_HZ);
+  digitalWrite(PWM_PIN, LOW);
+  s_motorRunning = false;
+  Serial.printf("[WAKE]  Pin %d als digitaler Wake-Ausgang\n", PWM_PIN);
 
   // ── I2C Wire1 initialisieren ───────────────────────────────
   // Teensy 4.0: Wire1 → SDA1 = Pin 17, SCL1 = Pin 16
@@ -494,9 +520,11 @@ void setup() {
     while (true) { delay(500); }
   }
 
+  motorStop();  // Sicher starten: SPEED_REF = 0 per I2C
+
   Serial.println("\n[OK]    Initialisierung abgeschlossen.");
-  Serial.println("[INFO]  Strommodus aktiv: CURRENT_REF = Duty% × 3A");
-  Serial.println("[INFO]  Testschleife: 10 s Motor EIN (50 % → 1,5 A)  →  10 s Motor AUS\n");
+  Serial.println("[INFO]  Strommodus aktiv mit I2C-Sollwert in CLOSED_LOOP3.");
+  Serial.println("[INFO]  Testschleife: 10 s Motor EIN (50 % per I2C)  →  10 s Motor AUS\n");
 }
 
 // ─────────────────────────────────────────────────────────────
