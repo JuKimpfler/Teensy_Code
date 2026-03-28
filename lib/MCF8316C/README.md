@@ -6,46 +6,53 @@ targeting the **Teensy 4.0** (Arduino/PlatformIO framework).
 
 ---
 
-## ⚠️ Important Disclaimer
+## I²C Protocol
 
-The register addresses and bit-field definitions in this library are based on
-the MCF8316C-Q1 datasheet (**SLVSEO5, rev. A**).  
-**Always verify every constant marked `// VERIFY` against your exact silicon
-revision and the TI EVM GUI register export before deploying to production.**  
-Using incorrect motor parameters can prevent the motor from starting or cause
-hardware damage.
+The MCF8316C-Q1 uses a **proprietary I²C protocol** — it is **not** a standard
+2-byte register address device.  Every transaction begins with a 24-bit
+**Control Word** (3 bytes, MSB first), followed by 32-bit data (LSB first):
+
+```
+Write: START | [ADDR+W] | CW[23:16] | CW[15:8] | CW[7:0] | DB0(LSB) | DB1 | DB2 | DB3(MSB) | STOP
+Read : START | [ADDR+W] | CW[23:16] | CW[15:8] | CW[7:0] | RSTART | [ADDR+R] | DB0 | DB1 | DB2 | DB3 | STOP
+```
+
+Control Word bit layout:
+
+| Bits  | Field    | Description                          |
+|-------|----------|--------------------------------------|
+| [23]  | OP_R/W   | 0 = Write, 1 = Read                  |
+| [22]  | CRC_EN   | 0 = CRC disabled                     |
+| [21:20]| DLEN    | 01b = 32-bit data (always used here) |
+| [19:16]| MEM_SEC | 0x0                                  |
+| [15:12]| MEM_PAGE| 0x0                                  |
+| [11:0] | MEM_ADDR| 12-bit register address              |
 
 ---
 
 ## Wiring Assumptions
 
-| MCF8316C-Q1 pin | Teensy 4.0 pin | Notes |
-|-----------------|---------------|-------|
-| SDA             | 18 (Wire)     | I²C data; add 4.7 kΩ pull-up to 3.3 V |
-| SCL             | 19 (Wire)     | I²C clock; add 4.7 kΩ pull-up to 3.3 V |
-| SPEED           | 3 (PWM)       | PWM signal 0–100 %; frequency ≥ 1 kHz |
-| DIR             | 4             | HIGH = CW, LOW = CCW |
-| BRAKE           | 5             | HIGH = active brake, LOW = release |
-| DRVOFF          | 6             | LOW = driver on, HIGH = driver off |
-| FAULT           | 7 (INPUT_PULLUP) | Active-LOW fault indicator from IC |
-| FG              | optional      | Motor speed feedback (frequency output) |
+This hardware uses **Wire1** (Teensy 4.0 pins 17/16) with DIR/BRAKE/DRVOFF
+hard-wired and only the SPEED/WAKE pin driven from PWM:
 
-> Pin numbers can be changed at the top of `BasicSpin.ino`.
+| MCF8316C-Q1 pin | Teensy 4.0 pin | Notes |
+|-----------------|----------------|-------|
+| SDA             | 17 (Wire1)     | I²C data; add 4.7 kΩ pull-up to 3.3 V |
+| SCL             | 16 (Wire1)     | I²C clock; add 4.7 kΩ pull-up to 3.3 V |
+| SPEED/WAKE      | 33 (PWM)       | PWM signal 0–100 %; 20 kHz recommended |
+| DIR             | GND (hard-wired) | Fixed direction |
+| BRAKE           | GND (hard-wired) | Brake released |
+| DRVOFF          | GND (hard-wired) | Driver always enabled |
+| FAULT           | LED (hard-wired) | Active-LOW fault indicator |
 
 ---
 
 ## I²C Address
 
-The 7-bit I²C base address is **0x60**.  The two LSBs are set by the `ADDR`
-pin on the MCF8316C-Q1:
-
-| ADDR pin  | I²C address |
-|-----------|-------------|
-| GND       | 0x60        |
-| VCC       | 0x61        |
+The MCF8316C-Q1 default 7-bit I²C address is **0x01** (ADDR pin = GND).
 
 Change `DRIVER_ADDR` in the example sketch and pass the correct value to
-`driver.begin(Wire, addr)`.
+`driver.begin(Wire1, addr)`.
 
 ---
 
