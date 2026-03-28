@@ -33,13 +33,14 @@ Control Word bit layout:
 ## Wiring Assumptions
 
 This hardware uses **Wire1** (Teensy 4.0 pins 17/16) with DIR/BRAKE/DRVOFF
-hard-wired and only the SPEED/WAKE pin driven from PWM:
+hard-wired. Speed is set via I²C (`CLOSED_LOOP3.SPEED_REF`); SPEED/WAKE is
+optional for wake-up pulses only:
 
 | MCF8316C-Q1 pin | Teensy 4.0 pin | Notes |
 |-----------------|----------------|-------|
 | SDA             | 17 (Wire1)     | I²C data; add 4.7 kΩ pull-up to 3.3 V |
 | SCL             | 16 (Wire1)     | I²C clock; add 4.7 kΩ pull-up to 3.3 V |
-| SPEED/WAKE      | 33 (PWM)       | PWM signal 0–100 %; 20 kHz recommended |
+| SPEED/WAKE      | 33 (GPIO)      | Optional short wake pulse |
 | DIR             | GND (hard-wired) | Fixed direction |
 | BRAKE           | GND (hard-wired) | Brake released |
 | DRVOFF          | GND (hard-wired) | Driver always enabled |
