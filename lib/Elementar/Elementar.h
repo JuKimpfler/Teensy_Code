@@ -1,7 +1,4 @@
-#pragma once
-#include "Arduino.h"
-#include "enum.h"
-#include "Globals.h"
+#include "enum_alt.h"
 #include "Utils.h"
+#include "Globals.h"
 #include "Param.h"
-#include "elapsedMillis.h"

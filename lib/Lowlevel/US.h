@@ -8,9 +8,9 @@ class USC{
         void init();
         void read();
 
-        //0 = links, 1 = hinten, 2 = rechts
-        double Distance_raw[3];
-        double Distance;
+        int giveNR(int NR); // cm (0=Vorne, 1=Rechts, 2=Hinten, 3=Links)
+
+        int Distance[4] ; // cm (0=Vorne, 1=Rechts, 2=Hinten, 3=Links)
 };
 
 extern elapsedMillis US_Timer1;

@@ -1,6 +1,9 @@
 #pragma once
 #include "Arduino.h"
 
+// Modus wahl
+#define Robo_s // Robo_w oder Robo_s für Roboter Auswahl
+
 
 //#define Debug_EN // Debug Ausgabe
 //#define Ir_Calib // calibration Mode IR Values
@@ -10,13 +13,23 @@
 //#define Com_Debug 
 
 #define HighSpeed 30 // Speed im HS modus
-#define LowSpeed = 25; // Speed im LS modus
+inline float LowSpeed = 25; // Speed im LS modus
 
 inline float Kp = 1.6; // Startwert, dann erhöhen  1
 inline float Kd = 35.0; // Startwert, dann erhöhen 
 inline float Ki = 0; // Startwert, dann erhöhen
 inline float PID_Mult = 0.1; // Belassen
+
 inline float PID_Konstante = 0.5; // 0.3
+
+inline double E_Faktor = 1.35;
+inline double B_Faktor = -4;
+inline double F_Faktor = 1.5;
+inline double C_Faktor = 0.85;
+inline double H_Faktor = 1.9;
+
+inline int Dist_Schwelle_min = 18; // Zonen Schwelle Dist 
+inline int Dist_Schwelle_max = 60; // Zonen Schwelle Dist 
 
 inline int LDR_Schwelle_w = 500;
 inline int LDR_Schwelle_s = 600; 
@@ -31,24 +44,15 @@ const uint16_t IR_maxi_w[16] = {2950,2950,2950,2950,2950,2950,2950,2950,2950,295
 
 inline int Line_Grass = 2000;
 inline int Line_Norm = 4000;
+inline int Line_Grass_VW = 1900;
+inline int Line_Norm_VW = 3200;
 
+inline int Line_Schwelle_VW = 1000;
 inline int Line_Schwelle = 1000;
-
-inline int LDR_Schwelle = 0;
 
 inline int IR_Sight = 45; // ab wann wird der Ball als da erkannt
 
 inline int Motor_Frequency =  400;
-
-// --- Kamera Konstanten ---
-const float CAM_RES_X = 320.0;
-const float CAM_CENTER_X = CAM_RES_X / 2.0;
-const float FOCAL_LENGTH_PX = 266.6;  // MUSS KALIBRIERT WERDEN!
-const float GOAL_WIDTH_CM = 60.0;
-const float BLUE_GOAL_X = 91.0;
-const float BLUE_GOAL_Y = 243.0;
-const float YELLOW_GOAL_X = 91.0;
-const float YELLOW_GOAL_Y = 0.0;
 
 #define Interface_Frequency 20 // angegeben in Hz (wie oft pro sekunde wird das Interface upgedated)
 #define US_Frequency 10 // angegeben in Hz (wie oft pro sekunde wird das US upgedated)

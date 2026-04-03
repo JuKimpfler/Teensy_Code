@@ -1,5 +1,7 @@
 #pragma once
 #include "Elementar.h"
+#include "..\Extern\BNO055\BNO055_beaver.h"
+#include "Debug.h"
 
 class BNO055C {
 
@@ -13,8 +15,9 @@ class BNO055C {
 
         void init();
         void read();
+        float giveRad();
+        float giveDeg();
         void Calibrate();
-        void showCal();
 };
 
 extern BNO055C BNO055;

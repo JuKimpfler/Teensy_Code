@@ -18,9 +18,6 @@ LineC Line;
  * zu max_schwelle. Dieser Wert wird in Line_Schwelle gespeichert.
  */
 void LineC::Calibrate(int Modes){
-
-    ready1 = true;
-
     SPI.beginTransaction(SPISettings(14000000, MSBFIRST, SPI_MODE3));
 
     digitalWriteFast(CS_LineA, LOW);

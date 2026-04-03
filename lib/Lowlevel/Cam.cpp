@@ -1,79 +1,49 @@
 #include "Cam.h"
-#include "RGB.h"
 #include "BNO055.h"
 CamC Cam;
 GoalC Goal;
 
-/**
- * @brief Reads a message from the serial port and decodes it if it is a valid message.
- * 
- * @details Checks if there is a message available in the serial port. If there is, it reads the message and checks if it is a valid message (19 characters long). If it is, it decodes the message and updates the goal and ball positions.
- */
-
-void CamC::read(){
-    if (UART_2.available()>0){
-        message = UART_2.readStringUntil('$');
-    
-        if (message.length() == 19){
-            Decode(message);
-        }
+void CamC::readSerialFromOpenMV() {
+  while (Serial1.available()) {
+    String data = Serial1.readStringUntil('\n');
+    if (data.length() > 4) {
+      last_goal_color = data.charAt(0);
+      int commaIndex = data.indexOf(',', 2);
+      if (commaIndex > 0) {
+        last_blob_cx = data.substring(2, commaIndex).toFloat();
+        last_blob_w = data.substring(commaIndex + 1).toFloat();
+        last_cam_update = millis(); 
+      }
     }
+  }
 }
 
-/**
- * @brief Decodes a message from the serial port and updates the goal and ball positions.
- * 
- * @details Checks if the message is valid (19 characters long and contains "tt" or "ff" as the first three characters). If it is, it decodes the message and updates the goal and ball positions. If not, it sets the goal and ball positions to default values.
- * 
- * @param message The message to decode.
- */
-
-void CamC::Decode(String message){
-
-    if (!(message.substring(1,3) == "tt" || message.substring(1,3) == "ff"))
-    {
-        if (message.substring(1,3) == "tf"){
-            goal = true;
-            Goal.inSight = true; 
-        }
-        else if (message.substring(1,3) == "ft"){
-            goal = false;
-            Goal.inSight = false;
-        }
-        x = ((message.substring(3,7)).toInt());
-        y = ((message.substring(7,11)).toInt());
-        area = ((message.substring(11,15)).toInt())*25; // daten übertragung mit geminderter auflösung um große zahlen darzustellen
-        rest = ((message.substring(15,19)).toInt());
-        #ifdef Robo_w
-        x = x-40;
-        #endif
-        #ifdef Robo_s
-        x = x-10;
-        #endif
-    }
-    else { 
-        RGB.write(2,"R");
-        x = 0;
-        y = 0;
-        area = 0;
-        rest = 0;
-        Goal.inSight = false;
-    }
-    
-
-    Goal.Y = y;
-    Goal.X = x;
-    Goal.Area = area;
-    if(Goal.inSight==true){
-        if(Goal.Angle<0){Goal.lastdir = true;}
-        if(Goal.Angle >= 0){Goal.lastdir = false;}
-        Goal.Angle = ((x-140)/3.5)*-1;
-        //if(abs(Goal.Angle-BNO055.TiltZ) > 90){
-        //    Goal.Angle = 0;
-        //}
-    }
-    else{
-        Goal.Angle = 0;
-        //Serial.println("Goal no in sight");
-    }
+bool CamC::readCameraAbsolute(float &camX, float &camY) {
+  readSerialFromOpenMV();
+  
+  if (millis() - last_cam_update > 150 || last_blob_w < 5.0) {
+    return false; // Keine aktuellen/gültigen Daten
+  }
+  
+  float Z_cam = (GOAL_WIDTH_CM * FOCAL_LENGTH_PX) / last_blob_w;
+  float X_cam = ((last_blob_cx - CAM_CENTER_X) * Z_cam) / FOCAL_LENGTH_PX;
+  float fieldOffsetX, fieldOffsetY;
+  
+  if (last_goal_color == 'B') { 
+    fieldOffsetX = (X_cam * cos(BNO055.giveRad())) - (Z_cam * sin(BNO055.giveRad()));
+    fieldOffsetY = (X_cam * sin(BNO055.giveRad())) + (Z_cam * cos(BNO055.giveRad()));
+    camX = BLUE_GOAL_X - fieldOffsetX;
+    camY = BLUE_GOAL_Y - fieldOffsetY;
+    return true;
+  } 
+  else if (last_goal_color == 'Y') { 
+    float Z_cam_inv = -Z_cam;
+    float X_cam_inv = -X_cam;
+    fieldOffsetX = (X_cam_inv * cos(BNO055.giveRad())) - (Z_cam_inv * sin(BNO055.giveRad()));
+    fieldOffsetY = (X_cam_inv * sin(BNO055.giveRad())) + (Z_cam_inv * cos(BNO055.giveRad()));
+    camX = YELLOW_GOAL_X - fieldOffsetX;
+    camY = YELLOW_GOAL_Y - fieldOffsetY;
+    return true;
+  }
+  return false;
 }

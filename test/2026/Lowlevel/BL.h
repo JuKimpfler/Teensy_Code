@@ -21,23 +21,8 @@ class BLC {
 
         bool SinglePlayer = true; // true, wenn kein gültiger Peer-Frame empfangen wurde
 
-        // Zeigt die aktuelle Rolle per RGB-LED an.
         void showRolle();
-
-        // Nicht-blockierende Kommunikationslogik; muss jeden Loop-Zyklus aufgerufen werden.
-        // Empfängt und verarbeitet RX-Frames und sendet zyklisch den eigenen TX-Frame.
-        // Setzt Rolle="N" und SinglePlayer=true wenn seit >500 ms kein gültiger Frame kam.
         void doRolle();
-
-        // Sendet eine Debug-Nachricht mit "DBG:"-Prefix über UART_Pixy.
-        // Die ESP-Bridge erkennt den Prefix und leitet die Nachricht an den
-        // Debug-Monitor weiter, ohne sie an den Peer-Roboter zu senden.
-        // Hat keinen Effekt wenn Debug.debugEnabled == false.
-        void sendDebug(String msg);
-
-        // Konfiguriert das ESP-Modul für den Debug-Monitor-Betrieb.
-        // Nur im Setup/Config-Zustand aufrufen – niemals im Spiel-Loop.
-        void setDebugEnabled(bool enabled);
 };
 
 // Globale Instanz der Rollenklasse

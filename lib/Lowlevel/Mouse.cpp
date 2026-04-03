@@ -31,3 +31,11 @@ void MouseC::read(){
     movement = mouseData.isMotion;
 }
 
+float MouseC::giveVx(){
+    return deltaX;
+}
+
+float MouseC::giveVy(){
+    return deltaY;
+}
+

@@ -1,6 +1,6 @@
 #pragma once
 #include "Elementar.h"
-#include "pmw3389.h"
+#include "..\Extern\PMW3389\pmw3389.h"
 
 class MouseC{
     private:
@@ -19,6 +19,9 @@ class MouseC{
 
         void init();
         void read();
+        float giveVx();
+        float giveVy();
+
 };
 
 extern PMW3389 pmw; // SPI CS vom Moussensor kommt auf PixyTx

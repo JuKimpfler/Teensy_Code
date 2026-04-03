@@ -3,15 +3,14 @@
 
 class CamC{
     private:
-        void Decode(String message);
+        void readSerialFromOpenMV();
     public:
-        int x;
-        int y;
-        int area;
-        int rest;
-        bool goal; // true = gelb , false = blau                    
-        String message;
-        void read();
+        bool readCameraAbsolute(float &camX, float &camY);
+
+        float last_blob_cx = 160.0;
+        float last_blob_w = 0.0;
+        char last_goal_color = 'N'; 
+        unsigned long last_cam_update = 0;
 };
 
 extern CamC Cam;

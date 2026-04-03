@@ -1,7 +1,4 @@
 #include "BNO055.h"
-#include "RGB.h"
-#include "BNO055_beaver.h"
-#include "Debug.h"
 
 BNO055C BNO055;
 
@@ -20,16 +17,13 @@ void BNO055C::read(){
 }
 
 void BNO055C::Calibrate(){
-    ready2 = true;
     BNO_Cal = U.Circel(BNO_beaver.eulHeading());
 }
 
-void BNO055C::showCal(){
-    int mag = 0;
-    mag = BNO_beaver.calibStatus();
+float BNO055C::giveDeg(){
+    return TiltZ;
+}
 
-    if (mag==0){RGB.write(0,"R");}// LED AN
-    else if (mag==1){RGB.write(0,"O");}// LED AN
-    else if (mag==2){RGB.write(0,"Y");}// LED AN
-    else if (mag==3){RGB.write(0,"G");}// LED AN
+float BNO055C::giveRad(){
+    return TiltZ*DEG_TO_RAD;
 }

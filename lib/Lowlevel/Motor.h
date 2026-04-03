@@ -1,6 +1,5 @@
 #pragma once
-#include "enum.h"
-#include "Param.h"
+#include "Elementar.h"
 
 class MotorC
 {
