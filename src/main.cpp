@@ -1,6 +1,4 @@
-#include "Elementar.h"
 #include "System.h"
-#include "Lowlevel.h"
 
 void setup() {
     SPI.begin();
@@ -12,8 +10,15 @@ void setup() {
 
     pinMode(Start_Port,INPUT);
     pinMode(Kicker_Port, OUTPUT);
+
+    System.begin(0);
 }
 
 void loop() { 
-    
+    if(System.Start){
+        Game.Run();
+    }
+    else{
+        Game.Stop();
+    }
 }

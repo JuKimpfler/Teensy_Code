@@ -1,4 +1,4 @@
-#include "Kalman_filter.h"
+#include "PFU.h"
 
 bool readLineSensor(int index) { return (Line.line[index] == 1) ; } // true = Weiß
 
@@ -7,6 +7,8 @@ Kalmanfilter PFU; // PositionFilteringUnit
 void Kalmanfilter::begin(){
     unsigned long now = micros();
     last500Hz = now; last20Hz = now; last10Hz = now;
+    Mouse.init();
+    Line.init();    
 }
 
 void Kalmanfilter::updateOdometry(float dt) {
@@ -81,9 +83,9 @@ void Kalmanfilter::updateUltrasonic() {
 }
 
 void Kalmanfilter::Update() {
-  BNO055.read();
+  float camAbsX, camAbsY;
   Mouse.read();
-  Cam.readCameraAbsolute();
+  Cam.readCameraAbsolute(camAbsX, camAbsY);
   US.read();
 
   unsigned long currentMicros = micros();
@@ -101,7 +103,6 @@ void Kalmanfilter::Update() {
   if (currentMicros - last20Hz >= 50000) {
     last20Hz = currentMicros;
     
-    float camAbsX, camAbsY;
     if (Cam.readCameraAbsolute(camAbsX, camAbsY)) {
       // Plausibilität (nicht außerhalb des Feldes interpolieren)
       if(camAbsX > -10.0 && camAbsX < 192.0 && camAbsY > -10.0 && camAbsY < 253.0) {

@@ -1,5 +1,6 @@
 #pragma once
 #include "Elementar.h"
+#include "BotConnect.h"
 
 #include <vector>
 
@@ -21,7 +22,7 @@ class DebugC {
         void Plot_List(String names, String Values[], size_t count);
         void Plot_List(String names, uint16_t Values[], size_t count);
         // Step 3: Adds a list of name-value pairs to the debug output.
-        void Send(bool BLE = true); // Sendet die aktuelle mainliste per Serial.println oder – wenn BLE==false – über UART_Pixy
+        void Send(bool BLE = false); // Sendet die aktuelle mainliste per Serial.println oder – wenn BLE==false – über UART_Pixy
             // Step 4: Sends the current main list via Serial or UART_Pixy.
         
 };

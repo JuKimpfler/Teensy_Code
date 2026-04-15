@@ -10,4 +10,6 @@
 #include "wire.h"
 #include "SPI.h"
 #include "US.h"
+#include "IR.h"
+#include "RGB.h"
 #include "BotConnect.h"

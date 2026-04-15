@@ -11,6 +11,10 @@ class SystemC {
     public:
         void begin(int CIndex);
 
+        bool Start;
+        bool Button[4];
+        bool Switches[4];
+
         class UpdateC{
             private:
             public:

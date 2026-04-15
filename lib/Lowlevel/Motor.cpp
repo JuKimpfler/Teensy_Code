@@ -51,28 +51,14 @@ void MotorC::On(int Speed , int Motor){
             digitalWriteFast(VL_ExpanderB,1);
         }
         else if (Motor == HR_Motor){
-            #ifdef Robo_s
-                analogWrite(HR_Speed_Port,Speed);
-                digitalWriteFast(HR_ExpanderA,1);
-                digitalWriteFast(HR_ExpanderB,0);
-            #endif
-            #ifdef Robo_w
-                analogWrite(HR_Speed_Port,Speed);
-                digitalWriteFast(HR_ExpanderA,0);
-                digitalWriteFast(HR_ExpanderB,1);
-            #endif
+            analogWrite(HR_Speed_Port,Speed);
+            digitalWriteFast(HR_ExpanderA,0);
+            digitalWriteFast(HR_ExpanderB,1);
         }
         else if (Motor == HL_Motor){
-            #ifdef Robo_s
-                analogWrite(HL_Speed_Port,Speed);
-                digitalWriteFast(HL_ExpanderA,1);
-                digitalWriteFast(HL_ExpanderB,0);
-            #endif
-            #ifdef Robo_w
-                analogWrite(HL_Speed_Port,Speed);
-                digitalWriteFast(HL_ExpanderA,0);
-                digitalWriteFast(HL_ExpanderB,1);
-            #endif
+            analogWrite(HL_Speed_Port,Speed);
+            digitalWriteFast(HL_ExpanderA,0);
+            digitalWriteFast(HL_ExpanderB,1);
         }
     }
     else{
@@ -87,28 +73,14 @@ void MotorC::On(int Speed , int Motor){
             digitalWriteFast(VL_ExpanderB,0);
         }
         else if (Motor == HR_Motor){
-            #ifdef Robo_s
-                analogWrite(HR_Speed_Port,Speed);
-                digitalWriteFast(HR_ExpanderA,0);
-                digitalWriteFast(HR_ExpanderB,1);
-            #endif
-            #ifdef Robo_w
-                analogWrite(HR_Speed_Port,Speed);
-                digitalWriteFast(HR_ExpanderA,1);
-                digitalWriteFast(HR_ExpanderB,0);
-            #endif
+            analogWrite(HR_Speed_Port,Speed);
+            digitalWriteFast(HR_ExpanderA,1);
+            digitalWriteFast(HR_ExpanderB,0);
         }
         else if (Motor == HL_Motor){
-            #ifdef Robo_s
-                analogWrite(HL_Speed_Port,Speed);
-                digitalWriteFast(HL_ExpanderA,0);
-                digitalWriteFast(HL_ExpanderB,1);
-            #endif
-            #ifdef Robo_w
-                analogWrite(HL_Speed_Port,Speed);
-                digitalWriteFast(HL_ExpanderA,1);
-                digitalWriteFast(HL_ExpanderB,0);
-            #endif
+            analogWrite(HL_Speed_Port,Speed);
+            digitalWriteFast(HL_ExpanderA,1);
+            digitalWriteFast(HL_ExpanderB,0);
         }
     }
 }

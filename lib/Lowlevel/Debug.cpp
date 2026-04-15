@@ -126,28 +126,11 @@ void DebugC::Plot_List(String name, String Values[], size_t count) {
         mainList += ", ";
 }
 
-/**
- * Sends the debug output via Serial or UART_Pixy based on the BLE flag.
- * @param BLE true to send via Serial, false to send via UART_Pixy.
- * This function is used to send the debug output to the console.
- * It uses the BLE flag to determine whether to send the output via Serial or UART_Pixy.
- * The debug output is sent in the format "<Name1>: <Value1>, <Name2>: <Value2>, ..."
- * The function should be called once per debug output sequence.
- * Example:
- * Debug.Plot("Name1", 1.0);
- * Debug.Plot("Name2", 2.0);
- * Debug.Send();
- */
 void DebugC::Send(bool BLE) {
-    if (BLE) {
+    if (!BLE) {
         Serial.println(mainList);
     } else {
-        if(!debugEnabled) return;
-        // Prefix "DBG:" wird von der ESP-Bridge erkannt und als Debug-Paket
-        // an den Debug-Monitor weitergeleitet (nicht an den Peer-Roboter).
-        UART_Pixy.print("DBG:");
-        UART_Pixy.print(mainList);
-        UART_Pixy.print("\r\n");
+        //UART_Pixy.println(mainList);
     }
 }
 
