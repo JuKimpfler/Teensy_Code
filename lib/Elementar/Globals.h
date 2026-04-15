@@ -5,4 +5,5 @@
 #define Glob
 inline int Cycletime = 0;
 inline int MainSpeed = 30;
+inline bool Color_ID = false;
 #endif

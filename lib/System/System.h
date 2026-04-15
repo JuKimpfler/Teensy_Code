@@ -9,7 +9,7 @@ class SystemC {
     private:
                   
     public:
-        void begin(int CIndex);
+        void begin(bool CIndex);
 
         bool Start=false;
         bool Button[4];

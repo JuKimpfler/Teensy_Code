@@ -2,7 +2,23 @@
 
 SystemC System;
 
-void SystemC::begin(int CIndex){
+void setColorID(bool ID){
+    if(ID == true){ // weis
+        US_Back = US_Back_w;
+        US_Left = US_Left_w;
+        US_Right = US_Right_w;
+        US_Front = US_Front_w;
+    }
+    else{ // schwarz
+        US_Back = US_Back_s;
+        US_Left = US_Left_s;
+        US_Right = US_Right_s;
+        US_Front = US_Front_s;
+    }
+}
+
+void SystemC::begin(bool CIndex){
+    setColorID(CIndex);
     PFU.begin();
     Motor.init();
     BNO055.init();
@@ -38,4 +54,6 @@ void SystemC::UpdateC::Sensors(){
 void SystemC::UpdateC::Calculations(){
     PFU.Update();
     PID.Calculate();
+    BallCalc.CalcAngle();
+    BallCalc.CalcDist();
 }

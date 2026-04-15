@@ -26,19 +26,28 @@ enum Motor_Port { // Portbelegung Direct an Teensy
     HL_ExpanderB = 3, //+
 };
 
-enum US_Ports {
-    US_Left =  0x71,
-    US_Right = 0x72,
-    US_Back = 0x70,
-    US_Vorn = 0x73,
-};
+
+inline int    US_Left_w =  0x71;
+inline int    US_Right_w = 0x72;
+inline int    US_Back_w = 0x70;
+inline int    US_Front_w = 0x73;
+
+inline int    US_Left_s =  0x71;
+inline int    US_Right_s = 0x72;
+inline int    US_Back_s = 0x70;
+inline int    US_Front_s = 0x73;
+
+inline int    US_Left;
+inline int    US_Right;
+inline int    US_Back;
+inline int    US_Front;
+
 
 enum Pinout {
     LDR_Port = 23,
     Start_Port = 10,
     RCJ_Port = 25,
-    BT_State_Port = 31,
-    Schuss_Port = 30,
+    Mouse_Port = 24,
     Kicker_Port = 18
 };
 
@@ -62,7 +71,7 @@ enum I2C_Port {
 };
 
 enum I2C_Pin {
-    ITF_Main_LED = 7,
+    ITF_Main_CID = 7,
     ITF_Main_SW0 = 4,
     ITF_Main_SW1 = 5,
     ITF_Main_SW2 = 6,

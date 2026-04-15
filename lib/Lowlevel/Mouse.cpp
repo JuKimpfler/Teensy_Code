@@ -2,13 +2,12 @@
 #include "BNO055.h"
 
 MouseC Mouse;
-PMW3389 pmw = PMW3389(&SPI, 24); // SPI CS vom Moussensor kommt auf PixyTx
+PMW3389 pmw = PMW3389(&SPI, Mouse_Port); // SPI CS vom Moussensor kommt auf PixyTx
 
 void MouseC::init(){
     delay(1000);
     pmw.begin();
     delay(50);
-    //pmwId = pmw.getProductID();
 }
 
 void MouseC::read(){      

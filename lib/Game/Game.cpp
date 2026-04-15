@@ -32,5 +32,9 @@ void GameC::Run(){
     }
 }
 
+void GameC::Stop(){
+    Robot.Stop();
+}
+
 
 

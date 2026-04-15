@@ -1,7 +1,7 @@
 #include "PowerPump.h"
 
 PowerPumpC PowerPump;
-
+/*
 void PowerPumpC::init() {
     pinMode(Schuss_Port, OUTPUT);
     digitalWrite(Schuss_Port, LOW);
@@ -21,4 +21,4 @@ bool PowerPumpC::shoot() {
     digitalWrite(Schuss_Port, LOW);
     lastShootTime = millis();
     return true;
-}
+}*/

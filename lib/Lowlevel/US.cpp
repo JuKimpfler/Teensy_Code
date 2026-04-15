@@ -51,22 +51,22 @@ void USC::read(){
         Wire1.write(byte(0x51));    
         Wire1.endTransmission();  
 
-        Wire1.beginTransmission(US_Vorn);
+        Wire1.beginTransmission(US_Front);
         Wire1.write(byte(0x02));  
         Wire1.endTransmission();   
-        Wire1.requestFrom(US_Vorn, 2);   
+        Wire1.requestFrom(US_Front, 2);   
         if (2 <= Wire1.available()) { 
         reading = Wire1.read(); 
         reading = reading << 8;    
         reading |= Wire1.read(); 
         Distance[0]=reading;}
-        Wire1.beginTransmission(US_Vorn); 
+        Wire1.beginTransmission(US_Front); 
         Wire1.write(byte(0x00));  
         Wire1.write(byte(0x51));    
         Wire1.endTransmission(); 
 
         Wire1.setClock(I2C_SPEED);
-        US_Timer1 = 0;
+        US_Timer = 0;
     }
 }
 
