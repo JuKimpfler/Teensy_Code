@@ -11,7 +11,7 @@ class SystemC {
     public:
         void begin(int CIndex);
 
-        bool Start;
+        bool Start=false;
         bool Button[4];
         bool Switches[4];
 

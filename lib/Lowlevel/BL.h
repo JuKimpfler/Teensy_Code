@@ -14,7 +14,7 @@ class BLC {
 
     private:
         // Dekodiert eine mindestens 16 Zeichen lange Nutzlast eines RX-Frames.
-        void decode(const char* payload);
+        void decode(String message1);
 
     public:
         String Rolle = "N"; // Aktuelle Rolle: "A" (Angreifer), "D" (Verteidiger), "N" (Neutral)

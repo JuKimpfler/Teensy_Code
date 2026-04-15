@@ -24,6 +24,8 @@ void SystemC::UpdateC::Interface(){
     System.Switches[0] = Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW0);
     System.Switches[1] = Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW1);
     System.Switches[2] = Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW2);
+
+    System.Start = digitalRead(Start_Port);
 }
 
 void SystemC::UpdateC::Sensors(){

@@ -16,9 +16,9 @@ void setup() {
 
 void loop() { 
     if(System.Start){
-        Game.Run();
+        //Game.Run();
     }
     else{
-        Game.Stop();
+        //Game.Stop();
     }
 }
