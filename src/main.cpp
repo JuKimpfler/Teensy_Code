@@ -60,7 +60,7 @@ void loop() {
     }
     else{
         Game.Stop();
-        BC.sendTelemetryFloat("test",0.321);
+        //BC.sendTelemetryFloat("test",0.321);
     }
 
     if(System.Button[0]){BNO055.Calibrate();}
