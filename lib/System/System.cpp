@@ -2,6 +2,10 @@
 
 SystemC System;
 
+elapsedMillis Interface_Timer;
+elapsedMillis Schuss_Timer;
+elapsedMicros Cycle_Timer;
+
 void setColorID(bool ID){
     if(ID == true){ // weis
         US_Back = US_Back_w;
@@ -46,6 +50,7 @@ void SystemC::UpdateC::Interface(){
 
 void SystemC::UpdateC::Sensors(){
     BC.process();
+    BL.doRolle();
     IR.read();
     BNO055.read();
     Line.read_Fast();

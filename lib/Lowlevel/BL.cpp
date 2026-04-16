@@ -47,9 +47,9 @@ void BLC::decode(String message1){
     if(message1.length() < 16) return;
     int angle = message1.substring(1,4).toInt();
     int dist = message1.substring(5,8).toInt();
-    bool info1 = message1.substring(9,10).toInt();
-    bool info2 = message1.substring(11,12).toInt();
-    int extra = message1.substring(13).toInt();
+    message1.substring(9,10).toInt();
+    message1.substring(11,12).toInt();
+    message1.substring(13).toInt();
 
     if((angle == 999 && dist == 999)||(BL_Timer_RX>3000)){SinglePlayer = true;}
     else{

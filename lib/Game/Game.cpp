@@ -4,31 +4,14 @@ GameC Game;
 elapsedMillis Line_Timer;
 
 void GameC::Run(){
-    if ((Line.Summe > 0) )  {        
-        dead_diff = dead_zone-LineCalc.DriveAngle;
-        U.Circel(dead_diff);
-        if(U.Ran(abs(dead_diff),135,225)){
-            Robot.Drive(((LineCalc.DriveAngle-180)*-1),0,100);
-        }
-        else{
-            Robot.Drive(LineCalc.DriveAngle,0,100);
-        }
+    if(BL.Rolle == "A"){
+        // Attaker
     }
-    else if ((Line.VW_Summe > 0))  {
-        dead_zone = LineCalc.DriveAngle;
-        U.Circel(dead_zone);
-        Robot.Drive(LineCalc.DriveAngle,0,100);
+    else if(BL.Rolle == "D"){
+        // Defender 
     }
-    else {
-        /*if(BL.Rolle == "A"){
-            AttackerTactics.step();
-        }
-        else if(BL.Rolle == "D"){
-            DefenderTactics.step();
-        }
-        else if(BL.Rolle == "N"){
-            Taktics.step();
-        }*/
+    else if(BL.Rolle == "N"){
+        // Neutral Game
     }
 }
 
@@ -41,7 +24,7 @@ bool GameC::LineInterrupt(){
 
         dead_diff = dead_zone-LineCalc.DriveAngle;
         U.Circel(dead_diff);
-        
+
         if(U.Ran(abs(dead_diff),135,225)){
             Robot.Drive(((LineCalc.DriveAngle-180)*-1),0,100);
         }

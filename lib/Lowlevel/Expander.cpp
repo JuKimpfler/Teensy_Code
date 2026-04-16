@@ -21,8 +21,6 @@ void ExpanderC::I2CC::read(int Add){
     byte last = Wire1.read();     // read Register
     Wire1.endTransmission(); // end of transmittion
 
-    int rest=0;
-
     if(Add == I2C_ITF_Main){
         Switch[0] = (last & 1);
         Switch[1] = (last & (1 << 1));
@@ -39,6 +37,7 @@ bool ExpanderC::I2CC::give(int Add , int Port){
     if (Add == I2C_ITF_Main){
         return Switch[Port];
     }
+    return false;
 }
 
 

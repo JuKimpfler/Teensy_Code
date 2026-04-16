@@ -2,7 +2,6 @@
 #include "System.h"
 #include "ESC.h"
 
-
 void setup() {
     Wire1.begin();
     Wire1.setClock(I2C_SPEED);
@@ -10,7 +9,9 @@ void setup() {
     Expander.I2C.init(I2C_ITF_Main,Input_Mode,All_Off);
     delay(1000);
     Expander.I2C.read(I2C_ITF_Main);
-    Color_ID = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_CID);
+    Color_ID = Expander.I2C.give(I2C_ITF_Main,ITF_Main_CID);
+    while(!System.Button[2]){System.Update.Interface();Serial.println("waiting on power up");}
+    Serial.println(Color_ID);
 
     SPI.begin();
     Serial.begin(115200);
@@ -43,23 +44,23 @@ void setup() {
 }
 
 void loop() { 
+    Cycle_Timer = 0;
+
     if(System.Start){
         if(Game.LineInterrupt()){return;}
-
-        
-        
         int drive = LUT.get_DriveAngle(Ball.Angle,Ball.Distance*0.9);
         Robot.Drive(drive,0,MainSpeed);
 
-        Debug.Start();
+        /*Debug.Start();
         Debug.Plot("In",Ball.Angle);
         Debug.Plot("Dist",Ball.Distance);
         Debug.Plot("Out",drive);
         Debug.Send();
-        delay(20);
+        delay(20);*/
     }
     else{
         Game.Stop();
+        BC.sendTelemetryFloat("test",0.321);
     }
 
     if(System.Button[0]){BNO055.Calibrate();}
@@ -67,4 +68,7 @@ void loop() {
     System.Update.Calculations();
     System.Update.Sensors();
     System.Update.Interface();
+
+    Cycletime=Cycle_Timer;
+    //Serial.println("Cycle: "+String(Cycletime));
 }
