@@ -1,4 +1,7 @@
 #include "System.h"
+#include "System.h"
+#include "ESC.h"
+
 
 void setup() {
     Wire1.begin();
@@ -19,8 +22,25 @@ void setup() {
     pinMode(Mouse_Port,INPUT);
     pinMode(Kicker_Port, OUTPUT);
     pinMode(RCJ_Port,INPUT);
-
     System.begin(Color_ID);
+
+    RGB.write(0,"Off");
+    RGB.write(1,"Off");
+    RGB.write(2,"Off");
+
+
+    RGB.write(1,"R");  
+    Serial.println("push button 3");
+    RGB.Apply();
+    ESC.init(33);
+    delay(1000);
+    while(!System.Button[2]){System.Update.Interface();Serial.println("waiting on power up");}
+    delay(100);
+    ESC.init_Power();
+    ESC.set(100);
+    RGB.write(1,"G");  
+    Serial.println("ON!");
+    RGB.Apply();
 }
 
 void loop() { 

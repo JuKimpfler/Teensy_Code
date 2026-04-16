@@ -48,7 +48,8 @@ enum Pinout {
     Start_Port = 10,
     RCJ_Port = 25,
     Mouse_Port = 24,
-    Kicker_Port = 18
+    Kicker_Port = 18,
+    Drib_Port = 33,
 };
 
 enum I2C_Befehle {
