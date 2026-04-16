@@ -28,7 +28,6 @@ void setup() {
     RGB.write(1,"Off");
     RGB.write(2,"Off");
 
-
     RGB.write(1,"R");  
     Serial.println("push button 3");
     RGB.Apply();
@@ -45,20 +44,10 @@ void setup() {
 
 void loop() { 
     if(System.Start){
-        if(System.Button[0]){
-            Ball.Angle = 20;
-        }
-        else{
-            Ball.Angle = -170;
-        }
-        if(System.Button[1]){
-            Ball.Distance = 2;
-        }
-        else{
-            Ball.Distance = 180;
-        }
+        if(Game.LineInterrupt()){return;}
 
-        //Game.Run();
+        
+        
         int drive = LUT.get_DriveAngle(Ball.Angle,Ball.Distance*0.9);
         Robot.Drive(drive,0,MainSpeed);
 
@@ -72,6 +61,9 @@ void loop() {
     else{
         Game.Stop();
     }
+
+    if(System.Button[0]){BNO055.Calibrate();}
+
     System.Update.Calculations();
     System.Update.Sensors();
     System.Update.Interface();

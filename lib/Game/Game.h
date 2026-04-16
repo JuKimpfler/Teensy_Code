@@ -10,6 +10,7 @@ class GameC{
     public:
         void Run();
         void Stop();
+        bool LineInterrupt();
         float dead_zone;
         float dead_diff;
         bool outside = false;
