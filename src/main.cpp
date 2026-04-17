@@ -1,5 +1,4 @@
 #include "System.h"
-#include "System.h"
 #include "ESC.h"
 
 void setup() {
@@ -35,7 +34,7 @@ void setup() {
     while(!System.Button[2]){System.Update.Interface();Serial.println("waiting on power up");}
     delay(100);
     ESC.init_Power();
-    ESC.set(40);
+    ESC.set(12);
     RGB.write(1,"G");  
     Serial.println("ON!");
     RGB.Apply();*/
@@ -46,23 +45,29 @@ void loop() {
     MainSpeed = 40;
 
     if(System.Start){
-        //if(Game.LineInterrupt()){return;}
-        int drive = LUT.get_DriveAngle(Ball.Angle,Ball.Distance*0.9)*-1;
-        Robot.Drive(drive,0,MainSpeed);
-
+        if(!Game.LineInterrupt()){
+            int drive = U.Circel(((LUT.get_DriveAngle(U.Circel(Ball.Angle),Ball.Distance))));
+            Robot.Drive(drive,0,20);
+        }
         Debug.Start();
-        Debug.Plot("In",Ball.Angle);
-        Debug.Plot("Dist",Ball.Distance);
-        Debug.Plot("Out",drive);
+        Debug.Plot_List("In",Line.Values_raw,32);
+        Debug.Plot_List("In",Line.Values_raw_VW,8);
         Debug.Send();
         delay(20);
     } 
     else{
         Game.Stop();
         //BC.sendTelemetryFloat("test",0.321);
-    }
+    
 
-    if(System.Button[0]){BNO055.Calibrate();}
+        if(System.Button[0]){BNO055.Calibrate();} // BNO055 set to 0
+
+        if (System.Button[1]){Robot.Kicker.On();} // Kicker test
+
+        if (System.Button[2]){IR.Calib_Dist();} 
+        else{}
+
+    }
 
     System.Update.Calculations();
     System.Update.Sensors();

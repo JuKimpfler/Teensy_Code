@@ -389,15 +389,15 @@ float LUTC::robot_aktion_zu_winkel(uint8_t aktion) {
 }
 
 float LUTC::get_DriveAngle(int winkel, int abstand){
-    abstand = abstand*0.9;
+    abstand = abstand+10;
     uint8_t aktion = robot_lut_lookup(winkel, abstand);
     float   grad   = robot_aktion_zu_winkel(aktion);
 
     // 4. Motor-Steuerung ausführen
-    if ((abstand <= 5) && (abs(winkel) >= 80)) {
-        return U.Circel(winkel+180);
-    } 
-    else{
-        return U.Circel(grad);
-    }
+    //if ((abstand <= 5) && (abs(winkel) >= 80)) {
+    //    return U.Circel(winkel+180);
+    //} 
+    //else{
+        return U.Circel(grad*-1);
+    //}
 }
