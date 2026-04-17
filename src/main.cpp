@@ -10,8 +10,6 @@ void setup() {
     delay(1000);
     Expander.I2C.read(I2C_ITF_Main);
     Color_ID = Expander.I2C.give(I2C_ITF_Main,ITF_Main_CID);
-    while(!System.Button[2]){System.Update.Interface();Serial.println("waiting on power up");}
-    Serial.println(Color_ID);
 
     SPI.begin();
     Serial.begin(115200);
@@ -29,7 +27,7 @@ void setup() {
     RGB.write(1,"Off");
     RGB.write(2,"Off");
 
-    RGB.write(1,"R");  
+    /*RGB.write(1,"R");  
     Serial.println("push button 3");
     RGB.Apply();
     ESC.init(33);
@@ -37,26 +35,27 @@ void setup() {
     while(!System.Button[2]){System.Update.Interface();Serial.println("waiting on power up");}
     delay(100);
     ESC.init_Power();
-    ESC.set(100);
+    ESC.set(40);
     RGB.write(1,"G");  
     Serial.println("ON!");
-    RGB.Apply();
+    RGB.Apply();*/
 }
 
 void loop() { 
     Cycle_Timer = 0;
+    MainSpeed = 40;
 
     if(System.Start){
-        if(Game.LineInterrupt()){return;}
-        int drive = LUT.get_DriveAngle(Ball.Angle,Ball.Distance*0.9);
+        //if(Game.LineInterrupt()){return;}
+        int drive = LUT.get_DriveAngle(Ball.Angle,Ball.Distance*0.9)*-1;
         Robot.Drive(drive,0,MainSpeed);
 
-        /*Debug.Start();
+        Debug.Start();
         Debug.Plot("In",Ball.Angle);
         Debug.Plot("Dist",Ball.Distance);
         Debug.Plot("Out",drive);
         Debug.Send();
-        delay(20);*/
+        delay(20);
     }
     else{
         Game.Stop();
