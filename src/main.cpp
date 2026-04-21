@@ -49,15 +49,18 @@ void loop() {
         //    int drive = U.Circel(((LUT.get_DriveAngle(U.Circel(Ball.Angle),Ball.Distance))));
         //    Robot.Drive(drive,0,20);
         //}
-        Debug.Start();
-        Debug.Plot("mx",Mouse.xPos);
-        Debug.Plot("my",Mouse.yPos);
-        Debug.Plot("px",PFU.giveX());
-        Debug.Plot("py",PFU.giveY());
-        Debug.Plot("l",US.Distance[0]);
-        Debug.Plot("h",US.Distance[1]);
-        Debug.Plot("r",US.Distance[2]);
-        Debug.Send();
+        //Debug.Start();
+        //Debug.Plot("mx",Mouse.xPos);
+        //Debug.Plot("my",Mouse.yPos);
+        //Debug.Plot("px",PFU.giveX());
+        //Debug.Plot("py",PFU.giveY());
+        Serial.print(PFU.giveX());
+        Serial.print(",");
+        Serial.println(PFU.giveY());
+        //Debug.Plot("l",US.Distance[0]);
+        //Debug.Plot("h",US.Distance[1]);
+        //Debug.Plot("r",US.Distance[2]);
+        //Debug.Send();
         delay(20);
         
         Game.Stop();
