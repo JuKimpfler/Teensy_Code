@@ -17,7 +17,7 @@ void USC::read(){
         reading = Wire1.read(); 
         reading = reading << 8;    
         reading |= Wire1.read(); 
-        Distance[0]=reading;}
+        Distance[1]=reading;}
         Wire1.beginTransmission(US_Left); 
         Wire1.write(byte(0x00));      
         Wire1.write(byte(0x51));  
@@ -31,7 +31,7 @@ void USC::read(){
         reading = Wire1.read(); 
         reading = reading << 8;    
         reading |= Wire1.read(); 
-        Distance[1]=reading;}
+        Distance[0]=reading;}
         Wire1.beginTransmission(US_Back); 
         Wire1.write(byte(0x00));      
         Wire1.write(byte(0x51));  

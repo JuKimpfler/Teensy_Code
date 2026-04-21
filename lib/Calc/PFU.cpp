@@ -8,7 +8,7 @@ void Kalmanfilter::begin(){
     unsigned long now = micros();
     last500Hz = now; last20Hz = now; last10Hz = now;
     Mouse.init();
-    Line.init();    
+    //Line.init();    
     //US.init();
 }
 
@@ -96,8 +96,8 @@ void Kalmanfilter::Update() {
     float dt = (currentMicros - last500Hz) / 1000000.0f; 
     last500Hz = currentMicros;
     
-    updateOdometry(dt); 
-    checkLineSensors(); 
+    //updateOdometry(dt); 
+    //checkLineSensors(); 
   }
 
   /*// --- 20 Hz TASK (Kamera) ---
@@ -113,7 +113,11 @@ void Kalmanfilter::Update() {
     }
   }*/
 
-  updateUltrasonic();
+  // --- 10 Hz TASK (Ultraschall) ---
+  if (currentMicros - last10Hz >= 10000) {
+    last10Hz = currentMicros;
+    updateUltrasonic();
+  }
 
   X=posX;
   Y=posY;
