@@ -24,7 +24,7 @@ void MouseC::read(){
     }
 
     xPos = xPos + deltaX ;//* cos(BNO055.TiltZ*DEG_TO_RAD) - deltaY * sin(BNO055.TiltZ*DEG_TO_RAD);
-    yPos = yPos + deltaX ;//* sin(BNO055.TiltZ*DEG_TO_RAD) + deltaY * cos(BNO055.TiltZ*DEG_TO_RAD);
+    yPos = yPos + deltaY ;//* sin(BNO055.TiltZ*DEG_TO_RAD) + deltaY * cos(BNO055.TiltZ*DEG_TO_RAD);
 
     lift = mouseData.isOnSurface;
     movement = mouseData.isMotion;

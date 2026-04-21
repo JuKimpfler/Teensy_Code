@@ -45,15 +45,22 @@ void loop() {
     MainSpeed = 40;
 
     if(System.Start){
-        if(!Game.LineInterrupt()){
-            int drive = U.Circel(((LUT.get_DriveAngle(U.Circel(Ball.Angle),Ball.Distance))));
-            Robot.Drive(drive,0,20);
-        }
+        //if(!Game.LineInterrupt()){
+        //    int drive = U.Circel(((LUT.get_DriveAngle(U.Circel(Ball.Angle),Ball.Distance))));
+        //    Robot.Drive(drive,0,20);
+        //}
         Debug.Start();
-        Debug.Plot_List("In",Line.Values_raw,32);
-        Debug.Plot_List("In",Line.Values_raw_VW,8);
+        Debug.Plot("mx",Mouse.xPos);
+        Debug.Plot("my",Mouse.yPos);
+        Debug.Plot("px",PFU.giveX());
+        Debug.Plot("py",PFU.giveY());
+        Debug.Plot("l",US.Distance[0]);
+        Debug.Plot("h",US.Distance[1]);
+        Debug.Plot("r",US.Distance[2]);
         Debug.Send();
         delay(20);
+        
+        Game.Stop();
     } 
     else{
         Game.Stop();

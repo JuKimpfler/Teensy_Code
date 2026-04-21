@@ -11,19 +11,18 @@ void setColorID(bool ID){
         US_Back = US_Back_w;
         US_Left = US_Left_w;
         US_Right = US_Right_w;
-        US_Front = US_Front_w;
     }
     else{ // schwarz
         US_Back = US_Back_s;
         US_Left = US_Left_s;
         US_Right = US_Right_s;
-        US_Front = US_Front_s;
     }
 }
 
 void SystemC::begin(bool CIndex){
     setColorID(CIndex);
     PFU.begin();
+    Mouse.init();
     Motor.init();
     BNO055.init();
     BC.begin(UART_Pixy);
@@ -44,16 +43,16 @@ void SystemC::UpdateC::Interface(){
     System.Switches[0] = Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW0);
     System.Switches[1] = Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW1);
     System.Switches[2] = Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW2);
-
-    System.Start = digitalRead(Start_Port);
 }
 
 void SystemC::UpdateC::Sensors(){
+    System.Start = digitalRead(Start_Port);
     BC.process();
     BL.doRolle();
     IR.read();
     BNO055.read();
     Line.read_Fast();
+    US.read();
 }
 
 void SystemC::UpdateC::Calculations(){

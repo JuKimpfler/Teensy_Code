@@ -30,18 +30,14 @@ enum Motor_Port { // Portbelegung Direct an Teensy
 inline int    US_Left_w =  0x71;
 inline int    US_Right_w = 0x72;
 inline int    US_Back_w = 0x70;
-inline int    US_Front_w = 0x73;
 
 inline int    US_Left_s =  0x71;
 inline int    US_Right_s = 0x72;
 inline int    US_Back_s = 0x70;
-inline int    US_Front_s = 0x73;
 
 inline int    US_Left;
 inline int    US_Right;
 inline int    US_Back;
-inline int    US_Front;
-
 
 enum Pinout {
     LDR_Port = 23,

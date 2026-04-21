@@ -9,6 +9,7 @@ void Kalmanfilter::begin(){
     last500Hz = now; last20Hz = now; last10Hz = now;
     Mouse.init();
     Line.init();    
+    //US.init();
 }
 
 void Kalmanfilter::updateOdometry(float dt) {
@@ -61,7 +62,7 @@ void Kalmanfilter::updateUltrasonic() {
   if (deviationDeg <= 15.0) {
     float deviationRad = deviationDeg * (M_PI / 180.0);
     
-    for (int sensorDir = 0; sensorDir < 4; sensorDir++) {
+    for (int sensorDir = 0; sensorDir < 3; sensorDir++) {
       float dist = US.giveNR(sensorDir);
       
       if (dist > 5.0 && dist < 200.0) { 
@@ -85,7 +86,7 @@ void Kalmanfilter::updateUltrasonic() {
 void Kalmanfilter::Update() {
   float camAbsX, camAbsY;
   Mouse.read();
-  Cam.readCameraAbsolute(camAbsX, camAbsY);
+  //Cam.readCameraAbsolute(camAbsX, camAbsY);
   US.read();
 
   unsigned long currentMicros = micros();
@@ -99,7 +100,7 @@ void Kalmanfilter::Update() {
     checkLineSensors(); 
   }
 
-  // --- 20 Hz TASK (Kamera) ---
+  /*// --- 20 Hz TASK (Kamera) ---
   if (currentMicros - last20Hz >= 50000) {
     last20Hz = currentMicros;
     
@@ -110,13 +111,9 @@ void Kalmanfilter::Update() {
         posY = posY * (1.0 - K_CAM) + (camAbsY * K_CAM);
       }
     }
-  }
+  }*/
 
-  // --- 10 Hz TASK (Ultraschall) ---
-  if (currentMicros - last10Hz >= 100000) {
-    last10Hz = currentMicros;
-    updateUltrasonic();
-  }
+  updateUltrasonic();
 
   X=posX;
   Y=posY;
