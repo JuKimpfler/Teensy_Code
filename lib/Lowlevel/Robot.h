@@ -18,10 +18,12 @@ public:
             void On(int Cycle = 400); // start pulse cycling
             void Off(); // stop cycling
             void Update(); // internal timer handling
+            void Update_End();
         private:
             bool active = false;
             bool onceActive = false;
             int cyclet = 0;
+            bool set=false;
     };
     KickerC Kicker;
 

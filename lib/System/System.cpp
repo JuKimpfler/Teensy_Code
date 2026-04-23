@@ -33,6 +33,7 @@ void SystemC::begin(bool CIndex){
 }
 
 void SystemC::UpdateC::Interface(){
+    RGB.Apply();
     Expander.I2C.read(I2C_ITF_Main);
 
     System.Button[0] = !Expander.I2C.give(I2C_ITF_Main,ITF_Main_BT0);
@@ -53,6 +54,7 @@ void SystemC::UpdateC::Sensors(){
     BNO055.read();
     Line.read_Fast();
     US.read();
+    Robot.Kicker.Update();
 }
 
 void SystemC::UpdateC::Calculations(){

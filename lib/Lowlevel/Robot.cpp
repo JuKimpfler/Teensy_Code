@@ -1,4 +1,5 @@
 #include "Robot.h"
+#include "RGB.h"
 RobotC Robot;
 
 elapsedMillis Kicker_Timer;
@@ -102,6 +103,14 @@ void RobotC::KickerC::Off(){
     onceActive = false;
 }
 
+
+void RobotC::KickerC::Update_End(){
+    if(set==false){
+        active=false;
+    }
+    set=false;
+}
+
 void RobotC::KickerC::Update(){
     // one-shot pulse handling
     if(onceActive){
@@ -132,6 +141,7 @@ void RobotC::KickerC::On(int Cycle = 400){
     cyclet = Cycle;
     active = true;
     onceActive = false;
+    set = true;
 }
 
 void RobotC::KickerC::Once(){

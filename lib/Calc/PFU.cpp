@@ -85,7 +85,7 @@ void Kalmanfilter::updateUltrasonic() {
 
 void Kalmanfilter::Update() {
   float camAbsX, camAbsY;
-  Mouse.read();
+  //Mouse.read();
   //Cam.readCameraAbsolute(camAbsX, camAbsY);
   US.read();
 

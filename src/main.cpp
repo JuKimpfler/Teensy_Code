@@ -26,7 +26,7 @@ void setup() {
     RGB.write(1,"Off");
     RGB.write(2,"Off");
 
-    /*RGB.write(1,"R");  
+    RGB.write(1,"R");  
     Serial.println("push button 3");
     RGB.Apply();
     ESC.init(33);
@@ -34,10 +34,10 @@ void setup() {
     while(!System.Button[2]){System.Update.Interface();Serial.println("waiting on power up");}
     delay(100);
     ESC.init_Power();
-    ESC.set(12);
+    ESC.set(15);
     RGB.write(1,"G");  
     Serial.println("ON!");
-    RGB.Apply();*/
+    RGB.Apply();
 }
 
 void loop() { 
@@ -83,6 +83,7 @@ void loop() {
     System.Update.Sensors();
     System.Update.Interface();
 
+    Robot.Kicker.Update_End();
     Cycletime=Cycle_Timer;
     //Serial.println("Cycle: "+String(Cycletime));
 }
