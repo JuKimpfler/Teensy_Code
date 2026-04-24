@@ -25,7 +25,7 @@
  *   → Nur einen Sensor anschliessen und changeI2CAddress() nutzen
  *   → Siehe Funktion reprogramAddress() unten
  */
-#include "Arduino.h"
+
 #include <Wire.h>
 #include "SRF08.h"
 
@@ -36,8 +36,8 @@
 //   → SRF08_RANGE_2M:  ~14ms Zykluszeit pro Sensor
 //   → Gain MID (199):  gut für harte Plastikwände, kein übermäßiges Gain
 //
-SRF08Sensor sensorVorne (SRF08_ADDR(0x70), SRF08_RANGE_2M, SRF08_GAIN_MID);
-SRF08Sensor sensorHinten(SRF08_ADDR(0x71), SRF08_RANGE_2M, SRF08_GAIN_MID);
+SRF08Sensor sensorVorne (SRF08_ADDR(0xE2), SRF08_RANGE_2M, SRF08_GAIN_MID);
+SRF08Sensor sensorHinten(SRF08_ADDR(0xE6), SRF08_RANGE_2M, SRF08_GAIN_MID);
 
 SRF08Manager sonar;
 
@@ -121,11 +121,11 @@ void reprogramAddress() {
     }
 }
 
+
 // ── Setup ─────────────────────────────────────────────────────────────────────
 void setup() {
-
     Serial.begin(115200);
-    while (!Serial && millis() < 9000) {}  // Warte auf Serial (USB)
+    while (!Serial && millis() < 3000) {}  // Warte auf Serial (USB)
 
     Serial.println(F("=== SRF08 RoboCup Demo ==="));
 
