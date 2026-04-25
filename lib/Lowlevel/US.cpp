@@ -1,73 +1,50 @@
 #include "US.h"
 #include "RGB.h"
+#include "SRF08.h"
 
 elapsedMillis US_Timer ;
 USC US;
 
+SRF08Sensor sensorH(SRF08_ADDR(0xE4), SRF08_RANGE_3M, SRF08_GAIN_MID);
+//SRF08Sensor sensorV(SRF08_ADDR(US_Front), SRF08_RANGE_2M, SRF08_GAIN_MID);
+SRF08Sensor sensorL(SRF08_ADDR(0xE0), SRF08_RANGE_3M, SRF08_GAIN_MID);
+SRF08Sensor sensorR(SRF08_ADDR(0xE2), SRF08_RANGE_3M, SRF08_GAIN_MID);
+
+SRF08Manager sonar;
+
+void USC::init(){
+    //Wire1.setClock(I2C_SPEED_US);
+    //sensorV.setEMAAlpha(0.25f);
+    sensorH.setEMAAlpha(0.25f);
+    sensorR.setEMAAlpha(0.25f);
+    sensorL.setEMAAlpha(0.25f);
+
+    // Sprungfilter: Max. 50cm Änderung pro Zyklus
+    // (Roboter bewegt sich max. ~1.5 m/s × 0.03s ≈ 4.5cm/Zyklus → 50cm sehr konservativ)
+    //sensorV.setJumpThreshold(50);
+    sensorH.setJumpThreshold(50);
+    sensorR.setJumpThreshold(50);
+    sensorL.setJumpThreshold(50);
+
+    // Sensoren zum Manager hinzufügen
+    sonar.addSensor(&sensorR);
+    sonar.addSensor(&sensorH);
+    sonar.addSensor(&sensorL);
+    //sonar.addSensor(&sensorL);
+
+    // Initialisieren — begin() testet Erreichbarkeit
+    sonar.begin(Wire1);
+    //Wire1.setClock(I2C_SPEED);
+}
+
 void USC::read(){
-    if(US_Timer > (1000/US_Frequency)){
-        Wire1.setClock(I2C_SPEED_US);
-        int reading;
-
-        Wire1.beginTransmission(US_Left);
-        Wire1.write(byte(0x02));  
-        Wire1.endTransmission();   
-        Wire1.requestFrom(US_Left, 2);   
-        if (2 <= Wire1.available()) { 
-        reading = Wire1.read(); 
-        reading = reading << 8;    
-        reading |= Wire1.read(); 
-        Distance[3]=reading;}
-        Wire1.beginTransmission(US_Left); 
-        Wire1.write(byte(0x00));      
-        Wire1.write(byte(0x51));  
-        Wire1.endTransmission();   
-
-        Wire1.beginTransmission(US_Back);
-        Wire1.write(byte(0x02));  
-        Wire1.endTransmission();   
-        Wire1.requestFrom(US_Back, 2);   
-        if (2 <= Wire1.available()) { 
-        reading = Wire1.read(); 
-        reading = reading << 8;    
-        reading |= Wire1.read(); 
-        Distance[2]=reading;}
-        Wire1.beginTransmission(US_Back); 
-        Wire1.write(byte(0x00));      
-        Wire1.write(byte(0x51));  
-        Wire1.endTransmission();   
-
-        Wire1.beginTransmission(US_Right);
-        Wire1.write(byte(0x02));  
-        Wire1.endTransmission();   
-        Wire1.requestFrom(US_Right, 2);   
-        if (2 <= Wire1.available()) { 
-        reading = Wire1.read(); 
-        reading = reading << 8;    
-        reading |= Wire1.read(); 
-        Distance[1]=reading;}
-        Wire1.beginTransmission(US_Right); 
-        Wire1.write(byte(0x00));  
-        Wire1.write(byte(0x51));    
-        Wire1.endTransmission();  
-
-        Wire1.beginTransmission(US_Front);
-        Wire1.write(byte(0x02));  
-        Wire1.endTransmission();   
-        Wire1.requestFrom(US_Front, 2);   
-        if (2 <= Wire1.available()) { 
-        reading = Wire1.read(); 
-        reading = reading << 8;    
-        reading |= Wire1.read(); 
-        Distance[0]=reading;}
-        Wire1.beginTransmission(US_Front); 
-        Wire1.write(byte(0x00));  
-        Wire1.write(byte(0x51));    
-        Wire1.endTransmission();
-
-        Wire1.setClock(I2C_SPEED);
-        US_Timer = 0;
-    }
+    //Wire1.setClock(I2C_SPEED_US);
+    sonar.update();
+    Distance[1]=sonar.getDistance(0);
+    Distance[2]=sonar.getDistance(1);
+    Distance[3]=sonar.getDistance(2);
+    //Distance[3]=sonar.getDistance(3);
+    //Wire1.setClock(I2C_SPEED);
 }
 
 int USC::giveNR(int NR){

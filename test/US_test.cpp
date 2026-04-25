@@ -37,7 +37,7 @@
 //   → Gain MID (199):  gut für harte Plastikwände, kein übermäßiges Gain
 //
 SRF08Sensor sensorVorne (SRF08_ADDR(0xE2), SRF08_RANGE_2M, SRF08_GAIN_MID);
-SRF08Sensor sensorHinten(SRF08_ADDR(0xE6), SRF08_RANGE_2M, SRF08_GAIN_MID);
+SRF08Sensor sensorHinten(SRF08_ADDR(0xE4), SRF08_RANGE_2M, SRF08_GAIN_MID);
 
 SRF08Manager sonar;
 
@@ -166,10 +166,7 @@ void loop() {
     sonar.update();
 
     // ── Serielle Debug-Ausgabe (zeitgesteuert, nicht blockierend) ────────────
-    if (debugTimer >= DEBUG_INTERVAL_MS) {
-        debugTimer = 0;
-        printSensorData();
-    }
+    
 
     // ── Hier: Motorsteuerung, IR-Sensor, usw. ────────────────────────────────
     // Alle nicht-blockierend implementieren!

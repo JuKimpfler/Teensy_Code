@@ -1,6 +1,7 @@
 #include "Elementar.h"
 #include "Expander.h"
 #include "Motor.h"
+#include "Mouse.h"
 #include "Line.h"
 #include "Cam.h"
 #include "LDR.h"

@@ -27,15 +27,15 @@ enum Motor_Port { // Portbelegung Direct an Teensy
 };
 
 
-inline int    US_Left_w =  0x71;
-inline int    US_Right_w = 0x72;
-inline int    US_Back_w = 0x70;
-inline int    US_Front_w = 0x73;
+inline int    US_Left_w =  0xE0;
+inline int    US_Right_w = 0xE2;
+inline int    US_Back_w = 0xE4;
+inline int    US_Front_w = 0xE6;
 
-inline int    US_Left_s =  0x71;
-inline int    US_Right_s = 0x72;
-inline int    US_Back_s = 0x70;
-inline int    US_Front_s = 0x73;
+inline int    US_Left_s =  0xE0;
+inline int    US_Right_s = 0xE2;
+inline int    US_Back_s = 0xE4;
+inline int    US_Front_s = 0xE6;
 
 inline int    US_Left;
 inline int    US_Right;

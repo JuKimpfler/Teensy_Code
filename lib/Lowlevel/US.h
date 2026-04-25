@@ -6,6 +6,7 @@ class USC{
     private:
     public:
         void read();
+        void init();
 
         int giveNR(int NR); // cm (0=Vorne, 1=Rechts, 2=Hinten, 3=Links)
 

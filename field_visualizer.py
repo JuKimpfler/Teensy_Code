@@ -1,18 +1,4 @@
-"""
-RoboCup Junior Soccer 2v2 – Feldvisualisierung
-================================================
-Zeigt das Spielfeld aus der Vogelperspektive und bewegt einen Kreis
-(Ø 22 cm) anhand von Positionsdaten, die über einen seriellen Port im
-Format  "x,y\n"  empfangen werden.
 
-Koordinatenursprung: linke untere Feldecke
-Tore: oben und unten (an den Schmalseiten)
-
-Starten:
-    python field_visualizer.py
-Abhängigkeiten:
-    pip install pyserial
-"""
 
 import tkinter as tk
 from tkinter import ttk, messagebox
@@ -237,9 +223,7 @@ class FieldVisualizer(tk.Tk):
         py = CANVAS_H_PX - CANVAS_PAD - y_cm * self._scale
         r = BALL_R_CM * self._scale
 
-        # Schatten
-        c.create_oval(px - r + 2, py - r + 2, px + r + 2, py + r + 2,
-                      fill="#00000066", outline="", tags="ball")
+
         # Ball
         c.create_oval(px - r, py - r, px + r, py + r,
                       fill=COLOR_BALL, outline="white", width=1, tags="ball")

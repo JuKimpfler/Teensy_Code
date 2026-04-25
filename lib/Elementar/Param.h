@@ -32,7 +32,7 @@ const uint16_t IR_maxi_w[16] = {2950,2950,2950,2950,2950,2950,2950,2950,2950,295
 inline int Line_Grass = 2000;
 inline int Line_Norm = 4000;
 
-inline int Line_Schwelle = 1000;
+inline int Line_Schwelle = 3000;
 
 inline int LDR_Schwelle = 0;
 
@@ -51,4 +51,4 @@ const float YELLOW_GOAL_X = 91.0;
 const float YELLOW_GOAL_Y = 0.0;
 
 #define Interface_Frequency 20 // angegeben in Hz (wie oft pro sekunde wird das Interface upgedated)
-#define US_Frequency 10 // angegeben in Hz (wie oft pro sekunde wird das US upgedated)
+#define US_Frequency 40 // angegeben in Hz (wie oft pro sekunde wird das US upgedated)

@@ -24,6 +24,7 @@ void SystemC::begin(bool CIndex){
     PFU.begin();
     Mouse.init();
     Motor.init();
+    Line.init();
     BNO055.init();
     BC.begin(UART_Pixy);
     Expander.I2C.init(I2C_ITF_Main,Input_Mode,All_Off);
@@ -55,6 +56,7 @@ void SystemC::UpdateC::Sensors(){
     Line.read_Fast();
     US.read();
     Robot.Kicker.Update();
+    Mouse.read();
 }
 
 void SystemC::UpdateC::Calculations(){
@@ -62,4 +64,5 @@ void SystemC::UpdateC::Calculations(){
     PID.Calculate();
     BallCalc.CalcAngle();
     BallCalc.CalcDist();
+    LineCalc.Calc();
 }

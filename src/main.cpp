@@ -1,10 +1,13 @@
 #include "System.h"
 #include "ESC.h"
 
+elapsedMillis debugTimer;
+static constexpr uint32_t DEBUG_INTERVAL_MS = 20; // Serielle Ausgabe alle 100ms
+
 void setup() {
     Wire1.begin();
     Wire1.setClock(I2C_SPEED);
-
+    
     Expander.I2C.init(I2C_ITF_Main,Input_Mode,All_Off);
     delay(1000);
     Expander.I2C.read(I2C_ITF_Main);
@@ -38,32 +41,32 @@ void setup() {
     RGB.write(1,"G");  
     Serial.println("ON!");
     RGB.Apply();
+
+    US.init();
+
+    Cam.init(UART_2,115200);
 }
 
 void loop() { 
     Cycle_Timer = 0;
-    MainSpeed = 40;
+    MainSpeed = 30;
 
     if(System.Start){
-        //if(!Game.LineInterrupt()){
-        //    int drive = U.Circel(((LUT.get_DriveAngle(U.Circel(Ball.Angle),Ball.Distance))));
-        //    Robot.Drive(drive,0,20);
-        //}
+        if(!Game.LineInterrupt()){
+            int drive = U.Circel(((LUT.get_DriveAngle(U.Circel(Ball.Angle),Ball.Distance))));
+            Robot.Drive(drive,0,20);
+        }
         //Debug.Start();
         //Debug.Plot("mx",Mouse.xPos);
         //Debug.Plot("my",Mouse.yPos);
         //Debug.Plot("px",PFU.giveX());
         //Debug.Plot("py",PFU.giveY());
-        Serial.print(PFU.giveX());
-        Serial.print(",");
-        Serial.println(PFU.giveY());
         //Debug.Plot("l",US.Distance[0]);
         //Debug.Plot("h",US.Distance[1]);
         //Debug.Plot("r",US.Distance[2]);
         //Debug.Send();
-        delay(20);
+        //delay(20);
         
-        Game.Stop();
     } 
     else{
         Game.Stop();
@@ -77,11 +80,29 @@ void loop() {
         if (System.Button[2]){IR.Calib_Dist();} 
         else{}
 
+        if (System.Button[3]){Line.Calibrate(0);} 
+        else{}
+
+    }
+
+    Cam.Update();
+
+    if (debugTimer >= DEBUG_INTERVAL_MS) {
+        debugTimer = 0;
+        //Serial.print(PFU.giveX());
+        //Serial.print(",");
+        //Serial.println(PFU.giveY());
+        Serial.print("> ");
+        if (Cam.isValid()) {
+            float x = Cam.giveXPos();
+            float x_r = Cam.giveXPos_relativ();
+            Serial.println(" camx: "+String(x)+" , camx_rela: "+String(x_r));
+        }
+        System.Update.Interface();
     }
 
     System.Update.Calculations();
     System.Update.Sensors();
-    System.Update.Interface();
 
     Robot.Kicker.Update_End();
     Cycletime=Cycle_Timer;

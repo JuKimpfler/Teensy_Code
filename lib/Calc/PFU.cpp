@@ -16,14 +16,19 @@ void Kalmanfilter::updateOdometry(float dt) {
   thetaDeg = BNO055.giveDeg();
   thetaRad = BNO055.giveRad();
   
-  float vX_local = Mouse.giveVx() * 100.0; 
-  float vY_local = Mouse.giveVy() * 100.0; 
+  float vX_local = Mouse.giveVy()+120; 
+  float vY_local = Mouse.giveVx()+90; 
   
-  float deltaX = (vX_local * cos(thetaRad) + vY_local * sin(thetaRad)) * dt;
-  float deltaY = (-vX_local * sin(thetaRad) + vY_local * cos(thetaRad)) * dt;
+  //float deltaX = (vX_local * cos(thetaRad) + vY_local * sin(thetaRad)) * dt;
+  //float deltaY = (-vX_local * sin(thetaRad) + vY_local * cos(thetaRad)) * dt;
+
+
   
-  posX += deltaX;
-  posY += deltaY;
+  //posX += deltaX;
+  //posY += deltaY;
+
+  posX = vX_local;
+  posY = vY_local;
 }
 
 void Kalmanfilter::checkLineSensors() {
@@ -92,13 +97,13 @@ void Kalmanfilter::Update() {
   unsigned long currentMicros = micros();
 
   // --- 500 Hz TASK (Prädiktion & Linien-Notfall) ---
-  if (currentMicros - last500Hz >= 2000) {
-    float dt = (currentMicros - last500Hz) / 1000000.0f; 
-    last500Hz = currentMicros;
+  //if (currentMicros - last500Hz >= 2000) {
+    //float dt = (currentMicros - last500Hz) / 1000000.0f; 
+    //last500Hz = currentMicros;
     
     //updateOdometry(dt); 
     //checkLineSensors(); 
-  }
+  //}
 
   /*// --- 20 Hz TASK (Kamera) ---
   if (currentMicros - last20Hz >= 50000) {
@@ -113,8 +118,7 @@ void Kalmanfilter::Update() {
     }
   }*/
 
-  // --- 10 Hz TASK (Ultraschall) ---
-  if (currentMicros - last10Hz >= 10000) {
+  if (currentMicros - last10Hz >= 5000) {
     last10Hz = currentMicros;
     updateUltrasonic();
   }

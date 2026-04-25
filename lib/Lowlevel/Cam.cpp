@@ -3,47 +3,124 @@
 CamC Cam;
 GoalC Goal;
 
-void CamC::readSerialFromOpenMV() {
-  while (Serial1.available()) {
-    String data = Serial1.readStringUntil('\n');
-    if (data.length() > 4) {
-      last_goal_color = data.charAt(0);
-      int commaIndex = data.indexOf(',', 2);
-      if (commaIndex > 0) {
-        last_blob_cx = data.substring(2, commaIndex).toFloat();
-        last_blob_w = data.substring(commaIndex + 1).toFloat();
-        last_cam_update = millis(); 
+void CamC::init(HardwareSerial& ser, uint32_t baud) {
+  port = &ser;
+  lineLen = 0;
+
+  rawValid = false;
+  lastCamUpdateMs = 0;
+}
+
+void CamC::setField(float fieldW_cm, float fieldH_cm) {
+  fieldW = fieldW_cm;
+  fieldH = fieldH_cm;
+}
+
+void CamC::setGoalCenters(float blueX, float blueY, float yellowX, float yellowY) {
+  blueGoalX = blueX; blueGoalY = blueY;
+  yellowGoalX = yellowX; yellowGoalY = yellowY;
+}
+
+bool CamC::isValid(uint32_t maxAgeMs) const {
+  if (!rawValid) return false;
+  return (millis() - lastCamUpdateMs) <= maxAgeMs;
+}
+
+void CamC::readOpenMV() {
+  if (!port) return;
+
+  while (port->available()) {
+    char c = (char)port->read();
+
+    if (c == '\n') {
+      lineBuf[lineLen] = '\0';
+      // strip CR
+      if (lineLen > 0 && lineBuf[lineLen - 1] == '\r') {
+        lineBuf[lineLen - 1] = '\0';
       }
+
+      handleLine(lineBuf);
+      lineLen = 0;
+      continue;
+    }
+
+    if (lineLen < (LINE_BUF_SIZE - 1)) {
+      lineBuf[lineLen++] = c;
+    } else {
+      // overflow -> drop line
+      lineLen = 0;
     }
   }
 }
 
-bool CamC::readCameraAbsolute(float &camX, float &camY) {
-  readSerialFromOpenMV();
-  
-  if (millis() - last_cam_update > 150 || last_blob_w < 5.0) {
-    return false; // Keine aktuellen/gültigen Daten
+void CamC::handleLine(const char* line) {
+  if (!line || !line[0]) return;
+
+  if (line[0] == 'N') {
+    rawValid = false;
+    return;
   }
-  
-  float Z_cam = (GOAL_WIDTH_CM * FOCAL_LENGTH_PX) / last_blob_w;
-  float X_cam = ((last_blob_cx - CAM_CENTER_X) * Z_cam) / FOCAL_LENGTH_PX;
-  float fieldOffsetX, fieldOffsetY;
-  
-  if (last_goal_color == 'B') { 
-    fieldOffsetX = (X_cam * cos(BNO055.giveRad())) - (Z_cam * sin(BNO055.giveRad()));
-    fieldOffsetY = (X_cam * sin(BNO055.giveRad())) + (Z_cam * cos(BNO055.giveRad()));
-    camX = BLUE_GOAL_X - fieldOffsetX;
-    camY = BLUE_GOAL_Y - fieldOffsetY;
-    return true;
-  } 
-  else if (last_goal_color == 'Y') { 
-    float Z_cam_inv = -Z_cam;
-    float X_cam_inv = -X_cam;
-    fieldOffsetX = (X_cam_inv * cos(BNO055.giveRad())) - (Z_cam_inv * sin(BNO055.giveRad()));
-    fieldOffsetY = (X_cam_inv * sin(BNO055.giveRad())) + (Z_cam_inv * cos(BNO055.giveRad()));
-    camX = YELLOW_GOAL_X - fieldOffsetX;
-    camY = YELLOW_GOAL_Y - fieldOffsetY;
-    return true;
+
+  if (line[0] == 'P') {
+    float x, y, relx, reld;
+    char g;
+    int q;
+
+    if (parsePLine(line, x, y, g, q, relx, reld)) {
+      cam_x_cm = x;   // falls du sie debuggen willst
+      cam_y_cm = y;
+      goal = g;
+      qual = q;
+      rel_x_cm = relx;
+      rel_dist_cm = reld;
+
+      rawValid = true;
+      lastCamUpdateMs = millis();
+    }
   }
-  return false;
+}
+
+bool CamC::parsePLine(const char* line,
+                      float& out_x, float& out_y,
+                      char& out_goal, int& out_qual,
+                      float& out_relx, float& out_reldist) {
+
+  char tmp[LINE_BUF_SIZE];
+  strncpy(tmp, line, LINE_BUF_SIZE - 1);
+  tmp[LINE_BUF_SIZE - 1] = '\0';
+
+  char* save = nullptr;
+  char* tok = strtok_r(tmp, ",", &save);
+  int idx = 0;
+
+  while (tok) {
+    if (idx == 1) out_x = strtof(tok, nullptr);
+    else if (idx == 2) out_y = strtof(tok, nullptr);
+    else if (idx == 3) out_goal = tok[0];
+    else if (idx == 4) out_qual = atoi(tok);
+    else if (idx == 5) out_relx = strtof(tok, nullptr);
+    else if (idx == 6) out_reldist = strtof(tok, nullptr);
+
+    tok = strtok_r(nullptr, ",", &save);
+    idx++;
+  }
+
+  return idx >= 7;
+}
+
+void CamC::Update() {
+  // 1) UART pollen (damit Update() alleine reicht)
+  readOpenMV();
+
+  // 2) Ohne frische Daten keine neuen Ausgaben berechnen
+  if (!isValid(250)) {
+    return;
+  }
+
+  const float gx_r = -rel_x_cm;      // Goal->Cam in Roboter-X (rechts+)
+  const float gy_r = -rel_dist_cm;   // Goal->Cam in Roboter-Y (vorne+)
+
+  X_pos = gx_r+91;
+  Y_pos = gy_r+121.5;
+
 }

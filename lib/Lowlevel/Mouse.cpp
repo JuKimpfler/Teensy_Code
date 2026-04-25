@@ -16,25 +16,23 @@ void MouseC::read(){
     deltaX = mouseData.dx * 1.25 / 100;
     deltaY = mouseData.dy * 1.25 / 100;
 
-    delta_dist = sqrtf(pow(deltaY,2)+pow(deltaX,2));
-    delta_angle = atan2f(deltaY,deltaX);
+    //delta_dist = sqrtf(pow(deltaY,2)+pow(deltaX,2));
+    //delta_angle = atan2f(deltaY,deltaX);
 
-    if (delta_dist>1){
-        delta_dist=1;
-    }
-
-    xPos = xPos + deltaX ;//* cos(BNO055.TiltZ*DEG_TO_RAD) - deltaY * sin(BNO055.TiltZ*DEG_TO_RAD);
-    yPos = yPos + deltaY ;//* sin(BNO055.TiltZ*DEG_TO_RAD) + deltaY * cos(BNO055.TiltZ*DEG_TO_RAD);
+    xPos = xPos - (deltaX * cos(BNO055.giveRad())) + (deltaY * sin(BNO055.giveRad()));
+    yPos = yPos - (deltaX * sin(BNO055.giveRad())) + (deltaY * cos(BNO055.giveRad()));
 
     lift = mouseData.isOnSurface;
     movement = mouseData.isMotion;
 }
 
+
 float MouseC::giveVx(){
-    return deltaX;
+    return yPos;
 }
 
+
 float MouseC::giveVy(){
-    return deltaY;
+    return xPos;
 }
 
