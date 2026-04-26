@@ -123,4 +123,9 @@ void CamC::Update() {
   X_pos = gx_r+91;
   Y_pos = gy_r+121.5;
 
+  float raw_angle = atanf(gy_r/gx_r)*RAD_TO_DEG;
+
+  if(raw_angle>0){Goal.Angle = U.Circel((raw_angle)-90);}
+  else if(raw_angle<=0){Goal.Angle = U.Circel((raw_angle)+90);}
+
 }

@@ -22,7 +22,6 @@ void setColorID(bool ID){
 void SystemC::begin(bool CIndex){
     setColorID(CIndex);
     PFU.begin();
-    Mouse.init();
     Motor.init();
     Line.init();
     BNO055.init();
@@ -31,6 +30,7 @@ void SystemC::begin(bool CIndex){
     IR.init();
     LDR.init();
     RGB.init();
+    US.init();
 }
 
 void SystemC::UpdateC::Interface(){
@@ -54,9 +54,8 @@ void SystemC::UpdateC::Sensors(){
     IR.read();
     BNO055.read();
     Line.read_Fast();
-    US.read();
     Robot.Kicker.Update();
-    Mouse.read();
+    US.read();
 }
 
 void SystemC::UpdateC::Calculations(){

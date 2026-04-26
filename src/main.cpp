@@ -1,10 +1,15 @@
 #include "System.h"
 #include "ESC.h"
+#include "servo.h"
+
+Servo US_servo;
 
 elapsedMillis debugTimer;
 static constexpr uint32_t DEBUG_INTERVAL_MS = 20; // Serielle Ausgabe alle 100ms
 
 void setup() {
+    US_servo.attach(Servo_Port);
+
     Wire1.begin();
     Wire1.setClock(I2C_SPEED);
     
@@ -41,8 +46,6 @@ void setup() {
     RGB.write(1,"G");  
     Serial.println("ON!");
     RGB.Apply();
-
-    US.init();
 
     Cam.init(UART_2,115200);
 }
@@ -85,6 +88,8 @@ void loop() {
 
     }
 
+    US_servo.write(BNO055.giveDeg()+90);
+
     Cam.Update();
 
     if (debugTimer >= DEBUG_INTERVAL_MS) {
@@ -95,8 +100,8 @@ void loop() {
         Serial.print("> ");
         if (Cam.isValid()) {
             float x = Cam.giveXPos();
-            float x_r = Cam.giveXPos_relativ();
-            Serial.println(" camx: "+String(x)+" , camx_rela: "+String(x_r));
+            float x_r = Cam.giveYPos();
+            Serial.println(" camx: "+String(x)+" , camx_rela: "+String(x_r)+" , angle: "+String(Goal.Angle));
         }
         System.Update.Interface();
     }

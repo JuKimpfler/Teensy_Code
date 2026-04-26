@@ -36,8 +36,8 @@
 //   → SRF08_RANGE_2M:  ~14ms Zykluszeit pro Sensor
 //   → Gain MID (199):  gut für harte Plastikwände, kein übermäßiges Gain
 //
-SRF08Sensor sensorVorne (SRF08_ADDR(0xE2), SRF08_RANGE_2M, SRF08_GAIN_MID);
-SRF08Sensor sensorHinten(SRF08_ADDR(0xE4), SRF08_RANGE_2M, SRF08_GAIN_MID);
+SRF08Sensor sensorVorne (SRF08_ADDR(0xE0), SRF08_RANGE_2M, SRF08_GAIN_MID);
+SRF08Sensor sensorHinten(SRF08_ADDR(0xE6), SRF08_RANGE_2M, SRF08_GAIN_MID);
 
 SRF08Manager sonar;
 

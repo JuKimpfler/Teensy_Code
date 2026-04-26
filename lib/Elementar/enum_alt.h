@@ -45,10 +45,11 @@ inline int    US_Front;
 enum Pinout {
     LDR_Port = 23,
     Start_Port = 10,
-    RCJ_Port = 25,
+    RCJ_Port = 27,
     Mouse_Port = 24,
     Kicker_Port = 18,
     Drib_Port = 33,
+    Servo_Port =25
 };
 
 enum I2C_Befehle {
