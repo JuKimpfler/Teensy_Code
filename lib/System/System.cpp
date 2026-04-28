@@ -21,16 +21,16 @@ void setColorID(bool ID){
 
 void SystemC::begin(bool CIndex){
     setColorID(CIndex);
-    PFU.begin();
+    //PFU.begin();
     Motor.init();
     Line.init();
     BNO055.init();
-    BC.begin(UART_Pixy);
+    //BC.begin(UART_Pixy);
     Expander.I2C.init(I2C_ITF_Main,Input_Mode,All_Off);
     IR.init();
     LDR.init();
     RGB.init();
-    US.init();
+    //US.init();
 }
 
 void SystemC::UpdateC::Interface(){
@@ -49,17 +49,17 @@ void SystemC::UpdateC::Interface(){
 
 void SystemC::UpdateC::Sensors(){
     System.Start = digitalRead(Start_Port);
-    BC.process();
-    BL.doRolle();
+    //BC.process();
+    //BL.doRolle();
     IR.read();
     BNO055.read();
     Line.read_Fast();
     Robot.Kicker.Update();
-    US.read();
+    //US.read();
 }
 
 void SystemC::UpdateC::Calculations(){
-    PFU.Update();
+    //PFU.Update();
     PID.Calculate();
     BallCalc.CalcAngle();
     BallCalc.CalcDist();

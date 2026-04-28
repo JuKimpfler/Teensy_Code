@@ -8,7 +8,7 @@ elapsedMillis debugTimer;
 static constexpr uint32_t DEBUG_INTERVAL_MS = 20; // Serielle Ausgabe alle 100ms
 
 void setup() {
-    US_servo.attach(Servo_Port);
+    //US_servo.attach(Servo_Port);
 
     Wire1.begin();
     Wire1.setClock(I2C_SPEED);
@@ -47,7 +47,9 @@ void setup() {
     Serial.println("ON!");
     RGB.Apply();
 
-    Cam.init(UART_2,115200);
+    Motor.On(100,VR_Motor);
+    delay(10000);
+    //Cam.init(UART_2,115200);
 }
 
 void loop() { 
@@ -55,10 +57,16 @@ void loop() {
     MainSpeed = 30;
 
     if(System.Start){
-        if(!Game.LineInterrupt()){
-            int drive = U.Circel(((LUT.get_DriveAngle(U.Circel(Ball.Angle),Ball.Distance))));
-            Robot.Drive(drive,0,20);
-        }
+        //if(!Game.LineInterrupt()){
+            /*if(LDR.Aktiv()){
+                Robot.Drive(0,0,30);
+                Robot.Kicker.On();
+            }
+            else{
+                int drive = U.Circel(((LUT.get_DriveAngle(U.Circel(Ball.Angle),Ball.Distance))));
+                Robot.Drive(drive,0,20);
+            }*/
+        //}
         //Debug.Start();
         //Debug.Plot("mx",Mouse.xPos);
         //Debug.Plot("my",Mouse.yPos);
@@ -69,7 +77,7 @@ void loop() {
         //Debug.Plot("r",US.Distance[2]);
         //Debug.Send();
         //delay(20);
-        
+        Motor.On(100,VR_Motor);
     } 
     else{
         Game.Stop();
@@ -88,21 +96,22 @@ void loop() {
 
     }
 
-    US_servo.write(BNO055.giveDeg()+90);
+    //US_servo.write(BNO055.giveDeg()+90);
 
-    Cam.Update();
+    //Cam.Update();
 
-    if (debugTimer >= DEBUG_INTERVAL_MS) {
+    if (debugTimer >= DEBUG_INTERVAL_MS ) {
         debugTimer = 0;
         //Serial.print(PFU.giveX());
         //Serial.print(",");
         //Serial.println(PFU.giveY());
         Serial.print("> ");
-        if (Cam.isValid()) {
-            float x = Cam.giveXPos();
-            float x_r = Cam.giveYPos();
-            Serial.println(" camx: "+String(x)+" , camx_rela: "+String(x_r)+" , angle: "+String(Goal.Angle));
-        }
+        //if (Cam.isValid()) {
+            //float x = Cam.giveXPos();
+            //float x_r = Cam.giveYPos();
+            //Serial.println(" camx: "+String(x)+" , camx_rela: "+String(x_r)+" , angle: "+String(Goal.Angle));
+        //}
+        Serial.println(" LDR: "+String(Line.Summe)+" , LDRa: "+String(Cycletime));
         System.Update.Interface();
     }
 
