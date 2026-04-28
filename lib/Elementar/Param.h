@@ -38,7 +38,7 @@ inline int LDR_Schwelle = 550;
 
 inline int IR_Sight = 45; // ab wann wird der Ball als da erkannt
 
-inline int Motor_Frequency =  100;
+inline int Motor_Frequency =  500;
 
 // --- Kamera Konstanten ---
 const float CAM_RES_X = 320.0;

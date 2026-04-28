@@ -27,7 +27,7 @@ void MotorC::init(){
 
 void MotorC::On(int Speed , int Motor){
 
-    Speed = Speed*2.55;
+    Speed = Speed*655.34;
     bool Dir;
     if (Speed < 0){
         Speed = Speed * -1;
