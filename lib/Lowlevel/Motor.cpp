@@ -4,6 +4,8 @@
 MotorC Motor;
 
 void MotorC::init(){
+    analogWriteResolution(16);
+
     pinMode(VR_Speed_Port,OUTPUT);
     pinMode(VL_Speed_Port,OUTPUT);
     pinMode(HR_Speed_Port,OUTPUT);
@@ -27,7 +29,7 @@ void MotorC::init(){
 
 void MotorC::On(int Speed , int Motor){
 
-    Speed = Speed*655.34;
+    Speed = Speed*-655.34;
     bool Dir;
     if (Speed < 0){
         Speed = Speed * -1;

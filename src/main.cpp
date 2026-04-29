@@ -14,7 +14,7 @@ void setup() {
     Wire1.setClock(I2C_SPEED);
     
     Expander.I2C.init(I2C_ITF_Main,Input_Mode,All_Off);
-    delay(1000);
+    delay(500);
     Expander.I2C.read(I2C_ITF_Main);
     Color_ID = Expander.I2C.give(I2C_ITF_Main,ITF_Main_CID);
 
@@ -39,14 +39,17 @@ void setup() {
     RGB.Apply();
     ESC.init(33);
     delay(1000);
-    //while(!System.Button[2]){System.Update.Interface();Serial.println("waiting on power up");}
+    while(!System.Button[2]){System.Update.Interface();Serial.println("waiting on power up");}
     delay(100);
     ESC.init_Power();
-    ESC.set(15);
+    ESC.set(13);
     RGB.write(1,"G");  
     Serial.println("ON!");
     RGB.Apply();
+
     Cam.init(UART_2,115200);
+
+    Cam.setSign(true);
 }
 
 void loop() { 
@@ -56,16 +59,20 @@ void loop() {
     if(System.Start){
         /*if(!Game.LineInterrupt()){
             if(LDR.Aktiv()){
-                Robot.Drive(0,0,30);
-                Robot.Kicker.On();
+                if(Cam.isValid()){Robot.Drive(Cam.give_Angle(),Cam.give_Angle(),30);Robot.Kicker.On();}
+                else{Robot.Drive(0,0,30);}
             }
             else{
                 int drive = U.Circel(((LUT.get_DriveAngle(U.Circel(Ball.Angle),Ball.Distance))));
                 Robot.Drive(drive,0,20);
             }
         }*/
-
-        Robot.Turn(Cam.give_Angle());
+        if(Cam.isValid()){Robot.Drive(Cam.give_Angle()*1.3,-Cam.give_Angle()/4,20);}
+        else{Robot.Drive(0,0,20);}
+        //if(Cam.isValid()){Robot.Turn(Cam.give_Angle());}
+        //else{Robot.Turn(0);}
+        //Robot.Turn(0);
+        //Robot.Drive(45,0,10);
     } 
     else{
         Game.Stop();
@@ -81,6 +88,8 @@ void loop() {
 
     }
 
+    Cam.Update();
+
     if (debugTimer >= DEBUG_INTERVAL_MS ) {
         debugTimer = 0;
 
@@ -95,7 +104,7 @@ void loop() {
             float h = Cam.give_BlobH();
             Serial.println(" Angle: "+String(a)+" , Angle_rela: "+String(a_r)+" , höhe: "+String(h));
         }
-        //Serial.println(" LDR: "+String(Line.Summe)+" , LDRa: "+String(Cycletime));
+        Serial.println(" LDR: "+String(Line.Summe)+" , LDRa: "+String(Cycletime));
         System.Update.Interface();
     }
 

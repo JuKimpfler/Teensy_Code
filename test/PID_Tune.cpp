@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "Param.h"
 #include "BNO055.h"
-#include "PidCalculations.h"
+#include "PID.h"
 #include "Robot.h"
 
 void printPID() {
@@ -18,16 +18,15 @@ void setup() {
     printPID();
     Serial.println("PID Parameter Tool bereit.");
     Serial.println("Befehl: kp <wert>, ki <wert>, kd <wert>, mult <wert>");
+    BNO055.Calibrate();
 }
 
 void loop() {
     BNO055.read();
-    BNO055.showCal();
     if(digitalRead(Start_Port)==false){
-        BNO055.Calibrate();
+        Robot.Turn(0);
     }
     PID.Calculate();
-    Robot.Turn(0);
     if (Serial.available()) {
         String input = Serial.readStringUntil('\n');
         input.trim();

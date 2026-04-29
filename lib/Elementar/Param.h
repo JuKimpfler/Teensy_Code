@@ -12,11 +12,11 @@
 #define HighSpeed 30 // Speed im HS modus
 #define LowSpeed = 25; // Speed im LS modus
 
-inline float Kp = 1.6; // Startwert, dann erhöhen  1
-inline float Kd = 35.0; // Startwert, dann erhöhen 
+inline float Kp = 1.1; // Startwert, dann erhöhen:  1
+inline float Kd = 12.0; // Startwert, dann erhöhen:  1
 inline float Ki = 0; // Startwert, dann erhöhen
 inline float PID_Mult = 0.1; // Belassen
-inline float PID_Konstante = 0.5; // 0.3
+inline float PID_Konstante = 0.5; // Belassen
 
 inline int LDR_Schwelle_w = 500;
 inline int LDR_Schwelle_s = 600; 
@@ -38,7 +38,7 @@ inline int LDR_Schwelle = 550;
 
 inline int IR_Sight = 45; // ab wann wird der Ball als da erkannt
 
-inline int Motor_Frequency =  500;
+inline int Motor_Frequency =  1000;
 
 // --- Kamera Konstanten ---
 const float CAM_RES_X = 320.0;
