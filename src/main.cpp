@@ -42,10 +42,12 @@ void setup() {
     while(!System.Button[2]){System.Update.Interface();Serial.println("waiting on power up");}
     delay(100);
     ESC.init_Power();
-    ESC.set(13);
+    ESC.set(50);
     RGB.write(1,"G");  
     Serial.println("ON!");
     RGB.Apply();
+    delay(2000);
+    ESC.stop();
 
     Cam.init(UART_2,115200);
 
@@ -57,6 +59,8 @@ void loop() {
     MainSpeed = 30;
 
     if(System.Start){
+        if(Ball.Distance<30){ESC.set(10);}
+        else{ESC.stop();}
         /*if(!Game.LineInterrupt()){
             if(LDR.Aktiv()){
                 if(Cam.isValid()){Robot.Drive(Cam.give_Angle(),Cam.give_Angle(),30);Robot.Kicker.On();}
@@ -67,7 +71,7 @@ void loop() {
                 Robot.Drive(drive,0,20);
             }
         }*/
-        if(Cam.isValid()){Robot.Drive(Cam.give_Angle()*1.3,-Cam.give_Angle()/4,20);}
+        if(Cam.isValid()){Robot.Drive(Cam.give_Angle()*1.3,0,20);}
         else{Robot.Drive(0,0,20);}
         //if(Cam.isValid()){Robot.Turn(Cam.give_Angle());}
         //else{Robot.Turn(0);}
@@ -76,6 +80,7 @@ void loop() {
     } 
     else{
         Game.Stop();
+        ESC.stop();
         //BC.sendTelemetryFloat("test",0.321);
     
 

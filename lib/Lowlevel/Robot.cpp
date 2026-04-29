@@ -1,5 +1,6 @@
 #include "Robot.h"
 #include "RGB.h"
+#include "ESC.h"
 RobotC Robot;
 
 elapsedMillis Kicker_Timer;
@@ -127,6 +128,7 @@ void RobotC::KickerC::Update(){
     
     // cyclic pulse handling
     if(active){
+        ESC.stop();
         if(Kicker_Timer > 150){
             digitalWrite(Kicker_Port, LOW);
         }
