@@ -1,6 +1,17 @@
 #pragma once
 #include <Arduino.h>
 
+// Data provided by a goal-facing camera.
+// In the original Defender design this is filled by a BACK camera that
+// looks toward the own goal.  The DefenderAdapter synthesises it from the
+// single FORWARD camera that looks toward the opponent goal.
+struct CamData {
+    float GoalAgnle          = 0.0f;   // camera-relative angle to goal (degrees, -180..+180)
+    bool  BlueGoal_visible   = false;  // blue goal detected
+    bool  YellowGoal_visible = false;  // yellow goal detected
+    int   GoalHeight         = 0;      // goal-blob height in pixels (distance indicator)
+};
+
 class CamC {
 public:
   void init(HardwareSerial& ser = Serial1, uint32_t baud = 115200);

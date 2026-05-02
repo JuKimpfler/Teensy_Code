@@ -56,7 +56,12 @@ bool Defender::check_Kick_Trigger(KickState& state, float ball_angle, double bal
 // ─────────────────────────────────────────────────────────────────────────────
 
 bool Defender::handle_Ball_In_Front(float ball_angle, float Goal_angle, float LinieWinkel, float Line_distance) {
-    if((ball_angle - Goal_angle) <= 175 || (ball_angle - Goal_angle) >= 185)
+    // ball_angle is already goal-relative (0..360).
+    // Check whether the ball is roughly behind the robot relative to the goal
+    // direction (≈180°).  The original code erroneously subtracted Goal_angle
+    // again (double-offset), causing the guard to miss the target window
+    // whenever Goal_angle ≠ 0.
+    if(ball_angle <= 175.0f || ball_angle >= 185.0f)
         return false;
 
     if(Line_distance > 0.5f &&

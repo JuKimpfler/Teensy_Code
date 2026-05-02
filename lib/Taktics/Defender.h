@@ -59,6 +59,8 @@ public:
   double normalizeAngle(double angle);
   double AtoT(double angleA);
   double TtoA(double angleB);
+  // Returns true while the kick-drive manoeuvre is active
+  bool isKicking() const { return Kick_Active; }
 };
 
 #endif
