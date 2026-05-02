@@ -135,9 +135,12 @@ void DefenderAdapterC::update() {
     _buildLineSensors(lineSensors);
 
     // Last_Line_Angle: Defender uses this as a reference after line is lost.
-    // We maintain _lastLineAngle ourselves (updated when line is detected) and
-    // also rely on Defender's internal static for the same purpose.
-    float lastLineAngle = linieWinkel;  // updated each cycle when line active
+    // Track the last LinieWinkel seen when the line WAS detected so that
+    // the Defender gets a meaningful value even when the line is currently lost.
+    if (lineDetected) {
+        _lastLineAngle = linieWinkel;
+    }
+    float lastLineAngle = _lastLineAngle;
 
     // ── Call Defender ─────────────────────────────────────────────────────────
     _drive = _defender.follow_Line(
