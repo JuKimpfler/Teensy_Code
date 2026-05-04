@@ -29,10 +29,7 @@ const uint16_t IR_maxi_s[16] = {2941,2917,2906,2917,2940,2922,2932,2922,2835,294
 const int16_t IR_mini_w[16] = {23,24,26,25,19,23,25,19,25,22,1,19,147,22,24,14};
 const uint16_t IR_maxi_w[16] = {2950,2950,2950,2950,2950,2950,2950,2950,2950,2950,535,2939,3018,2968,2955,2938};
 
-inline int Line_Grass = 2000;
-inline int Line_Norm = 4000;
-
-inline int Line_Schwelle = 3000;
+inline int Line_Schwelle = 1300;
 
 inline int LDR_Schwelle = 100;
 

@@ -1,4 +1,5 @@
 #include "Defender.h"
+#include "Elementar.h"
 
 DefenderC Defender;
 
@@ -8,47 +9,91 @@ void DefenderC::Bump_Ball(){
     }
 }
 
+static inline float angleDiff(float a, float b) {
+  return fabsf(U.Circel(a - b));
+}
+
+// Gibt 999.0f zurück => stehen bleiben
+float berechneLinienFahrWinkel(float ballAngle,
+                               const uint16_t* lineArray,
+                               int arraySize = 32,
+                               float toleranzGrenzWert = 10.0f)
+{
+  if (!lineArray) return 0.0f;
+  if (arraySize > 32) arraySize = 32;
+
+  float aktiveSensoren[32];
+  int anzahlAktiv = 0;
+
+  // 1) aktive Sensoren sammeln (Winkelpositionen)
+  for (int i = 0; i < arraySize; i++) {
+    if (lineArray[i] != 0u) { // uint16_t: 0/1
+      aktiveSensoren[anzahlAktiv++] = U.Circel((i * 11.25f) - 90.0f);
+    }
+  }
+
+  if (anzahlAktiv == 0) return 0.0f;
+  if (anzahlAktiv == 1) return aktiveSensoren[0];
+
+  // 2) zwei Sensoren mit maximaler Winkel-Distanz finden (kreisförmig korrekt)
+  float maxDistanz = -1.0f;
+  float sensorA = 0.0f, sensorB = 0.0f;
+
+  for (int i = 0; i < anzahlAktiv; i++) {
+    for (int j = i + 1; j < anzahlAktiv; j++) {
+      float dist = angleDiff(aktiveSensoren[i], aktiveSensoren[j]);
+      if (dist > maxDistanz) {
+        maxDistanz = dist;
+        sensorA = aktiveSensoren[i];
+        sensorB = aktiveSensoren[j];
+      }
+    }
+  }
+
+  // 3) Mittelwinkel zwischen A und B bestimmen (2 Möglichkeiten)
+  float delta  = U.Circel(sensorB - sensorA);
+  float mitte1 = U.Circel(sensorA + (delta * 0.5f));
+  float mitte2 = U.Circel(mitte1 + 180.0f);
+
+  // 4) Mitte wählen, die näher am Ballwinkel liegt
+  float zielWinkel = (angleDiff(mitte1, ballAngle) < angleDiff(mitte2, ballAngle)) ? mitte1 : mitte2;
+
+  // 5) Wenn Zielwinkel schon nahe am Ballwinkel ist: stehen bleiben
+  if (angleDiff(zielWinkel, ballAngle) <= toleranzGrenzWert) {
+    return 999.0f;
+  }
+
+  // 6) Fahrwinkel muss ein aktiver Sensorwinkel sein: nächstgelegenen wählen
+  float besterFahrWinkel = aktiveSensoren[0];
+  float minFehler = 1e9f;
+
+  for (int i = 0; i < anzahlAktiv; i++) {
+    float fehler = angleDiff(aktiveSensoren[i], zielWinkel);
+    if (fehler < minFehler) {
+      minFehler = fehler;
+      besterFahrWinkel = aktiveSensoren[i];
+    }
+  }
+
+  Serial.println("Drive : "+String(besterFahrWinkel) + " , Summe: " + String(Line.Summe) + " , Summe: " + String(minFehler));
+  return besterFahrWinkel;
+}
+
 float DefenderC::Follow_Line(){
-    float mdiff = 200;
-    float diff = 0;
-    float Position = 0;
-    float mPosition = 0;
-    int written = false;
-
-    Serial.print("start:  ");
-
-    for (int i = 0; i<32 ; i++){
-        if(Line.line[i]){
-            Position = U.Circel(((i*11.25)-90)*1);
-            diff = abs(U.Circel(Position-Ball.Angle));
-    
-            Serial.print(Position);
-            Serial.print(" ~ ");
-            Serial.print(diff);
-            Serial.print(" , ");
-
-            if(diff<mdiff){
-                mdiff = diff;
-                mPosition = Position;
-                written = 1;
-            }
+    if(Line.Summe > 0){
+        float fahrWinkel = berechneLinienFahrWinkel(Ball.Angle, Line.line , 32 ,10 );
+        if (fahrWinkel == 999.0f) {
+            Serial.println("Stop!");
+            Robot.Stop();
+        } else {
+            Robot.Drive(fahrWinkel,0,20);
         }
     }
-
-    Serial.println(" ");
-
-    if(written == 0){
-        return 0;
+    else {
+        Serial.println("No_line!");
+        Robot.Drive(180,0,20);
     }
-    else if(written == 1){
-        Serial.println(mPosition);
-        return (mPosition*-1);
-    }
-
-    if(Line.Summe == 0){
-        return 180;
-    }
-
+    return 0;
 }
 
 void DefenderC::set_State(bool State){
@@ -61,7 +106,7 @@ void DefenderC::init(){
 
 void DefenderC::Update(){
     if(State_Def == true){
-        Robot.Drive(Follow_Line(),0,15);
+        Follow_Line();
         Bump_Ball();
     }
 }

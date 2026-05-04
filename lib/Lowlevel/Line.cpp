@@ -80,8 +80,5 @@ void LineC::init(){
     digitalWrite(CS_LineD, HIGH);  /* prepare default state of ADC4 chip select */
     pinMode(CS_LineVW, OUTPUT);  /* ADC5 chip select */
     digitalWrite(CS_LineVW, HIGH);  /* prepare default state of ADC5 chip select */
-
-    //Line_Schwelle = Line_Grass + (uint16_t)(0.6f * (Line_Norm - Line_Grass));
-    //Line_Schwelle_VW = Line_Grass + (uint16_t)(0.6f * (Line_Norm_VW - Line_Grass_VW));
 }
 

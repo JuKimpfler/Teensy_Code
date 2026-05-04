@@ -82,11 +82,20 @@ void loop() {
         Game.Stop();
         ESC.stop();
 
+        Debug.Start();
+        Debug.Plot_List("Line",Line.Values_raw,32);
+        Debug.Send();
+
+        delay(500);
+
         if(System.Button[0] || BC.Bt1 ){BNO055.Calibrate();} // BNO055 set to 0
 
         if (System.Button[1] || BC.Bt2 ){Robot.Kicker.On();} // Kicker test
 
         if (System.Button[2] || BC.Bt3 ){IR.Calib_Dist();} 
+        else{}
+
+        if (System.Button[3] || BC.Bt4 ){Line.Calibrate(0);} 
         else{}
 
         if (System.Switches[1] || BC.Sw1){IR.Calib_Offset();} 

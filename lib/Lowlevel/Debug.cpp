@@ -127,10 +127,6 @@ void DebugC::Plot_List(String name, String Values[], size_t count) {
 }
 
 void DebugC::Send(bool BLE) {
-    if (!BLE) {
-        Serial.println(mainList);
-    } else {
-        //UART_Pixy.println(mainList);
-    }
+    Serial.println(mainList);
 }
 
