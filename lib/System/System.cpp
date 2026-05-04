@@ -48,18 +48,16 @@ void SystemC::UpdateC::Interface(){
 
 void SystemC::UpdateC::Sensors(){
     System.Start = digitalRead(Start_Port);
-    BC.process();
-    BL.doRolle();
     IR.read();
     BNO055.read();
     Line.read_Fast();
     Robot.Kicker.Update();
     US.read();
+    Cam.Update();
 }
 
 void SystemC::UpdateC::Calculations(){
     PID.Calculate();
     BallCalc.CalcAngle();
-    BallCalc.CalcDist();
     LineCalc.Calc();
 }

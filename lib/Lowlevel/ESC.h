@@ -30,6 +30,8 @@ class ESCC {
         void writeTicks(uint32_t ticks);
 
     public:
+        bool Enable = false;
+
         // Initialisiert den PWM-Pin, kalibriert den ESC einmalig und armt ihn.
         // pin: der Teensy-Pin, an dem das ESC-Signalkabel hängt.
         // Nach init() ist der ESC bereit und gestoppt (set(0)).

@@ -40,7 +40,7 @@ void USC::init(){
 
 void USC::read(){
     //Wire1.setClock(I2C_SPEED_US);
-    if(abs(BNO055.giveDeg())<10){
+    if(abs(BNO055.giveDeg())<7){
         sonar.update();
         Distance[1]=sonar.getDistance(0);
         Distance[2]=sonar.getDistance(1);

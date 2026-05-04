@@ -32,12 +32,13 @@ class BallC{
     public:
         double Angle;
         double Angle_raw;
-        int Distance;
-        int Distance_raw;
-        uint16_t Distance_raw2;
+        float Distance;
+        float Distance_raw;
+        float Distance_raw2;
         bool inSight;
         int Angle_P2; // Ballwinkel von Player2 
-        int Distance_P2; // Balldistance von Player2 
+        float Distance_P2; // Balldistance von Player2 
+        int Stilltime;
     private:
 };
 

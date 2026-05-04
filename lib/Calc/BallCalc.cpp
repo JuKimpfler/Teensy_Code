@@ -1,67 +1,31 @@
 #include "BallCalc.h"
 #include "IR.h"
+#include "BNO055.h"
 
 BallCalcC BallCalc;
+elapsedMillis Stilltimer;
 
 void BallCalcC::CalcAngle(){
+    lastA = Ball.Angle;
+    lastD = Ball.Distance;
+
+    Ball.Distance = (Ball.Distance_raw2 - IR.Dist_Offset)*2;
+
+    if(Ball.Distance>200){Ball.Distance = 200;}
+
     Ball.Angle = Ball.Angle_raw-IR.Angle_Offset;
 
-    /*
-    double x = 0; 
-    double y = 0;
+    diffA = abs(abs(Ball.Angle)-abs(lastA));
+    diffD = abs(abs(Ball.Distance)-abs(lastD));
 
-    for (uint_fast8_t i=0; i<16; i++)
-    {
-        x = x +  IR.IR_Values[i] * sinf(((i*22.5)*DEG_TO_RAD));
-        y = y +  IR.IR_Values[i] * cosf(((i*22.5)*DEG_TO_RAD));
+    if((diffA>0.13) || (diffD>5)){
+        Stilltimer = 0;
     }
 
-    Ball.Angle = atan2f(x,y)*RAD_TO_DEG;
-
-    if(Ball.Angle<-180){Ball.Angle = Ball.Angle+ 360;}
-    else if (Ball.Angle > 180){Ball.Angle = Ball.Angle - 360;}
-
-    Ball.Angle = -Ball.Angle;
-
-    //if(Ball.Distance<5){Ball.Angle=0;}*/
-}
-
-void BallCalcC::CalcDist(){
-    
-    Ball.Distance_raw2 = ((1/sqrt(Ball.Distance_raw)) * 2000);
-    Ball.Distance = (Ball.Distance_raw2 -IR.Dist_Offset)*2;
-
-    if(Ball.Distance>200){
-        Ball.Distance = 200;
-    }
+    Ball.Stilltime = Stilltimer;
 }
 
 void BallCalcC::getAngle(){
-
-    //Zone = "unread";
-
-    //int B_Schwelle = 10;
-    //if(U.Ran(Ball.Angle,-5,5)&&U.Ran(Ball.Distance,-30,Dist_Schwelle_min)){DriveAngle=Ball.Angle;Zone = "A";  /* Zone A*/ }
-    //else if(U.Ran(Ball.Angle,-B_Schwelle,B_Schwelle)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=Ball.Angle*B_Faktor; Zone = "B"; /* Zone B*/ }
-    //else if(U.Ran(Ball.Angle,5,90)&&U.Ran(Ball.Distance,-30,Dist_Schwelle_min)){DriveAngle=-C_Faktor;Zone = "C1"; /* Zone C1*/ }
-    //else if(U.Ran(Ball.Angle,-5,-90)&&U.Ran(Ball.Distance,-30,Dist_Schwelle_min)){DriveAngle=C_Faktor; Zone = "C2";/* Zone C2*/ }
-    //else if(U.Ran(Ball.Angle,90,130)&&U.Ran(Ball.Distance,-30,Dist_Schwelle_min)){DriveAngle=-H_Faktor;Zone = "H1"; /* Zone C1*/ }
-    //else if(U.Ran(Ball.Angle,-90,-130)&&U.Ran(Ball.Distance,-30,Dist_Schwelle_min)){DriveAngle=H_Faktor; Zone = "H2";/* Zone C2*/ }
-    //else if(U.Ran(Ball.Angle,130,180)&&U.Ran(Ball.Distance,-30,Dist_Schwelle_min)){DriveAngle=-90;Zone = "D1"; /* Zone D1*/ }
-    //else if(U.Ran(Ball.Angle,-130,-180)&&U.Ran(Ball.Distance,-30,Dist_Schwelle_min)){DriveAngle=90;Zone = "D2"; /* Zone D2*/ }
-    //else if(U.Ran(Ball.Angle,B_Schwelle,90)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=-E_Faktor;Zone = "E1"; /* Zone E1*/ }
-    //else if(U.Ran(Ball.Angle,-B_Schwelle,-90)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=E_Faktor;Zone = "E2"; /* Zone E2*/ }
-    //else if(U.Ran(Ball.Angle,90,160)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=-F_Faktor;Zone = "F1"; /* Zone F1*/ }
-    //else if(U.Ran(Ball.Angle,-90,-160)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=F_Faktor;Zone = "F2"; /* Zone F2*/ }
-    //else if(U.Ran(Ball.Angle,160,180)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=90;Zone = "G2"; /* Zone G1*/ }
-    //else if(U.Ran(Ball.Angle,-160,-180)&&U.Ran(Ball.Distance,Dist_Schwelle_min,Dist_Schwelle_max)){DriveAngle=-90;Zone = "G2"; /* Zone G2*/ }
-    //else{
-    //    DriveAngle = Ball.Angle;
-    //    Zone = "Error";
-    //}*/
-    //DriveAngle = DriveAngle*-1;
-
-     
 
     if (Ball.Distance < 30){
         if(abs(Ball.Angle) < 30){
@@ -83,8 +47,4 @@ void BallCalcC::getAngle(){
 
     if(DriveAngle<-180){DriveAngle = DriveAngle+ 360;}
     else if (DriveAngle > 180){DriveAngle = DriveAngle - 360;}
-}
-
-void BallCalcC::calcTorAngle(){
-    //TODO
 }

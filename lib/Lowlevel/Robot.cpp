@@ -23,18 +23,11 @@ void RobotC::Drive(float Dir , float Angle,int Speed1){
 
     Dir_A = Dir;
 
-    if(Color_ID){
-        Vel[VR_Motor] = sinf((Dir_A+55)*DEG_TO_RAD)*15 + (-PID.Out);
-        Vel[VL_Motor] = sinf((Dir_A+305)*DEG_TO_RAD)*15 + (-PID.Out);
-        Vel[HR_Motor] = sinf((Dir_A+145)*DEG_TO_RAD)*15 + (-PID.Out);
-        Vel[HL_Motor] = sinf((Dir_A+215)*DEG_TO_RAD)*15 + (-PID.Out);
-    }
-    else{
-        Vel[VR_Motor] = sinf((Dir_A+55)*DEG_TO_RAD)*15 + (-PID.Out);
-        Vel[VL_Motor] = sinf((Dir_A+305)*DEG_TO_RAD)*15 + (-PID.Out);
-        Vel[HR_Motor] = sinf((Dir_A+145)*DEG_TO_RAD)*15 + (-PID.Out);
-        Vel[HL_Motor] = sinf((Dir_A+215)*DEG_TO_RAD)*15 + (-PID.Out);
-    }
+    Vel[VR_Motor] = sinf((Dir_A+55)*DEG_TO_RAD)*15 + (-PID.Out);
+    Vel[VL_Motor] = sinf((Dir_A+305)*DEG_TO_RAD)*15 + (-PID.Out);
+    Vel[HR_Motor] = sinf((Dir_A+145)*DEG_TO_RAD)*15 + (-PID.Out);
+    Vel[HL_Motor] = sinf((Dir_A+215)*DEG_TO_RAD)*15 + (-PID.Out);
+
 
     if (Vel[VR_Motor]<0){Vel_D[VR_Motor]=Vel[VR_Motor]*-1;Dir0=0;}
     else{Vel_D[VR_Motor]=Vel[VR_Motor];Dir0=1;}

@@ -3,7 +3,7 @@
 
 
 //#define Debug_EN // Debug Ausgabe
-//#define Ir_Calib // calibration Mode IR Values
+#define Ir_Calib // calibration Mode IR Values
 //#define Calib // calibration Mode Normal
 //#define Line_Calib
 //#define PID_Calib
@@ -34,11 +34,11 @@ inline int Line_Norm = 4000;
 
 inline int Line_Schwelle = 3000;
 
-inline int LDR_Schwelle = 550;
+inline int LDR_Schwelle = 100;
 
 inline int IR_Sight = 45; // ab wann wird der Ball als da erkannt
 
-inline int Motor_Frequency =  1000;
+inline int Motor_Frequency =  400;
 
 // --- Kamera Konstanten ---
 const float CAM_RES_X = 320.0;

@@ -11,16 +11,9 @@ IR_ring ir_lib(ir_ring_handle);
 // init
 
 void IRC::init(){
-    #ifdef Robo_w
-        ir_lib.write_offsets(IR_mini_w);
-        ir_lib.write_gains(IR_maxi_w);
-        ir_lib.write_ir_sensor_mask(0b1111111111111111);
-    #endif
-    #ifdef Robo_s
-        ir_lib.write_offsets(IR_mini_s);
-        ir_lib.write_gains(IR_maxi_s);
-        ir_lib.write_ir_sensor_mask(0b1111111111111111);
-    #endif
+    ir_lib.write_offsets(IR_mini_s);
+    ir_lib.write_gains(IR_maxi_s);
+    ir_lib.write_ir_sensor_mask(0b1111111111111111);
     //ir_lib.load_calibration(true,true,false);
 }
 
@@ -35,14 +28,36 @@ void IRC::read(){
     ValueF=U.Circel(ir_lib.read_ball_angle()*-1);
     Ball.Angle_raw = ValueF;
 
+    int Position1 = 0;
+    int max = IR.IR_Values[0];
+    for (int i = 0;i<16;i++){
+        if(IR.IR_Values[i]>max){
+            Position1 = i;
+            max = IR.IR_Values[i];
+        }
+    }
+    int Position2 = 0;
+    max = IR.IR_Values[0];
+    for (int i = 0;i<16;i++){
+        if(i != Position1){
+            if(IR.IR_Values[i]>max){
+                Position2 = i;
+                max = IR.IR_Values[i];
+            }
+        }
+    }
+
+    Ball.Distance_raw = (IR.IR_Values[Position1])/5.9;
+    Ball.Distance_raw2 = ((1/sqrt(Ball.Distance_raw)) * 2000);
+
     uint16_t Value=0;
     //for (int i = 0; i<16 ; i++){
     //    Value=IR_Values[i]+Value;
     //}
-    Value = ir_lib.read_ball_distance();
-    Ball.Distance_raw = Value;
+    //Value = ir_lib.read_ball_distance();
+    //Ball.Distance_raw = Value;
 
-    Ball.inSight = !(Ball.Distance_raw < IR_Sight);
+    //Ball.inSight = !(Ball.Distance_raw < IR_Sight);
 }
 
 void IRC::Calib_Offset(){

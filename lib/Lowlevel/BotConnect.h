@@ -36,6 +36,15 @@ public:
     bool mode4 = false;
     bool mode5 = false;
 
+    bool Sw1 = false;
+    bool Sw2 = false;
+    bool Sw3 = false;
+
+    bool Bt1 = false;
+    bool Bt2 = false;
+    bool Bt3 = false;
+    bool Bt4 = false;
+
     // Active calibration: the last received calibration command is true,
     // all others false. Default at startup: calIrMax=true (channel 1 as standard).
     bool calIrMax   = true;
@@ -70,6 +79,12 @@ public:
 
     // ── P2P callback (optional) ───────────────────────────────
     void onP2P(OnP2PCb cb) { _onP2P = cb; }
+
+    // ── Decoder helpers ───────────────────────────────────────
+    // Decode the switches integer (bit0=SW1, bit1=SW2, bit2=SW3)
+    void decodeSwitches(bool &sw1, bool &sw2, bool &sw3) const;
+    // Decode the buttons integer (bit0=B1, bit1=B2, bit2=B3, bit3=B4)
+    void decodeButtons(bool &btn1, bool &btn2, bool &btn3, bool &btn4) const;
 
     // ── Telemetry helpers ─────────────────────────────────────
     // Send a named integer stream value
@@ -156,6 +171,9 @@ public:
 
     void begin(TwoWire &wire = Wire, uint8_t address = 0x03);
     void process();
+
+    void decodeSwitches(bool &sw1, bool &sw2, bool &sw3) const;
+    void decodeButtons(bool &btn1, bool &btn2, bool &btn3, bool &btn4) const;
 
     void sendTelemetryInt(const char *name, int32_t value);
     void sendTelemetryFloat(const char *name, float value);
