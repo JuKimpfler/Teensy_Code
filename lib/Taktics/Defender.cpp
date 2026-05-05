@@ -15,7 +15,7 @@ static inline float angleDiff(float a, float b) {
 
 // Gibt 999.0f zurück => stehen bleiben
 float berechneLinienFahrWinkel(float ballAngle,
-                               const uint16_t* lineArray,
+                               const uint8_t* lineArray,
                                int arraySize = 32,
                                float toleranzGrenzWert = 10.0f)
 {
@@ -74,8 +74,14 @@ float berechneLinienFahrWinkel(float ballAngle,
       besterFahrWinkel = aktiveSensoren[i];
     }
   }
-
-  Serial.println("Drive : "+String(besterFahrWinkel) + " , Summe: " + String(Line.Summe) + " , Summe: " + String(minFehler));
+  Debug.Start();
+  Debug.Plot("Anzahl",anzahlAktiv);
+  Debug.Plot_List("Aktive",aktiveSensoren,anzahlAktiv);
+  Debug.Plot("ziel",zielWinkel);
+  Debug.Plot("ball",Ball.Angle);
+  Debug.Plot("fahr",besterFahrWinkel);
+  Debug.Send();
+  delay(20);
   return besterFahrWinkel;
 }
 

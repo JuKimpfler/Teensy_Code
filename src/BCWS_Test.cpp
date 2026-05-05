@@ -76,7 +76,9 @@ void loop() {
         else if (BC.mode3) {Robot.Turn(0);}
         else if (BC.mode4) {Robot.Turn(Cam.give_Angle());}
 
-        else if (!BC.mode5) {Defender.Update();} // Ohne BC modus
+        else if (!BC.mode5) {
+            Defender.Update();
+        } // Ohne BC modus
     }
     else{
         Game.Stop();
