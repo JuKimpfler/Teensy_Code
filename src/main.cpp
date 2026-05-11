@@ -46,7 +46,6 @@ void setup() {
     RGB.write(1,"G");  
     Serial.println("ON!");
     RGB.Apply();
-    Cam.init(UART_2,115200);
 }
 
 void loop() { 
@@ -54,7 +53,7 @@ void loop() {
     MainSpeed = 30;
 
     if(System.Start){
-        /*if(!Game.LineInterrupt()){
+        if(!Game.LineInterrupt()){
             if(LDR.Aktiv()){
                 Robot.Drive(0,0,30);
                 Robot.Kicker.On();
@@ -63,9 +62,9 @@ void loop() {
                 int drive = U.Circel(((LUT.get_DriveAngle(U.Circel(Ball.Angle),Ball.Distance))));
                 Robot.Drive(drive,0,20);
             }
-        }*/
+        }
 
-        Robot.Turn(Cam.give_Angle());
+        //Robot.Turn(Cam.give_Angle());
     } 
     else{
         Game.Stop();
@@ -88,14 +87,7 @@ void loop() {
         //Serial.print(",");
         //Serial.println(PFU.giveY());
 
-        Serial.print("> ");
-        if (Cam.isValid()) {
-            float a = Cam.give_Angle();
-            float a_r = Cam.give_Angle_Cam();
-            float h = Cam.give_BlobH();
-            Serial.println(" Angle: "+String(a)+" , Angle_rela: "+String(a_r)+" , höhe: "+String(h));
-        }
-        //Serial.println(" LDR: "+String(Line.Summe)+" , LDRa: "+String(Cycletime));
+        Serial.println(" LDR: "+String(LDR.Aktiv())+" , LDRa: "+String(analogRead(LDR_Port)));
         System.Update.Interface();
     }
 
