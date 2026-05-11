@@ -9,12 +9,14 @@ void GameC::Run(){
 
     if(!Game.LineInterrupt()){
         if(LDR.Aktiv()){
-            if(Cam.isValid()){Robot.Drive(Cam.give_Angle()*1.3,Cam.give_Angle(),25);}
+            if(Cam.isValid()){Robot.Drive(Cam.give_Angle()*1.3,Cam.give_Angle(),25);Robot.Kicker.On();}
             else{
                 Robot.Drive(180,0,25);
+                Robot.Kicker.Off();
             }
         }
         else{
+            Robot.Kicker.Off();
             int Distance2 = Ball.Distance-0;
             if(Distance2 < 0){Distance2 = 0;}
             int drive = U.Circel(((LUT.get_DriveAngle(U.Circel(Ball.Angle),Distance2))));
