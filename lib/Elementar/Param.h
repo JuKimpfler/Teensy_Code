@@ -34,7 +34,7 @@ inline int Line_Norm = 4000;
 
 inline int Line_Schwelle = 3000;
 
-inline int LDR_Schwelle = 250;
+inline int LDR_Schwelle = 300;
 
 inline int IR_Sight = 45; // ab wann wird der Ball als da erkannt
 
