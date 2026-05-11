@@ -12,9 +12,20 @@ class LineC {
         uint8_t lineVW[8];
         int Values_raw[32];
         int Values_raw_VW[8];
+
+        #define N 40
+        #define ZYKLEN 1000
+
+        int eingangDaten[N];              // Dein Eingangsdatenarray (Werte 0..4000)
+        float mittelwertBuffer[N];        // Buffer zum Berechnen aktueller Mittelwerte
+        float mittelwerte1[N];            // Liste für Modus true
+        float mittelwerte2[N];            // Liste für Modus false
+        
         void read_Fast(); 
         void init();
-        void Calibrate(int Modes);
+        void Calibrate(bool Modes);
+
+        void messzyklenDurchschnitt(bool modus);
 };
 
 extern LineC Line;

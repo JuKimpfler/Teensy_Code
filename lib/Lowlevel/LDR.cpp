@@ -7,7 +7,7 @@ void LDRC::init(){
 }
 
 bool LDRC::Aktiv(bool check ){
-    if (analogRead(LDR_Port) > LDR_Schwelle){
+    if (analogRead(LDR_Port) > LDR_Schwelle[Color_ID]){
         return true;
     }
     else{

@@ -11,7 +11,7 @@ void setup() {
     Expander.I2C.init(I2C_ITF_Main,Input_Mode,All_Off);
     delay(500);
     Expander.I2C.read(I2C_ITF_Main);
-    Color_ID = Expander.I2C.give(I2C_ITF_Main,ITF_Main_CID);
+    Color_ID = false;//Expander.I2C.give(I2C_ITF_Main,ITF_Main_CID);
     ESC.Enable = Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW0);
 
     SPI.begin();
@@ -57,18 +57,79 @@ void setup() {
 
     Cam.setSign(true);
 
-    Defender.set_State(true);
+    Defender.set_State(false);
 }
 
 void loop() { 
     Cycle_Timer = 0 ;
 
+    //Calibroutine
+    if(Serial.available()>0){
+        if(Serial.readString()=="giveCalib"){
+            if(Color_ID){
+                Serial.print("int Line_w_calib[] = {");
+                for(int i = 0;i<40;i++){
+                    Serial.print(Line_conf[i]);
+                    if(i<39){Serial.print(",");}
+                }
+                Serial.println("};");
+
+
+                Serial.print("int IR_mini_w_calib[] = ");
+                for(int i = 0;i<16;i++){
+                    Serial.print(IR_mini_conf[i]);
+                    if(i<39){Serial.print(",");}
+                }
+                Serial.println("};");
+
+                Serial.print("int IR_maxi_w_calib[] = ");
+                for(int i = 0;i<16;i++){
+                    Serial.print(IR_maxi_conf[i]);
+                    if(i<39){Serial.print(",");}
+                }
+                Serial.println("};");
+
+                Serial.print("int LDR_w_Calib = ");
+                Serial.print(LDR_conf);
+                Serial.println(";");
+            }
+            else{
+                Serial.print("int Line_s_calib[] = {");
+                for(int i = 0;i<40;i++){
+                    Serial.print(Line_conf[i]);
+                    if(i<39){Serial.print(",");}
+                }
+                Serial.println("};");
+
+
+                Serial.print("int IR_mini_s_calib[] = ");
+                for(int i = 0;i<16;i++){
+                    Serial.print(IR_mini_conf[i]);
+                    if(i<39){Serial.print(",");}
+                }
+                Serial.println("};");
+
+                Serial.print("int IR_maxi_s_calib[] = ");
+                for(int i = 0;i<16;i++){
+                    Serial.print(IR_maxi_conf[i]);
+                    if(i<39){Serial.print(",");}
+                }
+                Serial.println("};");
+
+                Serial.print("int LDR_s_Calib = ");
+                Serial.print(LDR_conf);
+                Serial.println(";");
+            }
+            delay(10000);
+        }
+    }
+
     BC.process();
     
     if(System.Start || BC.start || digitalRead(RCJ_Port)){ 
         if (BC.mode1) {
-            //Game.Run();
-            Defender.Update();
+            Game.Run();
+            //Defender.Update();
         }
         else if (BC.mode2) {
             if (BC.controlActive) {Robot.Drive(BC.angle,0,BC.speed);}else{Game.Stop();}
@@ -77,31 +138,37 @@ void loop() {
         else if (BC.mode4) {Robot.Turn(Cam.give_Angle());}
 
         else if (!BC.mode5) {
-            Defender.Update();
+            //Defender.Update();
+            Game.Run();
         } // Ohne BC modus
     }
     else{
         Game.Stop();
         ESC.stop();
 
-        Debug.Start();
-        Debug.Plot_List("Line",Line.Values_raw,32);
-        Debug.Send();
+        //Debug.Start();
+        //Debug.Plot_List("Line",Line.line,32);
+        //Debug.Plot("Summe",Line.Summe);
+        //Debug.Plot("Angle",LineCalc.DriveAngle);
+        //Debug.Send();
 
-        delay(500);
+        //delay(100);
 
-        if(System.Button[0] || BC.Bt1 ){BNO055.Calibrate();} // BNO055 set to 0
+        if(System.Button[0] || BC.Bt1 ){BNO055.Calibrate();IR.Calib_Dist();} // BNO055 set to 0
 
         if (System.Button[1] || BC.Bt2 ){Robot.Kicker.On();} // Kicker test
 
-        if (System.Button[2] || BC.Bt3 ){IR.Calib_Dist();} 
+        if (System.Button[2] || BC.Bt3 ){Line.Calibrate(false);} 
         else{}
 
-        if (System.Button[3] || BC.Bt4 ){Line.Calibrate(0);} 
+        if (System.Button[3] || BC.Bt4 ){Line.Calibrate(true);} 
         else{}
 
-        if (System.Switches[1] || BC.Sw1){IR.Calib_Offset();} 
+        if (System.Switches[1] || BC.Sw2){IR.Calib_Offset();} 
         else{}
+
+        if (System.Switches[2] || BC.Sw3){ESC.set(15);}
+        else{ESC.set(0);}
     }
 
     if(BC.mode5){
@@ -121,11 +188,15 @@ void loop() {
         if (debugTimer >= DEBUG_INTERVAL_MS ) {
             debugTimer = 0;
 
-            //Serial.print("> ");
-           // Serial.println(" St: "+String(BallCalc.lastD)+" , D: "+String(BallCalc.diffD)+" , A: "+String(Ball.Distance));
+            Serial.print("> ");
+            Serial.println("analog: "+String(Line.Summe));
 
            // BC.sendTelemetryFloat("IR_Angle",Ball.Angle);
-           // BC.sendTelemetryFloat("Cam_Angle",Cam.give_Angle());            
+           // BC.sendTelemetryFloat("Cam_Angle",Cam.give_Angle());      
+           
+           BC.led1=LDR.Aktiv();
+           BC.led2=Line.Summe > 0;
+           BC.LedUpdate();
         }
     //}
 

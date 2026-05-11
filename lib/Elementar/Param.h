@@ -1,14 +1,6 @@
 #pragma once
 #include "Arduino.h"
 
-
-//#define Debug_EN // Debug Ausgabe
-#define Ir_Calib // calibration Mode IR Values
-//#define Calib // calibration Mode Normal
-//#define Line_Calib
-//#define PID_Calib
-//#define Com_Debug 
-
 #define HighSpeed 30 // Speed im HS modus
 #define LowSpeed = 25; // Speed im LS modus
 
@@ -18,28 +10,29 @@ inline float Ki = 0; // Startwert, dann erhöhen
 inline float PID_Mult = 0.1; // Belassen
 inline float PID_Konstante = 0.5; // Belassen
 
-inline int LDR_Schwelle_w = 500;
-inline int LDR_Schwelle_s = 600; 
+inline int16_t IR_mini_s_calib[16] = {19,20,18,18,21,18,18,18,18,21,19,19,0,19,17,17};
+inline uint16_t IR_maxi_s_calib[16] = {2941,2917,2906,2917,2940,2922,2932,2922,2835,2941,2941,2922,488,2924,2931,2916};
+inline int16_t IR_mini_w_calib[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+inline uint16_t IR_maxi_w_calib[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
-inline int IR_Dist_Offset_w = 90;
-inline int IR_Dist_Offset_s = 124;
+inline int Line_w_calib[40] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+inline int Line_s_calib[40] = {2691,2477,2618,2575,2384,2833,2780,3030,2714,2811,3158,2738,2816,2836,2540,2380,2424,2432,2301,2465,2417,2835,2644,1988,2191,2390,1970,2541,2574,2643,2703,2634,2820,2843,2550,2474,1929,2201,2605,2994};
+inline int Line_calib_min[40] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+inline int Line_calib_max[40] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
-const int16_t IR_mini_s[16] = {19,20,18,18,21,18,18,18,18,21,19,19,0,19,17,17};
-const uint16_t IR_maxi_s[16] = {2941,2917,2906,2917,2940,2922,2932,2922,2835,2941,2941,2922,488,2924,2931,2916};
-const int16_t IR_mini_w[16] = {23,24,26,25,19,23,25,19,25,22,1,19,147,22,24,14};
-const uint16_t IR_maxi_w[16] = {2950,2950,2950,2950,2950,2950,2950,2950,2950,2950,535,2939,3018,2968,2955,2938};
+inline int LDR_s_Calib = 100;
+inline int LDR_w_Calib = 100;
 
-// Calibration auf braunem ordner und weisem blatt papier ( Line mit nur weißer LED )
-const uint16_t Line_max_w[32] = {3868, 3852, 3864, 3864, 3852, 3868, 3864, 3876, 3872, 3872, 3884, 3876, 3880, 3884, 3880, 3880, 3880, 3876, 3864, 3864, 3856, 3876, 3872, 3832, 3852, 3860, 3812, 3856, 3864, 3868, 3868, 3868};
-const uint16_t Line_min_w[32] = {1104, 932, 1024, 1084, 904, 1264, 1168, 1656, 1424, 1436, 1688, 1280, 1356, 1528, 1504, 1604, 1540, 1492, 1060, 1060, 900, 1244, 1328, 740, 936, 1116, 628, 976, 1052, 1132, 1288, 1128};
+inline int16_t IR_mini_conf[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+inline uint16_t IR_maxi_conf[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+inline int Line_conf[40] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+inline int LDR_conf = 100;
 
-// Calibration auf braunem ordner und weisem blatt papier ( Line mit roter LED )
-const uint16_t Line_max_r[32] = {3868, 3852, 3864, 3864, 3852, 3868, 3864, 3876, 3872, 3872, 3884, 3876, 3880, 3884, 3880, 3880, 3880, 3876, 3864, 3864, 3856, 3876, 3872, 3832, 3852, 3860, 3812, 3856, 3864, 3868, 3868, 3868};
-const uint16_t Line_min_r[32] = {1104, 932, 1024, 1084, 904, 1264, 1168, 1656, 1424, 1436, 1688, 1280, 1356, 1528, 1504, 1604, 1540, 1492, 1060, 1060, 900, 1244, 1328, 740, 936, 1116, 628, 976, 1052, 1132, 1288, 1128};
-
-inline int Line_Schwelle = -400;
-
-inline int LDR_Schwelle = 100;
+inline int* Line_Schwelle_calib[] = {Line_calib_min,Line_calib_max};
+inline int LDR_Schwelle[] = {LDR_s_Calib,LDR_w_Calib};
+inline int* Line_Schwelle[] = {Line_s_calib,Line_w_calib};
+inline int16_t* IR_min[] = {IR_mini_s_calib,IR_mini_w_calib};
+inline uint16_t* IR_max[] = {IR_maxi_s_calib,IR_maxi_w_calib};
 
 inline int IR_Sight = 45; // ab wann wird der Ball als da erkannt
 

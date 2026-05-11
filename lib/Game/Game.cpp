@@ -9,9 +9,9 @@ void GameC::Run(){
 
     if(!Game.LineInterrupt()){
         if(LDR.Aktiv()){
-            if(Cam.isValid()){Robot.Drive(Cam.give_Angle()*1.3,Cam.give_Angle(),20);}
+            if(Cam.isValid()){Robot.Drive(Cam.give_Angle()*1.3,Cam.give_Angle(),25);}
             else{
-                Robot.Drive(180,0,20);
+                Robot.Drive(180,0,25);
             }
         }
         else{
@@ -24,7 +24,7 @@ void GameC::Run(){
             float turn=0;
             if(Cam.isValid() && abs(Cam.give_Angle()) < 60){turn = Cam.give_Angle();}
             else{turn = 0;}
-            Robot.Drive(drive,turn,15);
+            Robot.Drive(drive,turn,25);
         }
     }
     //if(Cam.isValid()){Robot.Turn(Cam.give_Angle());}
