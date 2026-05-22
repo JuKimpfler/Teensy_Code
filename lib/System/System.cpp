@@ -54,6 +54,7 @@ void SystemC::UpdateC::Sensors(){
     Robot.Kicker.Update();
     US.read();
     Cam.Update();
+    BC.process();
 }
 
 void SystemC::UpdateC::Calculations(){

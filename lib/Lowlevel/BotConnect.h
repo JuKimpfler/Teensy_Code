@@ -88,13 +88,17 @@ public:
 
     // ── Telemetry helpers ─────────────────────────────────────
     // Send a named integer stream value
-    void sendTelemetryInt(const char *name, int32_t value);
+    void sendTelemetryInt(const char *name, int value);
+    void sendListInt(const char *name, int value[] , size_t len);
     // Send a named float stream value
     void sendTelemetryFloat(const char *name, float value);
+    void sendListFloat(const char *name, float value[] , size_t len);
     // Send a named bool stream value
     void sendTelemetryBool(const char *name, bool value);
+    void sendListBool(const char *name, bool value[] , size_t len);
     // Send a named string stream value
-    void sendTelemetryString(const char *name, const char *value);
+    void sendTelemetryString(const char *name, char *value);
+    void sendListString(const char *name, char *value[] , size_t len);
     // Send all LED states (Led1..Led4) as telemetry update
     void LedUpdate();
 

@@ -125,11 +125,29 @@ void BotConnect::_parseLine(const char *line) {
 //   DBG:name=value\n   (unified prefix as of protocol v1)
 // The satellite firmware automatically tags telemetry with the correct SAT ID
 
-void BotConnect::sendTelemetryInt(const char *name, int32_t value) {
+void BotConnect::sendListInt(const char *name, int value[] , size_t len) {
+    if (!_serial) return;
+    for(int i = 0 ; i<len ; i++){
+        char buf[64];
+        snprintf(buf, sizeof(buf), "DBG:%s%d=%ld\n", name, i , (long)value[i]);
+        _sendLine(buf);
+    }
+}
+
+void BotConnect::sendTelemetryInt(const char *name, int value) {
     if (!_serial) return;
     char buf[64];
     snprintf(buf, sizeof(buf), "DBG:%s=%ld\n", name, (long)value);
     _sendLine(buf);
+}
+
+void BotConnect::sendListFloat(const char *name, float value[] , size_t len) {
+    if (!_serial) return;
+    for(int i = 0 ; i<len ; i++){
+        char buf[64];
+        snprintf(buf, sizeof(buf), "DBG:%s%d=%.2f\n", name, i , value[i]);
+        _sendLine(buf);
+    }
 }
 
 void BotConnect::sendTelemetryFloat(const char *name, float value) {
@@ -139,6 +157,15 @@ void BotConnect::sendTelemetryFloat(const char *name, float value) {
     _sendLine(buf);
 }
 
+void BotConnect::sendListBool(const char *name, bool value[] , size_t len) {
+    if (!_serial) return;
+    for(int i = 0 ; i<len ; i++){
+        char buf[64];
+        snprintf(buf, sizeof(buf), "DBG:%s%d=%d\n", name, i , value[i]);
+        _sendLine(buf);
+    }
+}
+
 void BotConnect::sendTelemetryBool(const char *name, bool value) {
     if (!_serial) return;
     char buf[64];
@@ -146,7 +173,16 @@ void BotConnect::sendTelemetryBool(const char *name, bool value) {
     _sendLine(buf);
 }
 
-void BotConnect::sendTelemetryString(const char *name, const char *value) {
+void BotConnect::sendListString(const char *name, char *value[] , size_t len) {
+    if (!_serial) return;
+    for(int i = 0 ; i<len ; i++){
+        char buf[64];
+        snprintf(buf, sizeof(buf), "DBG:%s%d=%s\n", name, i , value[i]);
+        _sendLine(buf);
+    }
+}
+
+void BotConnect::sendTelemetryString(const char *name, char *value) {
     if (!_serial) return;
     char buf[64];
     snprintf(buf, sizeof(buf), "DBG:%s=%s\n", name, value);

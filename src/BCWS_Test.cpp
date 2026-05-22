@@ -2,7 +2,7 @@
 #include "Defender.h"
 
 elapsedMillis debugTimer;
-static constexpr uint32_t DEBUG_INTERVAL_MS = 20; // Serielle Ausgabe alle 100ms
+static constexpr uint32_t DEBUG_INTERVAL_MS = 30; // Serielle Ausgabe alle 100ms
 
 void setup() {
     Wire1.begin();
@@ -123,8 +123,6 @@ void loop() {
             delay(10000);
         }
     }
-
-    BC.process();
     
     if(System.Start || BC.start || digitalRead(RCJ_Port)){ 
         if (BC.mode1) {
@@ -189,11 +187,11 @@ void loop() {
             debugTimer = 0;
 
             Serial.print("> ");
-            Serial.println("analog: "+String(Line.Summe));
+            Serial.println("pt26: "+String(Line.Values_raw[28])+" , pt22: "+String(Line.Values_raw[26])+" , pt20: "+String(Line.Values_raw[25]));
 
-           // BC.sendTelemetryFloat("IR_Angle",Ball.Angle);
-           // BC.sendTelemetryFloat("Cam_Angle",Cam.give_Angle());      
-           
+            //BC.sendTelemetryFloat("BNO",BNO055.giveDeg());
+            //BC.sendTelemetryBool("Start",digitalRead(Start_Port));  
+            //BC.sendListInt("list",Line.Values_raw,28);   
            BC.led1=LDR.Aktiv();
            BC.led2=Line.Summe > 0;
            BC.LedUpdate();
@@ -205,6 +203,7 @@ void loop() {
 
     System.Update.Calculations();
     System.Update.Sensors();
+    //Line.read_Fast();
 
     Robot.Kicker.Update_End();
     Cycletime=Cycle_Timer;
