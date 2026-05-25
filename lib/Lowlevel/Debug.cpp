@@ -138,6 +138,19 @@ void DebugC::Plot_List(String name, int Values[], size_t count) {
         mainList += ", ";
 }
 
+void DebugC::Plot_List(String name,int Num[] ,int Values[], size_t count) {
+    for (size_t i = 0; i < count; ++i) {
+        mainList += (name + String(Num[i]));
+        mainList += ":";
+        mainList += String(Values[i]);
+        if (i + 1 < count) {
+            mainList += ", ";
+        }
+    }
+        // Step 3: Add a list of name-value pairs to the debug output.
+        mainList += ", ";
+}
+
 void DebugC::Plot_List(String name, uint8_t Values[], size_t count) {
     for (size_t i = 0; i < count; ++i) {
         mainList += (name + String(i));

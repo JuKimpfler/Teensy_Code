@@ -4,11 +4,11 @@ GameC Game;
 elapsedMillis Line_Timer;
 
 void GameC::Run(){
-    if(Ball.Distance<30){ESC.set(10);}
+    if(Ball.Distance<30){ESC.set(20);}
     else{ESC.stop();}
 
     if(!Game.LineInterrupt()){
-        if(LDR.Aktiv()){
+        if(Ball.catched){
             if(Cam.isValid()){Robot.Drive(Cam.give_Angle()*1.3,Cam.give_Angle(),25);Robot.Kicker.On();}
             else{
                 Robot.Drive(180,0,25);
@@ -46,7 +46,7 @@ bool GameC::LineInterrupt(){
         U.Circel(dead_diff);
 
         if(U.Ran(abs(dead_diff),135,225)){
-            Robot.Drive(((LineCalc.DriveAngle-180)*-1),0,100);
+            Robot.Drive(LineCalc.RawAngle,0,100);
         }
         else{
             Robot.Drive(LineCalc.DriveAngle,0,100);

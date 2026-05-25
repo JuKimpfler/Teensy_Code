@@ -39,6 +39,7 @@ class BallC{
         int Angle_P2; // Ballwinkel von Player2 
         float Distance_P2; // Balldistance von Player2 
         int Stilltime;
+        bool catched=false;
     private:
 };
 

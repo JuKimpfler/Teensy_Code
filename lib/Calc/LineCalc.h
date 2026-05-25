@@ -7,6 +7,7 @@ class LineCalcC{
         float summex = 0;
         float summey = 0;
         float lastWinkel = 0;
+        bool berechneLinienTiefe();
     public:
         float RawAngle;
         int Distance;

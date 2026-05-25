@@ -1,8 +1,12 @@
 #include "System.h"
-#include "Defender.h"
+//#include "Defender.h"
+#include "INA.h"
+//#include "Defender_Tim.h"
+
+//Defender_Tim T_Defender;
 
 elapsedMillis debugTimer;
-static constexpr uint32_t DEBUG_INTERVAL_MS = 30; // Serielle Ausgabe alle 100ms
+static constexpr uint32_t DEBUG_INTERVAL_MS = 40; // Serielle Ausgabe alle 100ms
 
 void setup() {
     Wire1.begin();
@@ -19,6 +23,8 @@ void setup() {
     UART_2.begin(115200);
     UART_Pixy.begin(115200);
 
+    INA.init();
+
     pinMode(Start_Port,INPUT);
     pinMode(Kicker_Port, OUTPUT);
     pinMode(RCJ_Port,INPUT);
@@ -31,15 +37,16 @@ void setup() {
     RGB.write(1,"R");  
 
     if(ESC.Enable){
+        while(INA.Voltage_DR()>4){delay(30);}
         RGB.write(1,"R");  
         Serial.println("push button 3");
         RGB.Apply();
         ESC.init(33);
         delay(1000);
-        while(!System.Button[2]){System.Update.Interface();Serial.println("waiting on power up");}
+        while(INA.Voltage_DR()<4){delay(30);Serial.println("waiting on power up");}
         delay(100);
         ESC.init_Power();
-        ESC.set(10);
+        ESC.set(20);
         RGB.write(1,"G");  
         Serial.println("ON!");
         RGB.Apply();
@@ -57,11 +64,34 @@ void setup() {
 
     Cam.setSign(true);
 
-    Defender.set_State(false);
+    //Defender.set_State(false);
+
+    US.init();
 }
 
 void loop() { 
     Cycle_Timer = 0 ;
+
+    //bool aktive[32];
+    //for(int i = 0 ; i<32 ; i++){if(Line.line[i]==1){aktive[i] = true;}else{aktive[i] = false;}}
+
+    //Drive_Data Data = T_Defender.follow_Line(aktive,Ball.Angle,Cam.give_BlobH(),Cam.isValid(),Cam.give_Angle(),LineCalc.RawAngle,Line.dep,(Line.Summe!=0),LineCalc.RawAngle,Ball.Distance,false);
+
+    if(ESC.Enable){
+        if(INA.Current_DR()>1340){
+            RGB.write(0,"R");
+            Ball.catched=true;
+        }
+        else{
+            RGB.write(0,"G");
+            Ball.catched=false;
+        }
+    }
+    else{
+        Ball.catched = LDR.Aktiv();
+        if(Ball.catched){RGB.write(0,"O");}
+        else{RGB.write(0,"B");}
+    }
 
     //Calibroutine
     if(Serial.available()>0){
@@ -142,7 +172,6 @@ void loop() {
     }
     else{
         Game.Stop();
-        ESC.stop();
 
         //Debug.Start();
         //Debug.Plot_List("Line",Line.line,32);
@@ -152,9 +181,9 @@ void loop() {
 
         //delay(100);
 
-        if(System.Button[0] || BC.Bt1 ){BNO055.Calibrate();IR.Calib_Dist();} // BNO055 set to 0
+        if(System.Button[0] || BC.Bt1 ){IR.Calib_Dist();} // BNO055 set to 0
 
-        if (System.Button[1] || BC.Bt2 ){Robot.Kicker.On();} // Kicker test
+        if (System.Button[1] || BC.Bt2 ){Robot.Kicker.On();BNO055.Calibrate();} // Kicker test
 
         if (System.Button[2] || BC.Bt3 ){Line.Calibrate(false);} 
         else{}
@@ -165,7 +194,7 @@ void loop() {
         if (System.Switches[1] || BC.Sw2){IR.Calib_Offset();} 
         else{}
 
-        if (System.Switches[2] || BC.Sw3){ESC.set(15);}
+        if (System.Switches[2] || BC.Sw3){ESC.set(20);}
         else{ESC.set(0);}
     }
 
@@ -186,19 +215,30 @@ void loop() {
         if (debugTimer >= DEBUG_INTERVAL_MS ) {
             debugTimer = 0;
 
-            Serial.print("> ");
-            Serial.println("pt26: "+String(Line.Values_raw[28])+" , pt22: "+String(Line.Values_raw[26])+" , pt20: "+String(Line.Values_raw[25]));
+            
+            //Debug.Start();
+            //Debug.Plot_List("line",aktive,aktive2,Line.Summe);
+            //Debug.Plot("Summe",Line.Summe);
+            //Debug.Send();
+
+            Debug.Start();
+            //Debug.Plot("Hinten",US.giveNR(2));
+            //Debug.Plot("Links",US.giveNR(3));
+            Debug.Plot("still",Ball.Stilltime);
+            //Debug.Plot("dep",Line.dep);
+            Debug.Plot("cycl",Cycletime);
+            Debug.Send();
 
             //BC.sendTelemetryFloat("BNO",BNO055.giveDeg());
             //BC.sendTelemetryBool("Start",digitalRead(Start_Port));  
             //BC.sendListInt("list",Line.Values_raw,28);   
-           BC.led1=LDR.Aktiv();
-           BC.led2=Line.Summe > 0;
-           BC.LedUpdate();
+           //BC.led1=Ball.catched;
+           //BC.led2=Line.Summe > 0;
+           //BC.LedUpdate();
         }
     //}
 
-    
+    RGB.Apply();
     System.Update.Interface();
 
     System.Update.Calculations();

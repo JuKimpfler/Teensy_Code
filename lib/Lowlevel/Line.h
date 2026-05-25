@@ -7,6 +7,7 @@ class LineC {
     public:
         int VW_Summe;
         int Summe;
+        float dep;
         float calib_line[40];
         uint8_t line[32] ;
         uint8_t lineVW[8];

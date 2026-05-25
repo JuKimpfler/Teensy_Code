@@ -11,11 +11,13 @@ void setColorID(bool ID){
         US_Back = US_Back_w;
         US_Left = US_Left_w;
         US_Right = US_Right_w;
+        US_Front = US_Front_w;
     }
     else{ // schwarz
         US_Back = US_Back_s;
         US_Left = US_Left_s;
         US_Right = US_Right_s;
+        US_Front = US_Front_s;
     }
 }
 
@@ -24,12 +26,12 @@ void SystemC::begin(bool CIndex){
     Motor.init();
     Line.init();
     BNO055.init();
-    BC.begin(UART_Pixy);
+    //BC.begin(UART_Pixy);
     Expander.I2C.init(I2C_ITF_Main,Input_Mode,All_Off);
     IR.init();
     LDR.init();
     RGB.init();
-    US.init();
+   // US.init();
 }
 
 void SystemC::UpdateC::Interface(){
@@ -54,7 +56,7 @@ void SystemC::UpdateC::Sensors(){
     Robot.Kicker.Update();
     US.read();
     Cam.Update();
-    BC.process();
+    //BC.process();
 }
 
 void SystemC::UpdateC::Calculations(){

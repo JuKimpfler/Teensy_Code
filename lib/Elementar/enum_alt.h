@@ -33,9 +33,9 @@ inline int    US_Back_w = 0xE4;
 inline int    US_Front_w = 0xE6;
 
 inline int    US_Left_s =  0xE0;
-inline int    US_Right_s = 0xE2;
-inline int    US_Back_s = 0xE4;
-inline int    US_Front_s = 0xE6;
+inline int    US_Right_s = 0xE6;
+inline int    US_Back_s = 0xE2;
+inline int    US_Front_s = 0xE4;
 
 inline int    US_Left;
 inline int    US_Right;
@@ -68,7 +68,8 @@ enum I2C_Port {
     I2C_ITF_Main = 0x20, // Buttons und Switches Main Platine
     I2C_Motor = 0x21, // Motoren
     I2C_ITF_Ex  = 0x22, // Interface_Platine
-    I2C_INA219 = 0x40 // Batterie Voltage
+    I2C_INA219_Main = 0x40, // Batterie Voltage
+    I2C_INA219_DR = 0x41, // Dribbler Voltage
 };
 
 enum I2C_Pin {
