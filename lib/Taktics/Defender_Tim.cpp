@@ -112,28 +112,12 @@ double Defender_Tim::normalizeAngle(double angle) {
     return angle;
 }
 
-double Defender_Tim::AtoT(double angleA) {
-    return normalizeAngle(90.0 - angleA);
-}
-
-double Defender_Tim::TtoA(double angleB) {
-    return normalizeAngle(90.0 - angleB);
-}
-
 double Defender_Tim::Jto12(double angleJ) { // von J auf 0-360 bei 12 Uhr
     return U.Circel(angleJ)+180;
 }
 
-double Defender_Tim::Jto3(double angleJ) { // von J auf 0-360 bei 3 Uhr
-    return U.Circel(angleJ)+90;
-}
-
-double Defender_Tim::C12toJ(double angleJ) { // von J auf 0-360 bei 12 Uhr
+double Defender_Tim::C12toJ(double angleJ) { // von 0-360 bei 12 Uhr auf J
     return U.CircelA(angleJ)-180;
-}
-
-double Defender_Tim::C3toJ(double angleJ) { // von J auf 0-360 bei 3 Uhr
-    return U.CircelA(angleJ)-90;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -191,16 +175,17 @@ Drive_Data Defender_Tim::follow_Line(bool Line_sensors_active[], float ball_angl
       float diff = fabs(normalizeAngle(last_valid_line_angle - Goal_angle));
       bool robot_left_towards_goal = (diff < 90 || diff > 270);
 
-      if(robot_left_towards_goal && GoalHight > 60) {
+      //if(robot_left_towards_goal && GoalHight > 60) {
         // Roboter ist Richtung Tor von der Linie runtergefahren → NICHT Richtung Tor fahren!
         drive_data.speed = defender_out_speed;
         drive_data.direction = last_valid_line_angle;
-      } 
+      /*} 
       else {
-        // Roboter ist vom Tor weg runtergefahren → Richtung Tor fahren ist korrekt
+         Roboter ist vom Tor weg runtergefahren → Richtung Tor fahren ist korrekt
         return_to_Line(out_timer, Goal_Detected, Goal_angle);
-      }
+      }*/
 
+      Serial.println("noLine"+String(drive_data.direction));
       return drive_data;
     }
 

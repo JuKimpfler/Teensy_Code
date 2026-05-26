@@ -21,6 +21,12 @@ void setup() {
     SPI.begin();
     Serial.begin(115200);
     UART_2.begin(115200);
+    UART_1.begin(115200);
+
+    //disable tx
+    pinMode(RCJ_Port, INPUT);
+
+
     UART_Pixy.begin(115200);
 
     INA.init();
@@ -39,7 +45,7 @@ void setup() {
     if(ESC.Enable){
         while(INA.Voltage_DR()>4){delay(30);}
         RGB.write(1,"R");  
-        Serial.println("push button 3");
+        //Serial.println("push button 3");
         RGB.Apply();
         ESC.init(33);
         delay(1000);
@@ -74,22 +80,25 @@ void loop() {
 
     delay(10);
 
-    bool aktive[32];
-    for(int i = 8 ; i<32 ; i++){if(Line.line[i]==1){aktive[i-8] = true;}else{aktive[i-8] = false;}}
-    for(int i = 0 ; i<8  ; i++){if(Line.line[i]==1){aktive[i+24] = true;}else{aktive[+24] = false;}}
+    bool LineDef[32];
+    bool LineDef_invers[32];
+    for(int i = 8 ; i<32 ; i++){if(Line.line[i]==1){LineDef[i-8] = true;}else{LineDef[i-8] = false;}}
+    for(int i = 0 ; i<8  ; i++){if(Line.line[i]==1){LineDef[i+24] = true;}else{LineDef[i+24] = false;}}
 
-    Debug.Start();
+    for(int i = 0 ; i<32 ; i++){LineDef_invers[i]=LineDef[31-i];}
+
+    /*Debug.Start();
     Debug.Plot_List("o",Line.line,32);
     Debug.Send();
     Debug.Start();
-    Debug.Plot_List("n",aktive,32);
-    Debug.Send();
+    Debug.Plot_List("n",LineDef,32);
+    Debug.Send();*/
 
-    Drive_Data Data = T_Defender.follow_Line(aktive,T_Defender.Jto12(Ball.Angle),Cam.give_BlobH(),Cam.isValid(),Cam.give_Angle(),T_Defender.Jto12(LineCalc.RawAngle),Line.dep,(Line.Summe!=0),Ball.Distance);
-
+    Drive_Data Data = T_Defender.follow_Line(LineDef_invers,T_Defender.Jto12(Ball.Angle*-1),Cam.give_BlobH(),Cam.isValid(),Cam.give_Angle(),T_Defender.Jto12(LineCalc.RawAngle),Line.dep,(Line.Summe!=0),Ball.Distance);
     Data.direction = T_Defender.C12toJ(Data.direction);
 
-    Serial.println(Ball.Angle);
+    Serial.println(Cam.give_BlobH());
+
     if(ESC.Enable){
         if(INA.Current_DR()>1340){
             RGB.write(0,"R");
@@ -232,7 +241,7 @@ void loop() {
 
             
             //Debug.Start();
-            //Debug.Plot_List("line",aktive,aktive2,Line.Summe);
+            //Debug.Plot_List("line",LineDef,aktive2,Line.Summe);
             //Debug.Plot("Summe",Line.Summe);
             //Debug.Send();
 

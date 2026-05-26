@@ -49,8 +49,8 @@ private:
 
   static constexpr float KICK_DIST_MIN         = 5.0f;
   static constexpr float KICK_DIST_MAX         = 15.0f;
-  static constexpr float MOVEMENT_DIST_THRESH  = 5.0f;
-  static constexpr float MOVEMENT_ANGLE_THRESH = 15.0f;
+  static constexpr float MOVEMENT_DIST_THRESH  = 4.0f;
+  static constexpr float MOVEMENT_ANGLE_THRESH = 3.0f;
 
 
 public:
