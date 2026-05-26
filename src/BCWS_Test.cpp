@@ -1,9 +1,9 @@
 #include "System.h"
-//#include "Defender.h"
+#include "Defender.h"
 #include "INA.h"
-//#include "Defender_Tim.h"
+#include "Defender_Tim.h"
 
-//Defender_Tim T_Defender;
+Defender_Tim T_Defender;
 
 elapsedMillis debugTimer;
 static constexpr uint32_t DEBUG_INTERVAL_MS = 40; // Serielle Ausgabe alle 100ms
@@ -64,7 +64,7 @@ void setup() {
 
     Cam.setSign(true);
 
-    //Defender.set_State(false);
+    Defender.set_State(false);
 
     US.init();
 }
@@ -72,11 +72,24 @@ void setup() {
 void loop() { 
     Cycle_Timer = 0 ;
 
-    //bool aktive[32];
-    //for(int i = 0 ; i<32 ; i++){if(Line.line[i]==1){aktive[i] = true;}else{aktive[i] = false;}}
+    delay(10);
 
-    //Drive_Data Data = T_Defender.follow_Line(aktive,Ball.Angle,Cam.give_BlobH(),Cam.isValid(),Cam.give_Angle(),LineCalc.RawAngle,Line.dep,(Line.Summe!=0),LineCalc.RawAngle,Ball.Distance,false);
+    bool aktive[32];
+    for(int i = 8 ; i<32 ; i++){if(Line.line[i]==1){aktive[i-8] = true;}else{aktive[i-8] = false;}}
+    for(int i = 0 ; i<8  ; i++){if(Line.line[i]==1){aktive[i+24] = true;}else{aktive[+24] = false;}}
 
+    Debug.Start();
+    Debug.Plot_List("o",Line.line,32);
+    Debug.Send();
+    Debug.Start();
+    Debug.Plot_List("n",aktive,32);
+    Debug.Send();
+
+    Drive_Data Data = T_Defender.follow_Line(aktive,T_Defender.Jto12(Ball.Angle),Cam.give_BlobH(),Cam.isValid(),Cam.give_Angle(),T_Defender.Jto12(LineCalc.RawAngle),Line.dep,(Line.Summe!=0),Ball.Distance);
+
+    Data.direction = T_Defender.C12toJ(Data.direction);
+
+    Serial.println(Ball.Angle);
     if(ESC.Enable){
         if(INA.Current_DR()>1340){
             RGB.write(0,"R");
@@ -156,8 +169,9 @@ void loop() {
     
     if(System.Start || BC.start || digitalRead(RCJ_Port)){ 
         if (BC.mode1) {
-            Game.Run();
+            //Game.Run(); 
             //Defender.Update();
+            Robot.Drive(Data.direction,Data.turn,Data.speed);
         }
         else if (BC.mode2) {
             if (BC.controlActive) {Robot.Drive(BC.angle,0,BC.speed);}else{Game.Stop();}
@@ -167,7 +181,8 @@ void loop() {
 
         else if (!BC.mode5) {
             //Defender.Update();
-            Game.Run();
+            //Game.Run();
+            Robot.Drive(Data.direction,Data.turn,Data.speed);
         } // Ohne BC modus
     }
     else{
@@ -183,7 +198,7 @@ void loop() {
 
         if(System.Button[0] || BC.Bt1 ){IR.Calib_Dist();} // BNO055 set to 0
 
-        if (System.Button[1] || BC.Bt2 ){Robot.Kicker.On();BNO055.Calibrate();} // Kicker test
+        if (System.Button[1] || BC.Bt2 ){BNO055.Calibrate();} // Kicker test  Robot.Kicker.On();
 
         if (System.Button[2] || BC.Bt3 ){Line.Calibrate(false);} 
         else{}
@@ -221,13 +236,13 @@ void loop() {
             //Debug.Plot("Summe",Line.Summe);
             //Debug.Send();
 
-            Debug.Start();
+            //Debug.Start();
             //Debug.Plot("Hinten",US.giveNR(2));
             //Debug.Plot("Links",US.giveNR(3));
-            Debug.Plot("still",Ball.Stilltime);
+            //Debug.Plot("still",Ball.Stilltime);
             //Debug.Plot("dep",Line.dep);
-            Debug.Plot("cycl",Cycletime);
-            Debug.Send();
+            //Debug.Plot("cycl",Cycletime);
+            //Debug.Send();
 
             //BC.sendTelemetryFloat("BNO",BNO055.giveDeg());
             //BC.sendTelemetryBool("Start",digitalRead(Start_Port));  

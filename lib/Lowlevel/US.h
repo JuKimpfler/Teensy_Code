@@ -4,6 +4,10 @@
 
 class USC{
     private:
+        bool H_active = false;
+        bool R_active = false;
+        bool L_active = false;
+        bool V_active = false;
     public:
         void read();
         void init();

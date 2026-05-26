@@ -55,11 +55,15 @@ private:
 
 public:
   Drive_Data follow_Line(bool Line_sensors_active[], float ball_angle,
-                                 float GoalHight, bool GoalVisible , float Goalangle, float LinieWinkel, float Line_distance,
-                                 bool Line_Detected, float Last_Line_Angle, double ball_distance, bool Cam_SW);
+                                 float GoalHight, bool GoalVisible , float Goal_angle, float LinieWinkel, float Line_distance,
+                                 bool Line_Detected, double ball_distance);
   double normalizeAngle(double angle);
   double AtoT(double angleA);
   double TtoA(double angleB);
+  double Jto12(double angleJ);
+  double Jto3(double angleJ);
+  double C12toJ(double angleJ);
+  double C3toJ(double angleJ);
 };
 
 #endif

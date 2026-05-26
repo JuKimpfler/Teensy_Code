@@ -50,6 +50,7 @@ void CamC::handleLine(const char* line) {
 
   if (line[0] == 'N') {
     rawValid = false;
+    angle_field_deg = 0;
     return;
   }
 

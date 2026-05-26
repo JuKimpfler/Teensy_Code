@@ -1,4 +1,5 @@
 #include "Defender_Tim.h"
+#include "Elementar.h"
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Kick state machine
@@ -84,7 +85,7 @@ void Defender_Tim::find_Closest_Sensor(bool Line_sensors_active[], float ball_an
             min_angle_diff = angle_diff;
         }
     }
-    drive_data.direction = Closest_sesnor * 11.25f;
+    drive_data.direction = (Closest_sesnor * 11.25f);
 }
 
 void Defender_Tim::return_to_Line(int out_timer, bool Goal_Detected, float GoalAngle) {
@@ -119,15 +120,30 @@ double Defender_Tim::TtoA(double angleB) {
     return normalizeAngle(90.0 - angleB);
 }
 
+double Defender_Tim::Jto12(double angleJ) { // von J auf 0-360 bei 12 Uhr
+    return U.Circel(angleJ)+180;
+}
+
+double Defender_Tim::Jto3(double angleJ) { // von J auf 0-360 bei 3 Uhr
+    return U.Circel(angleJ)+90;
+}
+
+double Defender_Tim::C12toJ(double angleJ) { // von J auf 0-360 bei 12 Uhr
+    return U.CircelA(angleJ)-180;
+}
+
+double Defender_Tim::C3toJ(double angleJ) { // von J auf 0-360 bei 3 Uhr
+    return U.CircelA(angleJ)-90;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // MAIN FUNCTION
 // ─────────────────────────────────────────────────────────────────────────────
 
 Drive_Data Defender_Tim::follow_Line(bool Line_sensors_active[], float ball_angle,
-                                 float GoalHight, bool GoalVisible , float Goalangle, float LinieWinkel, float Line_distance,
-                                 bool Line_Detected, float Last_Line_Angle, double ball_distance, bool Cam_SW) {
+                                 float GoalHight, bool GoalVisible , float Goal_angle, float LinieWinkel, float Line_distance,
+                                 bool Line_Detected, double ball_distance) {
 
-  float Goal_angle = static_cast<float>(Goalangle);
   bool Goal_Detected = GoalVisible;
   timer = millis();
 
@@ -161,11 +177,12 @@ Drive_Data Defender_Tim::follow_Line(bool Line_sensors_active[], float ball_angl
   }
   else {
     Kick_Active = false;
-    if(fabs(Goal_angle) > 47 || (Goal_Detected == false && Cam_SW == true)) {
+    /*if(fabs(Goal_angle) > 47 || (Goal_Detected == false && false)) { // eck escape
       drive_data.speed     = 30;
       drive_data.direction = 0.0f;
+      Serial.println("Eck Escape");
       return drive_data;
-    }
+    }*/
     // ─────────────────────────────────────────────────────────────────────
     // LINE LOST LOGIC
     // ─────────────────────────────────────────────────────────────────────
@@ -260,14 +277,15 @@ Drive_Data Defender_Tim::follow_Line(bool Line_sensors_active[], float ball_angl
     } 
   }
   Serial.print("Ball angle bevor: ");
-  Serial.print(fabs(((ball_angle_before+180)%360)-180));
-  Serial.print(" AngleChange: " + String(fabs(ball_angle_before - ballmovementCheckAngle)));
+  Serial.print(ball_angle_before);
+  //Serial.print(" AngleChange: " + String(fabs(ball_angle_before - ballmovementCheckAngle)));
   Serial.print(" DistChange: " + String(fabs(ball_distance - ballmovementCheckDist)));
   Serial.print(" | Kick active: " + String(Kick_Active));
   Serial.print(" | BallDist: " + String(ball_distance));
-  Serial.print(" | Change: " + String(change));
   Serial.print(" | Drive direction: ");
-  Serial.print(drive_data.direction);
+  Serial.print(C12toJ(drive_data.direction));
+  Serial.print(" | Turn: ");
+  Serial.print(C12toJ(drive_data.turn));
   Serial.print(" | GoalAngle: ");
   Serial.print(Goal_angle);
   Serial.print(" | Ball angle: ");

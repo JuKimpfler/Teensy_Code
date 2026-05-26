@@ -14,3 +14,9 @@ double UtilsC::Circel(double Angle){
     else if (Angle > 180){Angle = Angle - 360;}
     return Angle;
 }
+
+double UtilsC::CircelA(double Angle){
+    if(Angle<0){Angle = Angle+ 360;}
+    else if (Angle > 360){Angle = Angle - 360;}
+    return Angle;
+}

@@ -33,7 +33,7 @@ if (Line.Summe == 0) {Line.dep=1;return false;}
 
   // 3) Mittelwinkel zwischen A und B bestimmen (2 Möglichkeiten)
   float delta  = U.Circel(sensorB - sensorA);
-  Line.dep = abs(sin((abs(delta)/2)*DEG_TO_RAD));
+  Line.dep = 1-abs(sin((abs(delta)/2)*DEG_TO_RAD));
   return true;
 }
 

@@ -27,64 +27,46 @@ void USC::init(){
     sensorR.setJumpThreshold(50);
     sensorL.setJumpThreshold(50);
 
-    if (!sensorH.begin(Wire1)) {
-        Serial.println("SensorH nicht gefunden!");
-        while (true) {}
+    if (sensorH.begin(Wire1)) {
+        sensorH.startRanging();  // Erste Messung starten
+        H_active = true;
     }
-    if (!sensorV.begin(Wire1)) {
-        Serial.println("SensorV nicht gefunden!");
-        while (true) {}
+    if (sensorV.begin(Wire1)) {
+        sensorV.startRanging();  // Erste Messung starten
+        V_active = true;
     }
-    if (!sensorR.begin(Wire1)) {
-        Serial.println("SensorR nicht gefunden!");
-        while (true) {}
+    if (sensorR.begin(Wire1)) {
+        sensorR.startRanging();  // Erste Messung starten
+        R_active = true;
     }
-    if (!sensorL.begin(Wire1)) {
-        Serial.println("SensorL nicht gefunden!");
-        while (true) {}
+    if (sensorL.begin(Wire1)) {
+        sensorL.startRanging();  // Erste Messung starten
+        L_active = true;
     }
-
-    // Sensoren zum Manager hinzufügen
-    //sonar.addSensor(&sensorV);
-    //sonar.addSensor(&sensorR);
-    //sonar.addSensor(&sensorH);
-    //sonar.addSensor(&sensorL);
-
-    // Initialisieren — begin() testet Erreichbarkeit
-    //sonar.begin(Wire1);
-
-    sensorH.startRanging();  // Erste Messung starten
-    sensorV.startRanging();  // Erste Messung starten
-    sensorR.startRanging();  // Erste Messung starten
-    sensorL.startRanging();  // Erste Messung starten
 
     Wire1.setClock(I2C_SPEED);
 }
 
 void USC::read(){
     Wire1.setClock(I2C_SPEED_US);
-
-    
-    
-    
     
     //if(abs(BNO055.giveDeg())<7){
-    if(sensorH.update()){
+    if(H_active){if(sensorH.update()){
         Distance[2] = sensorH.getDistance();
         sensorH.startRanging();
-    }
-    if(sensorV.update()){
-        Distance[0] = sensorV.getDistance()+30;
+    }}
+    if(V_active){if(sensorV.update()){
+        Distance[0] = sensorV.getDistance();
         sensorV.startRanging();
-    }
-    if(sensorR.update()){  
-        Distance[1] = sensorR.getDistance()+30;
+    }}
+    if(R_active){if(sensorR.update()){  
+        Distance[1] = sensorR.getDistance();
         sensorR.startRanging();
-    }
-    if(sensorL.update()){
+    }}
+    if(L_active){if(sensorL.update()){
         Distance[3] = sensorL.getDistance();
         sensorL.startRanging();
-    }
+    }}
         
         /*Distance[0]=sonar.getDistance(0)+30;
         Distance[1]=sonar.getDistance(1)+30;
