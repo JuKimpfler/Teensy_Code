@@ -15,7 +15,7 @@ void setup() {
     Expander.I2C.init(I2C_ITF_Main,Input_Mode,All_Off);
     delay(500);
     Expander.I2C.read(I2C_ITF_Main);
-    Color_ID = false;//Expander.I2C.give(I2C_ITF_Main,ITF_Main_CID);
+    Color_ID = Expander.I2C.give(I2C_ITF_Main,ITF_Main_CID);
     ESC.Enable = Expander.I2C.give(I2C_ITF_Main,ITF_Main_SW0);
 
     SPI.begin();
@@ -23,17 +23,13 @@ void setup() {
     UART_2.begin(115200);
     UART_1.begin(115200);
 
-    //disable tx
-    pinMode(RCJ_Port, INPUT);
-
-
     UART_Pixy.begin(115200);
 
     INA.init();
 
     pinMode(Start_Port,INPUT);
     pinMode(Kicker_Port, OUTPUT);
-    pinMode(RCJ_Port,INPUT);
+    //pinMode(RCJ_Port,INPUT);
     System.begin(Color_ID);
 
     RGB.write(0,"Off");
@@ -52,7 +48,7 @@ void setup() {
         while(INA.Voltage_DR()<4){delay(30);Serial.println("waiting on power up");}
         delay(100);
         ESC.init_Power();
-        ESC.set(20);
+        ESC.set(30);
         RGB.write(1,"G");  
         Serial.println("ON!");
         RGB.Apply();
@@ -65,14 +61,15 @@ void setup() {
         RGB.Apply();
     }
     
+    //              Cam1 / Cam2
+    Cam.init(115200,true,true,UART_2,UART_1);
 
-    Cam.init(UART_2,115200);
+    Cam.setSign1(false);
+    Cam.setSign2(false);
 
-    Cam.setSign(true);
+    pinMode(RCJ_Port, INPUT);
 
     Defender.set_State(false);
-
-    US.init();
 }
 
 void loop() { 
@@ -80,24 +77,59 @@ void loop() {
 
     delay(10);
 
+    Cam.Update();
+
+    float cam_calib1;
+
+    /*if(System.Button[3]){
+        cam_calib1 = (120 * ((Cam.give_BlobH1()+Cam.give_BlobH2())/2)) / 11;
+        Serial.println("Cam: "+String(cam_calib1));
+        PU.update(BNO055.giveDeg(),U.CircelA(T_Defender.Jto12(Cam.give_Angle1())+180),Cam.give_BlobH1(),Cam.isValid1(),U.CircelA(T_Defender.Jto12(Cam.give_Angle2())+180),Cam.give_BlobH2(),Cam.isValid2(),cam_calib1);
+
+    }
+    else{
+        PU.update(BNO055.giveDeg(),U.CircelA(T_Defender.Jto12(Cam.give_Angle1())+180),Cam.give_BlobH1(),Cam.isValid1(),U.CircelA(T_Defender.Jto12(Cam.give_Angle2())+180),Cam.give_BlobH2(),Cam.isValid2());
+    }*/
+    
+    //Serial.println("Ina "+String(INA.Current_DR()));
+    //Serial.println("> X: "+String(PU.Positon.x_cm)+", Y:" +String(PU.Positon.y_cm)+", V:" +String(PU.Positon.valid)+", S:" +String(PU.Positon.Speed)+", Deg:" +String(Robot.lastDir)+", Cor:" +String(Robot.lastDircor));
+
+    //Serial.print(digitalRead(RCJ_Port));
+    Serial.print("C1 ");
+    Serial.print(Cam.give_Angle1());
+    Serial.print(" , C2 ");
+    Serial.print(Cam.give_Angle2());
+    Serial.print(" , D "); 
+    Serial.print((Cam.give_Angle1()+Cam.give_Angle2())/2);
+    Serial.print(" , sq "); 
+    Serial.println(sqrt(pow(Cam.give_Angle1()-5,2)+pow(Cam.give_Angle2()+5,2)));
+
+    float testS ;
+
+    if(sqrt(pow(Cam.give_Angle1(),2)+pow(Cam.give_Angle2(),2))<50){
+        testS = 20;
+    }
+    else{
+        testS = 5;
+    }
+
     bool LineDef[32];
     bool LineDef_invers[32];
     for(int i = 8 ; i<32 ; i++){if(Line.line[i]==1){LineDef[i-8] = true;}else{LineDef[i-8] = false;}}
     for(int i = 0 ; i<8  ; i++){if(Line.line[i]==1){LineDef[i+24] = true;}else{LineDef[i+24] = false;}}
-
     for(int i = 0 ; i<32 ; i++){LineDef_invers[i]=LineDef[31-i];}
 
-    /*Debug.Start();
-    Debug.Plot_List("o",Line.line,32);
-    Debug.Send();
-    Debug.Start();
-    Debug.Plot_List("n",LineDef,32);
-    Debug.Send();*/
+    //Debug.Start();
+    //Debug.Plot_List("o",Line.line,32);
+    //Debug.Send();
+    //Debug.Start();
+    //Debug.Plot_List("n",LineDef,32);
+    //Debug.Send();
 
-    Drive_Data Data = T_Defender.follow_Line(LineDef_invers,T_Defender.Jto12(Ball.Angle*-1),Cam.give_BlobH(),Cam.isValid(),Cam.give_Angle(),T_Defender.Jto12(LineCalc.RawAngle),Line.dep,(Line.Summe!=0),Ball.Distance);
-    Data.direction = T_Defender.C12toJ(Data.direction);
+    Serial.println(Ball.Angle);
 
-    Serial.println(Cam.give_BlobH());
+    //Drive_Data Data = T_Defender.follow_Line(LineDef_invers,T_Defender.Jto12(U.Circel(Ball.Angle-180)*-1),Cam.give_BlobH2(),Cam.isValid2(),Cam.give_Angle2(),T_Defender.Jto12(LineCalc.DriveAngle),Line.dep,(Line.Summe!=0),Ball.Distance+10);
+    //Data.direction = T_Defender.C12toJ(Data.direction);
 
     if(ESC.Enable){
         if(INA.Current_DR()>1340){
@@ -115,7 +147,6 @@ void loop() {
         else{RGB.write(0,"B");}
     }
 
-    //Calibroutine
     if(Serial.available()>0){
         if(Serial.readString()=="giveCalib"){
             if(Color_ID){
@@ -176,51 +207,46 @@ void loop() {
         }
     }
     
-    if(System.Start || BC.start || digitalRead(RCJ_Port)){ 
+    if(System.Start || BC.start || digitalRead(RCJ_Port)){ //
         if (BC.mode1) {
             //Game.Run(); 
             //Defender.Update();
-            Robot.Drive(Data.direction,Data.turn,Data.speed);
+           // Robot.Drive(Data.direction,Data.turn,Data.speed);
+           Robot.Drive(Ball.Angle*-1,0,testS);
         }
         else if (BC.mode2) {
             if (BC.controlActive) {Robot.Drive(BC.angle,0,BC.speed);}else{Game.Stop();}
         }
         else if (BC.mode3) {Robot.Turn(0);}
-        else if (BC.mode4) {Robot.Turn(Cam.give_Angle());}
+        else if (BC.mode4) {Robot.Turn(Cam.give_Angle1());}
 
         else if (!BC.mode5) {
             //Defender.Update();
             //Game.Run();
-            Robot.Drive(Data.direction,Data.turn,Data.speed);
-        } // Ohne BC modus
+           // Robot.Drive(Data.direction,Data.turn,Data.speed);
+           Robot.Drive(Ball.Angle*-1,0,testS);
+        }
     }
     else{
+        Serial.println("Start");
         Game.Stop();
-
-        //Debug.Start();
-        //Debug.Plot_List("Line",Line.line,32);
-        //Debug.Plot("Summe",Line.Summe);
-        //Debug.Plot("Angle",LineCalc.DriveAngle);
-        //Debug.Send();
-
-        //delay(100);
-
-        if(System.Button[0] || BC.Bt1 ){IR.Calib_Dist();} // BNO055 set to 0
-
-        if (System.Button[1] || BC.Bt2 ){BNO055.Calibrate();} // Kicker test  Robot.Kicker.On();
-
-        if (System.Button[2] || BC.Bt3 ){Line.Calibrate(false);} 
-        else{}
-
-        if (System.Button[3] || BC.Bt4 ){Line.Calibrate(true);} 
-        else{}
-
-        if (System.Switches[1] || BC.Sw2){IR.Calib_Offset();} 
-        else{}
-
-        if (System.Switches[2] || BC.Sw3){ESC.set(20);}
-        else{ESC.set(0);}
     }
+
+    if(System.Button[0] || BC.Bt1 ){IR.Calib_Dist();} // BNO055 set to 0
+
+    if (System.Button[1] || BC.Bt2 ){BNO055.Calibrate();} // Kicker test  Robot.Kicker.On();
+
+    if (System.Button[2] || BC.Bt3 ){} 
+    else{}
+
+    if (System.Button[3] || BC.Bt4 ){Robot.Kicker.On();} 
+    else{}
+
+    if (System.Switches[1] || BC.Sw2){IR.Calib_Offset();} 
+    else{}
+
+    if (System.Switches[2] || BC.Sw3){ESC.set(30);}
+    else{ESC.set(0);}
 
     if(BC.mode5){
         if (BC.calIrMax)// nichts
@@ -235,39 +261,36 @@ void loop() {
         {}
     }
 
-    //if (BC.Sw3) {
-        if (debugTimer >= DEBUG_INTERVAL_MS ) {
-            debugTimer = 0;
+    if (debugTimer >= DEBUG_INTERVAL_MS ) {
+        debugTimer = 0;
 
-            
-            //Debug.Start();
-            //Debug.Plot_List("line",LineDef,aktive2,Line.Summe);
-            //Debug.Plot("Summe",Line.Summe);
-            //Debug.Send();
+        System.Update.Interface();
 
-            //Debug.Start();
-            //Debug.Plot("Hinten",US.giveNR(2));
-            //Debug.Plot("Links",US.giveNR(3));
-            //Debug.Plot("still",Ball.Stilltime);
-            //Debug.Plot("dep",Line.dep);
-            //Debug.Plot("cycl",Cycletime);
-            //Debug.Send();
+        //Debug.Start();
+        //Debug.Plot_List("line",LineDef,aktive2,Line.Summe);
+        //Debug.Plot("Summe",Line.Summe);
+        //Debug.Send();
 
-            //BC.sendTelemetryFloat("BNO",BNO055.giveDeg());
-            //BC.sendTelemetryBool("Start",digitalRead(Start_Port));  
-            //BC.sendListInt("list",Line.Values_raw,28);   
-           //BC.led1=Ball.catched;
-           //BC.led2=Line.Summe > 0;
-           //BC.LedUpdate();
-        }
-    //}
+        //Debug.Start();
+        //Debug.Plot("Hinten",US.giveNR(2));
+        //Debug.Plot("Links",US.giveNR(3));
+        //Debug.Plot("still",Ball.Stilltime);
+        //Debug.Plot("dep",Line.dep);
+        //Debug.Plot("cycl",Cycletime);
+        //Debug.Send();
+
+        //BC.sendTelemetryFloat("BNO",BNO055.giveDeg());
+        //BC.sendTelemetryBool("Start",digitalRead(Start_Port));  
+        //BC.sendListInt("list",Line.Values_raw,28);   
+        //BC.led1=Ball.catched;
+        //BC.led2=Line.Summe > 0;
+        //BC.LedUpdate();
+    }
 
     RGB.Apply();
-    System.Update.Interface();
 
     System.Update.Calculations();
     System.Update.Sensors();
-    //Line.read_Fast();
 
     Robot.Kicker.Update_End();
     Cycletime=Cycle_Timer;

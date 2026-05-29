@@ -11,6 +11,9 @@ public:
     void Stop();
     void Break();   
     void Turn_Drachen();
+
+    float lastDir = 0;
+    float lastDircor = 0;
     
     class KickerC{
         public:
@@ -22,7 +25,7 @@ public:
         private:
             bool active = false;
             bool onceActive = false;
-            int cyclet = 0;
+            long unsigned int cyclet = 0;
             bool set=false;
     };
     KickerC Kicker;

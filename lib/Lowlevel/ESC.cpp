@@ -38,6 +38,9 @@ void ESCC::init(uint8_t pin) {
 
 void ESCC::set(int speed) {
     if(Enable){
+        if(Color_ID == true){
+            speed = speed/3.5;
+        }
         if (!_armed) return;
 
         speed = constrain(speed, 0, 100);

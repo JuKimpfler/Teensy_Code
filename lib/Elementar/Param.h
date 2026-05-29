@@ -38,6 +38,9 @@ inline int IR_Sight = 45; // ab wann wird der Ball als da erkannt
 
 inline int Motor_Frequency =  400;
 
+inline bool preLineAvoidance = false;
+inline bool preLineDec = false;
+
 // --- Kamera Konstanten ---
 const float CAM_RES_X = 320.0;
 const float CAM_CENTER_X = CAM_RES_X / 2.0;

@@ -9,7 +9,7 @@ void GameC::Run(){
 
     if(!Game.LineInterrupt()){
         if(Ball.catched){
-            if(Cam.isValid()){Robot.Drive(Cam.give_Angle()*1.3,Cam.give_Angle(),25);Robot.Kicker.On();}
+            if(Cam.isValid1()){Robot.Drive(Cam.give_Angle1()*1.3,Cam.give_Angle1(),25);Robot.Kicker.On();}
             else{
                 Robot.Drive(180,0,25);
                 Robot.Kicker.Off();
@@ -24,7 +24,7 @@ void GameC::Run(){
                 drive = Ball.Angle;
             }
             float turn=0;
-            if(Cam.isValid() && abs(Cam.give_Angle()) < 60){turn = Cam.give_Angle();}
+            if(Cam.isValid1() && abs(Cam.give_Angle1()) < 60){turn = Cam.give_Angle1();}
             else{turn = 0;}
             Robot.Drive(drive,turn,25);
         }

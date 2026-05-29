@@ -1,6 +1,6 @@
 #include "Defender_Tim.h"
 #include "Elementar.h"
-
+#include "BallCalc.h"
 // ─────────────────────────────────────────────────────────────────────────────
 // Kick state machine
 // ─────────────────────────────────────────────────────────────────────────────
@@ -25,7 +25,7 @@ bool Defender_Tim::is_Ball_Still(KickState& state, float ball_angle, double ball
 Drive_Data Defender_Tim::handle_Kick(KickState& state, float ball_angle) {
     if(millis() - state.kick_start < KICK_DURATION_MS) {
         drive_data.speed     = 100;
-        drive_data.direction = ball_angle;
+        drive_data.direction = Jto12(Ball.Angle);
         return drive_data;
     }
     state.kicking    = false;
@@ -85,7 +85,7 @@ void Defender_Tim::find_Closest_Sensor(bool Line_sensors_active[], float ball_an
             min_angle_diff = angle_diff;
         }
     }
-    drive_data.direction = (Closest_sesnor * 11.25f);
+    drive_data.direction = Jto12(U.Circel(C12toJ((Closest_sesnor * 11.25f))-180)*1);
 }
 
 void Defender_Tim::return_to_Line(int out_timer, bool Goal_Detected, float GoalAngle) {
@@ -98,7 +98,7 @@ void Defender_Tim::return_to_Line(int out_timer, bool Goal_Detected, float GoalA
     }
     else {
         drive_data.speed     = defender_out_speed;
-        drive_data.direction = 0.0f;
+        drive_data.direction = 180.0;
     }
 }
 
@@ -157,16 +157,16 @@ Drive_Data Defender_Tim::follow_Line(bool Line_sensors_active[], float ball_angl
   if(Kick_Active && timer - Kick_Starter < KICK_DURATION_MS) {
       Serial.println("Kick active");
       drive_data.speed     = KICK_SPEED;
-      drive_data.direction = ball_angle_before;
+      drive_data.direction = Jto12(Ball.Angle);
   }
   else {
     Kick_Active = false;
-    /*if(fabs(Goal_angle) > 47 || (Goal_Detected == false && false)) { // eck escape
+    if(fabs(Goal_angle) > 65 || (Goal_Detected == false )) { // eck escape
       drive_data.speed     = 30;
-      drive_data.direction = 0.0f;
-      Serial.println("Eck Escape");
+      drive_data.direction = 180.0;
+      Serial.println("Eck Escape : " + String(fabs(Goal_angle)) + " Bool: " +String(Goal_Detected));
       return drive_data;
-    }*/
+    }
     // ─────────────────────────────────────────────────────────────────────
     // LINE LOST LOGIC
     // ─────────────────────────────────────────────────────────────────────
@@ -178,14 +178,14 @@ Drive_Data Defender_Tim::follow_Line(bool Line_sensors_active[], float ball_angl
       //if(robot_left_towards_goal && GoalHight > 60) {
         // Roboter ist Richtung Tor von der Linie runtergefahren → NICHT Richtung Tor fahren!
         drive_data.speed = defender_out_speed;
-        drive_data.direction = last_valid_line_angle;
+        drive_data.direction = U.CircelA(last_valid_line_angle+180);
       /*} 
       else {
          Roboter ist vom Tor weg runtergefahren → Richtung Tor fahren ist korrekt
         return_to_Line(out_timer, Goal_Detected, Goal_angle);
       }*/
 
-      Serial.println("noLine"+String(drive_data.direction));
+      Serial.println("noLine "+String(drive_data.direction));
       return drive_data;
     }
 
@@ -209,11 +209,11 @@ Drive_Data Defender_Tim::follow_Line(bool Line_sensors_active[], float ball_angl
       // Debug: Check each condition individually
       bool angle_change_ok = fabs(ball_angle_before - ballmovementCheckAngle) < 20.0f;
       bool dist_change_ok = fabs(ball_distance - ballmovementCheckDist) < 20.0f;
-      bool ball_dist_min_ok = ball_distance > 30;
-      bool ball_dist_max_ok = ball_distance < 55.0f;
+      bool ball_dist_min_ok = ball_distance > KICK_DIST_MIN;
+      bool ball_dist_max_ok = ball_distance < KICK_DIST_MAX;
       float ball_angle_check = fabs(((ball_angle_before+180)%360)-180);
-      bool ball_angle_min_ok = ball_angle_check > 15.0f;
-      bool ball_angle_max_ok = ball_angle_check < 40.0f;
+      bool ball_angle_min_ok = ball_angle_check > 10.0f;
+      bool ball_angle_max_ok = ball_angle_check < 50.0f;
       bool line_detected_ok = Line_Detected;
       
       Serial.print(" DEBUG: angle_change_ok=");

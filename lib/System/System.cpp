@@ -54,7 +54,7 @@ void SystemC::UpdateC::Sensors(){
     BNO055.read();
     Line.read_Fast();
     Robot.Kicker.Update();
-    US.read();
+    //US.read();
     Cam.Update();
     //BC.process();
 }

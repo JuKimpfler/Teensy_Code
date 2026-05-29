@@ -47,10 +47,10 @@ private:
   static const int KICK_SPEED             = 70;
 
 
-  static constexpr float KICK_DIST_MIN         = 5.0f;
-  static constexpr float KICK_DIST_MAX         = 15.0f;
-  static constexpr float MOVEMENT_DIST_THRESH  = 4.0f;
-  static constexpr float MOVEMENT_ANGLE_THRESH = 3.0f;
+  static constexpr float KICK_DIST_MIN         = -5.0f;
+  static constexpr float KICK_DIST_MAX         = 20.0f;
+  static constexpr float MOVEMENT_DIST_THRESH  = 6.0f;
+  static constexpr float MOVEMENT_ANGLE_THRESH = 6.0f;
 
 
 public:
@@ -58,12 +58,8 @@ public:
                                  float GoalHight, bool GoalVisible , float Goal_angle, float LinieWinkel, float Line_distance,
                                  bool Line_Detected, double ball_distance);
   double normalizeAngle(double angle);
-  double AtoT(double angleA);
-  double TtoA(double angleB);
   double Jto12(double angleJ);
-  double Jto3(double angleJ);
   double C12toJ(double angleJ);
-  double C3toJ(double angleJ);
 };
 
 #endif

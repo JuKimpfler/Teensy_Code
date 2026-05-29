@@ -23,8 +23,6 @@ void BLC::doRolle(){
     if(BL_Timer_TX > 10){
         int angle = (digitalReadFast(Start_Port)) ? (int)(round(abs(Ball.Angle)+180)) : 999;
         int dist = (digitalReadFast(Start_Port)) ? (int)round(abs(Ball.Distance)) : 999;
-        bool info1 = true; 
-        bool info2 = true; 
         int extra = 000; 
         char sendMsg[29]; 
         snprintf(sendMsg, sizeof(sendMsg), "0%03d0%03d0%1d0%1d0%03d$", angle, dist, 0, 0, extra);

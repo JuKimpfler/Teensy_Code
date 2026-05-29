@@ -1,11 +1,12 @@
 #include "Robot.h"
 #include "RGB.h"
 #include "ESC.h"
+#include "PU.h"
 RobotC Robot;
 
 elapsedMillis Kicker_Timer;
 
-void RobotC::Turn(float Angle ,int Speed1 = HighSpeed){
+void RobotC::Turn(float Angle ,int Speed1){
     PID.setAngle(Angle);
     Motor.On(PID.Out,VR_Motor);
     Motor.On(PID.Out,VL_Motor);
@@ -17,6 +18,16 @@ void RobotC::Drive(float Dir , float Angle,int Speed1){
     Dir = Dir-BNO055.TiltZ;
 
     Dir= U.Circel(Dir)*-1;
+
+    /*if(preLineAvoidance){
+        lastDir = Dir;
+        Dir = PU.AlongBorder(PU.Positon.x_cm,PU.Positon.y_cm,Dir,5,15);
+        lastDircor = Dir;
+    }
+    if(preLineDec){
+        Speed1 = PU.Positon.Speed*Speed1;
+    }*/
+
     Angle= U.Circel(Angle);
 
     PID.setAngle(Angle);
@@ -132,7 +143,7 @@ void RobotC::KickerC::Update(){
     }
 }
 
-void RobotC::KickerC::On(int Cycle = 400){
+void RobotC::KickerC::On(int Cycle){
     cyclet = Cycle;
     active = true;
     onceActive = false;
