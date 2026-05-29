@@ -12,12 +12,14 @@ void setColorID(bool ID){
         US_Left = US_Left_w;
         US_Right = US_Right_w;
         US_Front = US_Front_w;
+        Drib_schwelle = Drib_w;
     }
     else{ // schwarz
         US_Back = US_Back_s;
         US_Left = US_Left_s;
         US_Right = US_Right_s;
         US_Front = US_Front_s;
+        Drib_schwelle = Drib_s;
     }
 }
 

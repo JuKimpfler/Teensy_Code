@@ -29,6 +29,7 @@ void setup() {
 
     pinMode(Start_Port,INPUT);
     pinMode(Kicker_Port, OUTPUT);
+    pinMode(Drib_Port,OUTPUT);
     //pinMode(RCJ_Port,INPUT);
     System.begin(Color_ID);
 
@@ -43,8 +44,8 @@ void setup() {
         RGB.write(1,"R");  
         //Serial.println("push button 3");
         RGB.Apply();
-        ESC.init(33);
-        delay(1000);
+        ESC.init(Drib_Port);
+        delay(2000);
         while(INA.Voltage_DR()<4){delay(30);Serial.println("waiting on power up");}
         delay(100);
         ESC.init_Power();
@@ -52,7 +53,7 @@ void setup() {
         RGB.write(1,"G");  
         Serial.println("ON!");
         RGB.Apply();
-        delay(5000);
+        delay(1000);
         ESC.stop();
     }
     else{
@@ -75,11 +76,13 @@ void setup() {
 void loop() { 
     Cycle_Timer = 0 ;
 
-    delay(10);
+    delay(3);
 
     Cam.Update();
 
     float cam_calib1;
+
+    //Serial.println(Drib_schwelle);
 
     /*if(System.Button[3]){
         cam_calib1 = (120 * ((Cam.give_BlobH1()+Cam.give_BlobH2())/2)) / 11;
@@ -91,27 +94,20 @@ void loop() {
         PU.update(BNO055.giveDeg(),U.CircelA(T_Defender.Jto12(Cam.give_Angle1())+180),Cam.give_BlobH1(),Cam.isValid1(),U.CircelA(T_Defender.Jto12(Cam.give_Angle2())+180),Cam.give_BlobH2(),Cam.isValid2());
     }*/
     
+    //
     //Serial.println("Ina "+String(INA.Current_DR()));
     //Serial.println("> X: "+String(PU.Positon.x_cm)+", Y:" +String(PU.Positon.y_cm)+", V:" +String(PU.Positon.valid)+", S:" +String(PU.Positon.Speed)+", Deg:" +String(Robot.lastDir)+", Cor:" +String(Robot.lastDircor));
 
     //Serial.print(digitalRead(RCJ_Port));
-    Serial.print("C1 ");
+    /**/Serial.print("C1 ");
     Serial.print(Cam.give_Angle1());
     Serial.print(" , C2 ");
     Serial.print(Cam.give_Angle2());
     Serial.print(" , D "); 
     Serial.print((Cam.give_Angle1()+Cam.give_Angle2())/2);
     Serial.print(" , sq "); 
-    Serial.println(sqrt(pow(Cam.give_Angle1()-5,2)+pow(Cam.give_Angle2()+5,2)));
+    Serial.println(sqrt(pow(Cam.give_Angle1()-3,2)+pow(Cam.give_Angle2()+3,2)));
 
-    float testS ;
-
-    if(sqrt(pow(Cam.give_Angle1(),2)+pow(Cam.give_Angle2(),2))<50){
-        testS = 20;
-    }
-    else{
-        testS = 5;
-    }
 
     bool LineDef[32];
     bool LineDef_invers[32];
@@ -126,13 +122,13 @@ void loop() {
     //Debug.Plot_List("n",LineDef,32);
     //Debug.Send();
 
-    Serial.println(Ball.Angle);
+    //Serial.println(Ball.Angle);
 
-    //Drive_Data Data = T_Defender.follow_Line(LineDef_invers,T_Defender.Jto12(U.Circel(Ball.Angle-180)*-1),Cam.give_BlobH2(),Cam.isValid2(),Cam.give_Angle2(),T_Defender.Jto12(LineCalc.DriveAngle),Line.dep,(Line.Summe!=0),Ball.Distance+10);
-    //Data.direction = T_Defender.C12toJ(Data.direction);
+    Drive_Data Data = T_Defender.follow_Line(LineDef_invers,T_Defender.Jto12(U.Circel(Ball.Angle-180)*-1),Cam.give_BlobH2(),Cam.isValid2(),Cam.give_Angle2(),T_Defender.Jto12(LineCalc.DriveAngle),Line.dep,(Line.Summe!=0),Ball.Distance+10);
+    Data.direction = T_Defender.C12toJ(Data.direction);
 
-    if(ESC.Enable){
-        if(INA.Current_DR()>1340){
+    if(ESC.Enable && false){
+        if(INA.Current_DR()>Drib_schwelle){
             RGB.write(0,"R");
             Ball.catched=true;
         }
@@ -209,10 +205,10 @@ void loop() {
     
     if(System.Start || BC.start || digitalRead(RCJ_Port)){ //
         if (BC.mode1) {
-            //Game.Run(); 
+            Game.Run(); 
             //Defender.Update();
            // Robot.Drive(Data.direction,Data.turn,Data.speed);
-           Robot.Drive(Ball.Angle*-1,0,testS);
+           
         }
         else if (BC.mode2) {
             if (BC.controlActive) {Robot.Drive(BC.angle,0,BC.speed);}else{Game.Stop();}
@@ -222,31 +218,32 @@ void loop() {
 
         else if (!BC.mode5) {
             //Defender.Update();
-            //Game.Run();
+            Game.Run();
            // Robot.Drive(Data.direction,Data.turn,Data.speed);
-           Robot.Drive(Ball.Angle*-1,0,testS);
         }
     }
     else{
         Serial.println("Start");
         Game.Stop();
+
+        if (System.Switches[2] || BC.Sw3){ESC.set(30);}
+        else{ESC.set(0);}
     }
 
     if(System.Button[0] || BC.Bt1 ){IR.Calib_Dist();} // BNO055 set to 0
 
     if (System.Button[1] || BC.Bt2 ){BNO055.Calibrate();} // Kicker test  Robot.Kicker.On();
 
-    if (System.Button[2] || BC.Bt3 ){} 
+    if (System.Button[2] || BC.Bt3 ){Line.Calibrate(0);} 
     else{}
 
-    if (System.Button[3] || BC.Bt4 ){Robot.Kicker.On();} 
+    if (System.Button[3] || BC.Bt4 ){Line.Calibrate(1);} 
     else{}
 
     if (System.Switches[1] || BC.Sw2){IR.Calib_Offset();} 
     else{}
 
-    if (System.Switches[2] || BC.Sw3){ESC.set(30);}
-    else{ESC.set(0);}
+    
 
     if(BC.mode5){
         if (BC.calIrMax)// nichts

@@ -4,14 +4,16 @@ GameC Game;
 elapsedMillis Line_Timer;
 
 void GameC::Run(){
-    if(Ball.Distance<30){ESC.set(20);}
-    else{ESC.stop();}
+    /*if(Ball.Distance<70){ESC.set(30);}
+    else{ESC.stop();}*/
+    ESC.set(30);
 
     if(!Game.LineInterrupt()){
         if(Ball.catched){
-            if(Cam.isValid1()){Robot.Drive(Cam.give_Angle1()*1.3,Cam.give_Angle1(),25);Robot.Kicker.On();}
+            if(Cam.isValid1()){Robot.Drive(Cam.give_Angle1()*1.3,Cam.give_Angle1()*-1,25);Robot.Kicker.On();}
             else{
-                Robot.Drive(180,0,25);
+                Robot.Drive(180,0,20);
+                ESC.set(20);
                 Robot.Kicker.Off();
             }
         }
@@ -24,9 +26,9 @@ void GameC::Run(){
                 drive = Ball.Angle;
             }
             float turn=0;
-            if(Cam.isValid1() && abs(Cam.give_Angle1()) < 60){turn = Cam.give_Angle1();}
+            if(Cam.isValid1() && abs(Cam.give_Angle1()) < 60){turn = Cam.give_Angle1()*-1;}
             else{turn = 0;}
-            Robot.Drive(drive,turn,25);
+            Robot.Drive(drive,turn,20);
         }
     }
     //if(Cam.isValid()){Robot.Turn(Cam.give_Angle());}

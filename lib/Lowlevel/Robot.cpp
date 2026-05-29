@@ -2,6 +2,8 @@
 #include "RGB.h"
 #include "ESC.h"
 #include "PU.h"
+#include "Line.h"
+#include "Cam.h"
 RobotC Robot;
 
 elapsedMillis Kicker_Timer;
@@ -23,10 +25,13 @@ void RobotC::Drive(float Dir , float Angle,int Speed1){
         lastDir = Dir;
         Dir = PU.AlongBorder(PU.Positon.x_cm,PU.Positon.y_cm,Dir,5,15);
         lastDircor = Dir;
-    }
-    if(preLineDec){
-        Speed1 = PU.Positon.Speed*Speed1;
     }*/
+    if(preLineDec && Line.Summe != 0){
+        if(sqrt(pow(Cam.give_Angle1(),2)+pow(Cam.give_Angle2(),2))>45){
+            Speed1 = Speed1*0.2;
+        }
+        Serial.println("decSpeed");
+    }
 
     Angle= U.Circel(Angle);
 
@@ -132,11 +137,12 @@ void RobotC::KickerC::Update(){
     
     // cyclic pulse handling
     if(active){
-        ESC.stop();
         if(Kicker_Timer > 150){
+            ESC.stop();
             digitalWrite(Kicker_Port, LOW);
         }
         if(Kicker_Timer > cyclet){
+            ESC.stop();
             digitalWrite(Kicker_Port, HIGH);
             Kicker_Timer = 0;
         }
