@@ -28,12 +28,11 @@ void SystemC::begin(bool CIndex){
     Motor.init();
     Line.init();
     BNO055.init();
-    //BC.begin(UART_Pixy);
+    BC.begin(UART_Pixy);
     Expander.I2C.init(I2C_ITF_Main,Input_Mode,All_Off);
     IR.init();
     LDR.init();
     RGB.init();
-   // US.init();
 }
 
 void SystemC::UpdateC::Interface(){
@@ -56,9 +55,9 @@ void SystemC::UpdateC::Sensors(){
     BNO055.read();
     Line.read_Fast();
     Robot.Kicker.Update();
-    //US.read();
     Cam.Update();
-    //BC.process();
+    BC.process();
+    BL.doRolle();
 }
 
 void SystemC::UpdateC::Calculations(){

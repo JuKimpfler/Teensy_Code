@@ -19,6 +19,14 @@ void RobotC::Turn(float Angle ,int Speed1){
 void RobotC::Drive(float Dir , float Angle,int Speed1){
     Dir = Dir-BNO055.TiltZ;
 
+    if(Color_ID==true){
+        Speed1 = Speed_w_faktor*Speed1;
+    }
+
+    if(Speed1 > 100){
+        Speed1 = 100;
+    }
+
     Dir= U.Circel(Dir)*-1;
 
     /*if(preLineAvoidance){
@@ -26,12 +34,12 @@ void RobotC::Drive(float Dir , float Angle,int Speed1){
         Dir = PU.AlongBorder(PU.Positon.x_cm,PU.Positon.y_cm,Dir,5,15);
         lastDircor = Dir;
     }*/
-    if(preLineDec && Line.Summe != 0){
+    /*if(preLineDec && Line.Summe != 0){
         if(sqrt(pow(Cam.give_Angle1(),2)+pow(Cam.give_Angle2(),2))>45){
             Speed1 = Speed1*0.2;
         }
         Serial.println("decSpeed");
-    }
+    }*/
 
     Angle= U.Circel(Angle);
 

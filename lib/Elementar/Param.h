@@ -21,7 +21,9 @@ inline int Line_calib_min[40] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 inline int Line_calib_max[40] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 inline int LDR_s_Calib = 100;
-inline int LDR_w_Calib = 100;
+inline int LDR_w_Calib = 110;
+
+inline int Speed_w_faktor = 1.5;
 
 inline int Drib_w = 1210;
 inline int Drib_s = 1340;
